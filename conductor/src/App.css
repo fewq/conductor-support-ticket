@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 100s linear;
   height: 40vmin;
   pointer-events: none;
 }
@@ -30,4 +30,44 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Thad defined buttons here */
+
+input,
+button {
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+}
+
+.App input {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  padding: 15px;
+  outline: none;
+  width: 20%;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App button {
+  background: #5d8ffc;
+  color: #fff;
+  border: 1px solid #5d8ffc;
+  border-radius: 5px;
+  padding: 15px;
+  display: block;
+  width: 20%;
+  transition: 0.3s;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App form {
+  width: 100%;
+  display: block;
 }
