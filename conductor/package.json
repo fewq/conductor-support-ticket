@@ -5,6 +5,7 @@
   "dependencies": {
     "auth0-js": "^9.10.0",
     "react": "^16.8.2",
+    "react-auth0": "^0.4.1",
     "react-dom": "^16.8.2",
     "react-scripts": "2.1.5"
   },
