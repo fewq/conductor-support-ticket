@@ -17,7 +17,11 @@ class App extends Component {
         mainComponent = <Callback />;
         break;
       case "restricted":
-        mainComponent = <Restricted />;
+        mainComponent = this.props.auth.isAuthenticated() ? (
+          <Restricted {...this.props} />
+        ) : (
+          <NotFound />
+        );
         break;
       default:
         mainComponent = <NotFound />;

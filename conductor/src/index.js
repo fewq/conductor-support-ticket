@@ -3,6 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import Auth from "./Auth";
+
+//calls the constructor in Auth.js but doesn't check authentication yet
+const auth = new Auth();
 
 let state = {};
 Window.setState = changes => {
@@ -14,8 +18,9 @@ Window.setState = changes => {
 /* eslint no-restricted-globals: 0*/
 let initialState = {
   name: "Ted",
-  location: location.pathname.replace(/^\/?|\/$/g, "")
+  location: location.pathname.replace(/^\/?|\/$/g, ""),
   //if it still doesn't work change location to window.location
+  auth
 };
 
 Window.setState(initialState);
