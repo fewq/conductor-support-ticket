@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
-class Secret extends Component {
+class Restricted extends Component {
   state = {};
   render() {
     return (
       <div>
-        <h1>WEW secret area</h1>
+        <h1>RESTRICTED AREA</h1>
       </div>
     );
   }
 }
 
-export default Secret;
+export default Restricted;

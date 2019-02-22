@@ -4,9 +4,10 @@ export default class Main extends Component {
   render() {
     return (
       <div>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h1>Main component, {this.props.name}</h1>
+        <h1>
+          Click <a href="/restricted"> here</a> to access restricted area
+        </h1>
       </div>
     );
   }
