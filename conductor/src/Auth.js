@@ -8,7 +8,7 @@ const LOGIN_FAILURE_PAGE = "/"; //homepage
 export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: "conductor.au.auth0.com",
-    clientID: "",
+    clientID: "m28JIY4vvRBiX09GZY4YHpDTI7Bxp7zL",
     redirectUri: "http://localhost:3000/callback",
     audience: "https://conductor.au.auth0.com/userinfo", //specifies what kind of user
     responseType: "token id_token",

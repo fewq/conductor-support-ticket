@@ -1,20 +1,26 @@
 import React, { Component } from "react";
 
 export default class Main extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: null // to get username from Auth0
+    };
+  }
+
   render() {
     return (
       <div>
-        <h1>Main component, {this.props.name}</h1>
-        <h1>
-          Click <a href="/restricted"> here</a> to access restricted area
-        </h1>
+        {this.props.auth.isAuthenticated() && (<div>
+          <p>Hey, {this.props.name}, how can we assist you today?</p>
+          <p>Click <a href="/restricted"> here</a> to access restricted area</p>
+          </div>)}
+        
 
         {/* only display login option if user is not already logged in */}
         {!this.props.auth.isAuthenticated() && (
-          <h1>
-            Please login first{" "}
-            <button onClick={this.props.auth.login}>Login</button>
-          </h1>
+            <button class="btn btn-primary" onClick={this.props.auth.login}>Login</button>
         )}
       </div>
     );
