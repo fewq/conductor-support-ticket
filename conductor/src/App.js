@@ -31,9 +31,12 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          Welcome to react, {this.props.name}
-          {mainComponent}
+          Welcome to the <b>ACNAPI Modern Ticket Support System</b>
+          <p class="subtitle">Powered by the Conductor</p>
         </header>
+        <body>
+          {mainComponent}
+        </body>
       </div>
     );
   }

@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { timingSafeEqual } from "crypto";
+import Dashboard from './form/Dashboard.js';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class Restricted extends Component {
   state = {};
   render() {
     return (
-      <div>
-        <h1>RESTRICTED AREA</h1>
-        <h1>
+      <div class="container">
+        <h2>RESTRICTED AREA</h2>
+        <Dashboard />
+        <p>
           Click <a href="/"> here</a> to go back home
-        </h1>
-        <button onClick={this.props.auth.logout}>Logout</button>
+        </p>
+        <button class="btn btn-primary" onClick={this.props.auth.logout}>Logout</button>
       </div>
     );
   }

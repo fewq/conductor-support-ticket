@@ -32,8 +32,24 @@
   }
 }
 
-/* Thad defined buttons here */
+.subtitle {
+  color: 	#F6C645;
+}
 
+.App body {
+  background-color:  #282c34;
+  color: white;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+
+/* Thad defined buttons here */
+/* 
 input,
 button {
   font-family: "Nunito", sans-serif;
@@ -70,4 +86,4 @@ button {
 .App form {
   width: 100%;
   display: block;
-}
+} */
