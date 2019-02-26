@@ -14,7 +14,7 @@ export default class Auth {
     redirectUri: "http://localhost:3000/callback",
     audience: "https://conductor.au.auth0.com/userinfo", //specifies what kind of user
     responseType: "token id_token",
-    scope: "openid profile"
+    scope: "openid profile email app_metadata"
   });
 
   // constructor
@@ -42,6 +42,10 @@ export default class Auth {
         localStorage.setItem("access_token", authResults.accessToken);
         localStorage.setItem("id_token", authResults.idToken);
         localStorage.setItem("expires_at", expiresAt);
+        localStorage.setItem(
+          "role",
+          this.getProfile()["https://conductor.com/app_metadata"]["role"]
+        );
         location.hash = "";
         location.pathname = LOGIN_SUCCESS_PAGE;
       } else if (err) {
@@ -66,6 +70,7 @@ export default class Auth {
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
+    localStorage.removeItem("role");
     location.pathname = LOGIN_FAILURE_PAGE;
   }
 
