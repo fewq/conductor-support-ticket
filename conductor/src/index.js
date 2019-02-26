@@ -16,8 +16,6 @@ let state = {};
 Window.setState = changes => {
   //updates the state via changes
   state = Object.assign({}, state, changes);
-  console.log("Current state: ");
-  console.log(state);
   //passes the state object to the App via the spread syntax
   ReactDOM.render(<App {...state} />, document.getElementById("root"));
 };
@@ -25,7 +23,7 @@ Window.setState = changes => {
 //do not remove the next line, it prevents errors
 /* eslint no-restricted-globals: 0*/
 let initialState = {
-  name: "Ted",
+  name: auth.getProfile().name,
   location: location.pathname.replace(/^\/?|\/$/g, ""),
   //if it still doesn't work change location to window.location
   auth
