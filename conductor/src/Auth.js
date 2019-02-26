@@ -13,7 +13,7 @@ export default class Auth {
     redirectUri: "http://localhost:3000/callback",
     audience: "https://conductor.au.auth0.com/userinfo", //specifies what kind of user
     responseType: "token id_token",
-    scope: "openid"
+    scope: "openid profile"
   });
 
   // constructor
