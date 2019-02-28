@@ -1,0 +1,89 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 100s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.subtitle {
+  color: 	#F6C645;
+}
+
+.App body {
+  background-color:  #282c34;
+  color: white;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+
+/* Thad defined buttons here */
+/* 
+input,
+button {
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
+}
+
+.App input {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  padding: 15px;
+  outline: none;
+  width: 20%;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App button {
+  background: #5d8ffc;
+  color: #fff;
+  border: 1px solid #5d8ffc;
+  border-radius: 5px;
+  padding: 15px;
+  display: block;
+  width: 20%;
+  transition: 0.3s;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App form {
+  width: 100%;
+  display: block;
+} */
