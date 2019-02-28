@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { timingSafeEqual } from "crypto";
 import Dashboard from "./form/Dashboard.js";
+import Kanban from "./Kanban.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Restricted extends Component {
@@ -10,8 +11,7 @@ class Restricted extends Component {
     switch (localStorage.role) {
       case "admin":
         console.log("logged in as admin");
-        //Yuanjia put your html here
-        // restrictedComponent = <Kanban />
+        restrictedComponent = <Kanban />;
         break;
 
       case "user":
@@ -24,13 +24,13 @@ class Restricted extends Component {
     }
 
     return (
-      <div class="container">
+      <div className="container">
         <h2>RESTRICTED AREA</h2>
         {restrictedComponent}
         <p>
           Click <a href="/"> here</a> to go back home
         </p>
-        <button class="btn btn-primary" onClick={this.props.auth.logout}>
+        <button className="btn btn-primary" onClick={this.props.auth.logout}>
           Logout
         </button>
       </div>

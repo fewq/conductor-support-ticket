@@ -33,11 +33,25 @@
 }
 
 .subtitle {
-  color: 	#F6C645;
+  color: #f6c645;
 }
 
+/* 
 .App body {
-  background-color:  #282c34;
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+*/
+
+.body {
+  background-color: #282c34;
   color: white;
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
