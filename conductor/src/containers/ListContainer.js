@@ -7,15 +7,18 @@ import {
   moveCard
 } from "../actions/kanban";
 
-const mapStateToProps = ({ domainData, appState, uiState }, { id, index }) => ({
+const mapStateToProps = (
+  { domainData, kanbanState, uiState },
+  { id, index }
+) => ({
   index,
   list: domainData.lists.byId[id],
-  cards: appState.listCards[id],
+  cards: kanbanState.listCards[id],
   listByIds: domainData.lists.byId,
-  listCards: appState.listCards,
-  itemToEdit: appState.itemToEdit,
-  attributeToEdit: appState.attributeToEdit,
-  numOfCards: appState.listCards[id].length
+  listCards: kanbanState.listCards,
+  itemToEdit: kanbanState.itemToEdit,
+  attributeToEdit: kanbanState.attributeToEdit,
+  numOfCards: kanbanState.listCards[id].length
 });
 
 const mapDispatchToProps = (dispatch, { id }) => ({

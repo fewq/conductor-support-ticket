@@ -1,33 +1,30 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
-import rootReducer from "./reducers";
+import { createStore, compose } from "redux";
+import kanbanState from "./reducers/kanbanState";
+import domainData from "./appModule/appModule";
 
 const initialState = {
-  // domainData,
-  // appState: {
-  //   listCards: {
-  //     // how cards are sorted inside lists - sorting matters here
-  //     "0": ["0", "1", "2"],
-  //     "1": ["3"],
-  //     "2": ["4"]
-  //   },
-  //   selectedCard: "ID_OF_CARD_IN_FOCUS",
-  //   itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
-  //   attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"
-  // },
-  // uiState: {
-  //   cardMenuPosition: {},
-  //   shouldShowCardMenu: false
-  // }
+  domainData,
+  kanbanState: {
+    listCards: {
+      // how cards are sorted inside lists - sorting matters here
+      "0": ["0", "1", "2"],
+      "1": ["3"],
+      "2": ["4"]
+    },
+    selectedCard: "ID_OF_CARD_IN_FOCUS",
+    itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
+    attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"
+  },
+  uiState: {
+    cardMenuPosition: {},
+    shouldShowCardMenu: false
+  }
 };
 
-const middleware = [thunk];
-
 let store = createStore(
-  rootReducer,
+  kanbanState,
   initialState,
   compose(
-    applyMiddleware(...middleware),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );

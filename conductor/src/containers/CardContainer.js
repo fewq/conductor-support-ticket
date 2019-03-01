@@ -13,14 +13,15 @@ import {
   updateCard
 } from "../actions/kanban";
 
-const mapStateToProps = ({ domainData, appState, uiState }, { id }) => ({
+const mapStateToProps = ({ domainData, kanbanState, uiState }, { id }) => ({
   card: domainData.cards.byId[id],
   menuPosition: uiState.cardMenuPosition,
-  itemToEdit: appState.itemToEdit,
-  attributeToEdit: appState.attributeToEdit,
+  itemToEdit: kanbanState.itemToEdit,
+  attributeToEdit: kanbanState.attributeToEdit,
   currentEditorValue: uiState.currentEditorValue,
-  isSelectedCard: appState.selectedCard === id,
-  shouldShowCardMenu: uiState.shouldShowCardMenu && appState.selectedCard === id
+  isSelectedCard: kanbanState.selectedCard === id,
+  shouldShowCardMenu:
+    uiState.shouldShowCardMenu && kanbanState.selectedCard === id
 });
 
 const mapDispatchToProps = (dispatch, { id, index, parentListId }) => ({

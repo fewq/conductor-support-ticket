@@ -1,181 +1,194 @@
-// import {combineReducers} from "redux";
-import {removeItemFromObject, removeItemFromArray} from "../utils/";
-import { UPDATE_CARD, CREATE_TASK, DELETE_CARD,
-  UPDATE_TASK, TOGGLE_TASK_DONE, DELETE_TASK,
-  CREATE_CARD, CREATE_LIST, DELETE_LIST
+import { removeItemFromObject, removeItemFromArray } from "../utils/";
+import {
+  UPDATE_CARD,
+  CREATE_TASK,
+  DELETE_CARD,
+  UPDATE_TASK,
+  TOGGLE_TASK_DONE,
+  DELETE_TASK,
+  CREATE_CARD,
+  CREATE_LIST,
+  DELETE_LIST
 } from "../actions/actionTypes";
 
-const updateCard = (state, {cardId, cardField, newVal}) => ({
+const updateCard = (state, { cardId, cardField, newVal }) => ({
   ...state,
-  cards : {
+  cards: {
     ...state.cards,
-    byId : {
+    byId: {
       ...state.cards.byId,
-      [cardId] : {
+      [cardId]: {
         ...state.cards.byId[cardId],
-        [cardField] : newVal
+        [cardField]: newVal
       }
     }
   }
 });
 
-const addTaskIdToParentCardTasks = (cards, {cardId, taskId}) => ({
+const addTaskIdToParentCardTasks = (cards, { cardId, taskId }) => ({
   ...cards,
-  byId : {
+  byId: {
     ...cards.byId,
-    [cardId] : {
+    [cardId]: {
       ...cards.byId[cardId],
-      tasks : [
-        ...cards.byId[cardId].tasks,
-        taskId
-      ]
+      tasks: [...cards.byId[cardId].tasks, taskId]
     }
   }
 });
 
-const addNewTask = (tasks, {taskId, taskName}) => ({
+const addNewTask = (tasks, { taskId, taskName }) => ({
   ...tasks,
-  byId : {
+  byId: {
     ...tasks.byId,
-    [taskId] : {
-      id : taskId,
-      name : taskName,
-      done : false
+    [taskId]: {
+      id: taskId,
+      name: taskName,
+      done: false
     }
   }
 });
 
 const createTask = (state, action) => ({
   ...state,
-  cards : addTaskIdToParentCardTasks(state.cards, action),
-  tasks : addNewTask(state.tasks, action),
+  cards: addTaskIdToParentCardTasks(state.cards, action),
+  tasks: addNewTask(state.tasks, action)
 });
 
-const deleteAllTasksInCard = (tasks, cards, {cardId}) => {
+const deleteAllTasksInCard = (tasks, cards, { cardId }) => {
   const newTasks = {
-    ...tasks,
-    byId : {
-      ...tasks.byId
-    }
-  },
-  tasksInCard = cards.byId[cardId].tasks;
+      ...tasks,
+      byId: {
+        ...tasks.byId
+      }
+    },
+    tasksInCard = cards.byId[cardId].tasks;
 
-  tasksInCard.forEach((taskId) => delete newTasks.byId[taskId]);
+  tasksInCard.forEach(taskId => delete newTasks.byId[taskId]);
   return newTasks;
 };
 
-const _deleteCard = (cards, {cardId}) => ({
+const _deleteCard = (cards, { cardId }) => ({
   ...cards,
-    byId : removeItemFromObject(cardId, cards.byId)
+  byId: removeItemFromObject(cardId, cards.byId)
 });
 
 const deleteCard = (state, action) => ({
   ...state,
-  tasks : deleteAllTasksInCard(state.tasks, state.cards, action),
-  cards : _deleteCard(state.cards, action),
+  tasks: deleteAllTasksInCard(state.tasks, state.cards, action),
+  cards: _deleteCard(state.cards, action)
 });
 
-const createCard = (state, {cardId, cardTitle}) => ({
+const createCard = (state, { cardId, cardTitle }) => ({
   ...state,
-  cards : {
+  cards: {
     ...state.cards,
-    byId : {
+    byId: {
       ...state.cards.byId,
-      [cardId] : {
-        id : cardId,
-        title : cardTitle,
-        description : "",
-        tasks : []
+      [cardId]: {
+        id: cardId,
+        title: cardTitle,
+        description: "",
+        tasks: []
       }
     }
   }
 });
 
-const updateTask = (state, {taskId, newVal}) => ({
+const updateTask = (state, { taskId, newVal }) => ({
   ...state,
-  tasks : {
+  tasks: {
     ...state.tasks,
-    byId : {
+    byId: {
       ...state.tasks.byId,
-      [taskId] : {
+      [taskId]: {
         ...state.tasks.byId[taskId],
-        name : newVal
+        name: newVal
       }
     }
   }
 });
 
-const toggleTaskDone = (state, {taskId}) => ({
+const toggleTaskDone = (state, { taskId }) => ({
   ...state,
-  tasks : {
+  tasks: {
     ...state.tasks,
-    byId : {
+    byId: {
       ...state.tasks.byId,
-      [taskId] : {
+      [taskId]: {
         ...state.tasks.byId[taskId],
-        done : !state.tasks.byId[taskId].done
+        done: !state.tasks.byId[taskId].done
       }
     }
   }
 });
 
-const removeTaskFromCard = (cards, {cardId, index}) => ({
+const removeTaskFromCard = (cards, { cardId, index }) => ({
   ...cards,
-  byId : {
+  byId: {
     ...cards.byId,
-    [cardId] : {
+    [cardId]: {
       ...cards.byId[cardId],
-      tasks : removeItemFromArray(index, cards.byId[cardId].tasks)
+      tasks: removeItemFromArray(index, cards.byId[cardId].tasks)
     }
   }
 });
 
 const _deleteTask = (tasks, taskId) => ({
   ...tasks,
-  byId : removeItemFromObject(taskId, tasks.byId)
+  byId: removeItemFromObject(taskId, tasks.byId)
 });
 
 const deleteTask = (state, action) => ({
   ...state,
-  cards : removeTaskFromCard(state.cards, action),
-  task : _deleteTask(state.tasks, action)
+  cards: removeTaskFromCard(state.cards, action),
+  task: _deleteTask(state.tasks, action)
 });
 
-const createList = (state, {listId, listName}) => ({
+const createList = (state, { listId, listName }) => ({
   ...state,
-  lists : {
+  lists: {
     ...state.lists,
-    byId : {
+    byId: {
       ...state.lists.byId,
-      [listId] : {
-        id : listId,
-        name : listName
+      [listId]: {
+        id: listId,
+        name: listName
       }
     },
-    allLists : [...state.lists.allLists, listId]
+    allLists: [...state.lists.allLists, listId]
   }
 });
 
-const deleteList = (state, {listId}) => ({
+const deleteList = (state, { listId }) => ({
   ...state,
-  lists : {
+  lists: {
     ...state.lists,
-    byId : removeItemFromObject(listId, state.lists.byId),
-    allLists : state.lists.allLists.filter((id)=> id !== listId)
+    byId: removeItemFromObject(listId, state.lists.byId),
+    allLists: state.lists.allLists.filter(id => id !== listId)
   }
 });
 
 export default function domainData(state = {}, action) {
   switch (action.type) {
-    case UPDATE_CARD: return updateCard(state, action);
-    case CREATE_TASK : return createTask(state, action);
-    case DELETE_CARD : return deleteCard(state, action);
-    case UPDATE_TASK : return updateTask(state, action);
-    case TOGGLE_TASK_DONE : return toggleTaskDone(state, action);
-    case DELETE_TASK : return deleteTask (state, action);
-    case CREATE_CARD : return createCard(state, action);
-    case CREATE_LIST : return createList(state, action);
-    case DELETE_LIST: return deleteList(state, action);
-    default: return state;
+    case UPDATE_CARD:
+      return updateCard(state, action);
+    case CREATE_TASK:
+      return createTask(state, action);
+    case DELETE_CARD:
+      return deleteCard(state, action);
+    case UPDATE_TASK:
+      return updateTask(state, action);
+    case TOGGLE_TASK_DONE:
+      return toggleTaskDone(state, action);
+    case DELETE_TASK:
+      return deleteTask(state, action);
+    case CREATE_CARD:
+      return createCard(state, action);
+    case CREATE_LIST:
+      return createList(state, action);
+    case DELETE_LIST:
+      return deleteList(state, action);
+    default:
+      return state;
   }
 }
