@@ -1,12 +1,12 @@
-import React from 'react';
-import { withFormik } from 'formik';
-import categories from './categories.js';
-import * as Yup from 'yup';
-import Select from 'react-select';
+import React from "react";
+import { withFormik } from "formik";
+import categories from "./categories.js";
+import * as Yup from "yup";
+import Select from "react-select";
 
 import { PropState, disableEnterButton } from "./helper";
-import makeAnimated from 'react-select/lib/animated';
-import '../../css/form.css'
+import makeAnimated from "react-select/lib/animated";
+import "../../css/form.css";
 
 /////////////////////////////////////////////////////
 const formType = ["bug", "feature"];
@@ -25,10 +25,8 @@ const formikEnhancer = withFormik({
           value: Yup.string().required()
         })
       ),
-    description: Yup.string()
-      .required("Description Required!"),
-    formType: Yup.string()
-      .required("What is this feedback primarily for?"),
+    description: Yup.string().required("Description Required!"),
+    formType: Yup.string().required("What is this feedback primarily for?")
   }),
   mapPropsToValues: props => ({
     email: "",
@@ -41,6 +39,18 @@ const formikEnhancer = withFormik({
       ...values,
       topics: values.topics.map(t => t.value)
     };
+
+    // Test code for POST
+    /*
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));*/
+
+    // TODO: change static submit to database or else
     setTimeout(() => {
       alert(JSON.stringify(payload, null, 2));
       setSubmitting(false);
@@ -65,9 +75,13 @@ const MyForm = (props, selectedFormType) => {
     isSubmitting
   } = props;
   return (
-    <form id="ticket-form" onSubmit={handleSubmit} onKeyPress={disableEnterButton}>
-    <h1 class="subtitle">Ticket Form</h1>
-{/*     
+    <form
+      id="ticket-form"
+      onSubmit={handleSubmit}
+      onKeyPress={disableEnterButton}
+    >
+      <h1 class="subtitle">Ticket Form</h1>
+      {/*     
     <label htmlFor="email" style={{ display: "block" }}>
         Email
     </label>
@@ -83,29 +97,29 @@ const MyForm = (props, selectedFormType) => {
       <div style={{ color: "red", marginTop: ".5rem" }}>{errors.email}</div>
     )} */}
 
-    
-    <div class="radio-group">
-      <label>Ticket Type</label>
-      <div class="radio-container">
-      {formType.map(option => (
-        <React.Fragment key={option}>
-          <div class="radio-item">
-            <label htmlFor={option}>{option}
-            <input
-              type="radio"
-              name="formType"
-              id={option}
-              value={option}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              checked={values.formType === option}
-            />
-            </label>
-          </div>
-        </React.Fragment>
-      ))}
+      <div class="radio-group">
+        <label>Ticket Type</label>
+        <div class="radio-container">
+          {formType.map(option => (
+            <React.Fragment key={option}>
+              <div class="radio-item">
+                <label htmlFor={option}>
+                  {option}
+                  <input
+                    type="radio"
+                    name="formType"
+                    id={option}
+                    value={option}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    checked={values.formType === option}
+                  />
+                </label>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
-    </div>
       <MySelect
         value={values.topics}
         onChange={setFieldValue}
@@ -125,10 +139,10 @@ const MyForm = (props, selectedFormType) => {
         onBlur={handleBlur}
       />
       {errors.description && touched.description && (
-        <div style={{ color: "red", marginTop: ".5rem" }}>{errors.descriptionl}</div>
+        <div style={{ color: "red", marginTop: ".5rem" }}>
+          {errors.descriptionl}
+        </div>
       )}
-
-      
 
       <div>
         <button
@@ -149,7 +163,6 @@ const MyForm = (props, selectedFormType) => {
   );
 };
 
-
 // React-select component modified to fit Formik
 class MySelect extends React.Component {
   handleChange = value => {
@@ -168,7 +181,7 @@ class MySelect extends React.Component {
         <label htmlFor="topic">Category of issue</label>
         <Select
           id="category-select"
-          options= {categories}
+          options={categories}
           isMulti
           onChange={this.handleChange}
           onBlur={this.handleBlur}
@@ -185,7 +198,6 @@ class MySelect extends React.Component {
     );
   }
 }
-
 
 const TicketForm = formikEnhancer(MyForm);
 
