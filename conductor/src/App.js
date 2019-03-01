@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Provider } from "react-redux";
-import store from "./store";
 import logo from "./logo.svg";
 import "./App.css";
 import Main from "./components/Main";
@@ -41,19 +39,17 @@ class App extends Component {
     }
 
     return (
-      <Provider store={store}>
-        <main className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            Welcome to the <b>ACNAPI Modern Ticket Support System</b>
-            <p className="subtitle">Powered by the Conductor</p>
-          </header>
-          <div className="body">
-            {/* This is where the actual components are loaded */}
-            {mainComponent}
-          </div>
-        </main>
-      </Provider>
+      <main className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          Welcome to the <b>ACNAPI Modern Ticket Support System</b>
+          <p className="subtitle">Powered by the Conductor</p>
+        </header>
+        <div className="body">
+          {/* This is where the actual components are loaded */}
+          {mainComponent}
+        </div>
+      </main>
     );
   }
 }

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { timingSafeEqual } from "crypto";
+import { Provider } from "react-redux";
+import store from "../store";
 import Dashboard from "./form/Dashboard.js";
 import Kanban from "./Kanban.js";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,7 +13,11 @@ class Restricted extends Component {
     switch (localStorage.role) {
       case "admin":
         console.log("logged in as admin");
-        restrictedComponent = <Kanban />;
+        restrictedComponent = (
+          <Provider store={store}>
+            <Kanban />
+          </Provider>
+        );
         break;
 
       case "user":

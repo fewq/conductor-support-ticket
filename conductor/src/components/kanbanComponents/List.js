@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import CardContainer from "../../containers/CardContainer";
 import Editor from "./Editor";
 import { DropTarget } from "react-dnd";

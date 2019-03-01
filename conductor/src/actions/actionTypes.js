@@ -15,5 +15,3 @@ export const CREATE_LIST = "CREATE_LIST";
 export const DELETE_LIST = "DELETE_LIST";
 export const SORT_CARD = "SORT_CARD";
 export const MOVE_CARD = "MOVE_CARD";
-
-export const FETCH_POSTS = "FETCH_POSTS";

@@ -25,7 +25,7 @@ let store = createStore(
   kanbanState,
   initialState,
   compose(
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // for browser extension: redux devtool
   )
 );
 

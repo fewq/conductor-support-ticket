@@ -1,8 +1,9 @@
 // ALLOW findDOMNode because of DND
 /* eslint "react/no-find-dom-node": 0 */
 
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
+import PropTypes from "prop-types";
 import TaskList from "./TaskList";
 import CardMenu from "./CardMenu";
 import Editor from "./Editor";
