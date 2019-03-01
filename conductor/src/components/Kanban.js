@@ -5,6 +5,7 @@ import Board from "./kanbanComponents/Board";
 import AddList from "./kanbanComponents/AddList";
 import ListContainer from "../containers/ListContainer";
 import { closeAllPopups, showEditor, createList } from "../actions/kanban";
+import "../css/kanban.scss";
 
 const mapStateToProps = ({ domainData, kanbanState }) => ({
   allLists: domainData.lists.allLists,
@@ -32,7 +33,7 @@ const KanbanPropTypes = {
 };
 
 const Kanban = props => (
-  <div className="root-comp" onClick={props.onBodyClick}>
+  <div className="kanban" onClick={props.onBodyClick}>
     <h1>Kanban here</h1>
     <Board>
       {props.allLists.map((id, i) => (

@@ -1,6 +1,6 @@
 import { createStore, compose } from "redux";
 import kanbanState from "./reducers/kanbanState";
-import domainData from "./appModule/appModule";
+import domainData from "./appModule/kanbanDefault";
 
 const initialState = {
   domainData,
