@@ -31,7 +31,7 @@ class Editor extends Component {
   render() {
     return (
       <div className="editor">
-        <form>
+        <form className="kanban-form">
           <div className="input-container">
             <textarea
               onChange={this.handleOnChange}

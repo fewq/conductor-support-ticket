@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Card from "../components/kanbanComponents/Card";
-// import CardContainerPropTypes from "../propTypes/cardContainer";
 import { connect } from "react-redux";
 import {
   deleteCard,

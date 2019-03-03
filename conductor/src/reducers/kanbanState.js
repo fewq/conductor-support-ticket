@@ -16,7 +16,7 @@ import {
   removeItemFromObject,
   swapCardIndex,
   addItemToArray
-} from "../utils";
+} from "../utils/index";
 
 const setSelectedCard = (state, { cardId }) => ({
   ...state,

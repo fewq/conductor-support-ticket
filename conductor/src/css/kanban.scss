@@ -2,8 +2,21 @@
 @import "./vendors/normalise";
 @import "./vendors/font-awesome/css/font-awesome.min.css";
 
-*::-webkit-scrollbar {
-  display: none;
+.kanban-board::-webkit-scrollbar-track {
+  box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+.kanban-board::-webkit-scrollbar {
+  width: 12px;
+  background-color: #282c34;
+}
+.kanban-board::-webkit-scrollbar-thumb {
+  box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #555;
 }
 *::-moz-selection {
   background: #7ed0f5;
@@ -71,6 +84,7 @@ $header-color: #f7f7f7;
   }
   &.show-addlist-editor {
     background-color: transparent;
+    padding: 3.4px;
     cursor: default;
   }
 }
@@ -309,6 +323,7 @@ $header-color: #f7f7f7;
 .editor {
   display: flex;
   form {
+    margin-top: 0px;
     flex-grow: 1;
   }
   .input-container {

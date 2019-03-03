@@ -1,5 +1,5 @@
 import { createStore, compose } from "redux";
-import kanbanState from "./reducers/kanbanState";
+import kanbanReducers from "./reducers/index";
 import domainData from "./appModule/kanbanDefault";
 
 const initialState = {
@@ -22,7 +22,7 @@ const initialState = {
 };
 
 let store = createStore(
-  kanbanState,
+  kanbanReducers,
   initialState,
   compose(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // for browser extension: redux devtool

@@ -1,13 +1,14 @@
 /* MakeTicket Form related styling */
 code {
   background: #eee;
-  padding: .1rem;
-  font-family: 'Menlo';
+  padding: 0.1rem;
+  font-family: "Menlo";
   font-size: 13px;
   color: #ff00aa;
 }
 
-form {
+/* form */
+form#ticket-form {
   margin-top: 2rem;
   border-radius: 6px;
   display: flex;
@@ -27,11 +28,12 @@ label {
   text-align: center;
 }
 
-.radio-item>label {
+.radio-item > label {
   color: black;
 }
 
-input, textarea  {
+input.ticket-form,
+textarea#ticketdescription {
   padding: 12px;
   margin-bottom: 1rem;
   font-size: 16px;
@@ -65,30 +67,30 @@ input, textarea  {
   border-radius: 4px;
   background-color: white;
   border: 1px solid #ccc;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
-input[type='radio']{   
+input[type="radio"] {
   display: table-cell;
   vertical-align: middle;
   width: 50px;
-  margin: 0.6rem
+  margin: 0.6rem;
 }
 
-
-input[type=email], select {
+input[type="email"],
+select {
   text-align: center;
 }
 
-textarea {
+textarea#ticketdescription {
   height: 4em;
   transition: all 0.5s ease;
-  text-align:left;
+  text-align: left;
   overflow: auto;
-  font-family: "Roboto"
+  font-family: "Roboto";
 }
 
-textarea:focus {
+textarea#ticketdescription:focus {
   height: 6em;
 }
 
@@ -105,16 +107,16 @@ input.error {
 
 .input-feedback {
   color: red;
-  margin-top: .25rem;
+  margin-top: 0.25rem;
 }
 
-button {
+button.form-button {
   max-width: 50%;
   margin: 20px 0;
   padding: 12px 20px;
   border-style: none;
   border-radius: 5px;
-  background-color: #F6C645;
+  background-color: #f6c645;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
   font-size: 17px;
   font-weight: 500;
@@ -125,24 +127,20 @@ button {
 }
 
 button:hover {
-  background-color: rgb(209, 169, 57)
+  background-color: rgb(209, 169, 57);
 }
 
-
 button:disabled {
-  opacity: .5;
+  opacity: 0.5;
   cursor: not-allowed !important;
 }
 
 button + button {
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 
-button.outline {
+button#outline {
   background-color: #eee;
   border: 1px solid #aaa;
   color: #555;
 }
-
-
-

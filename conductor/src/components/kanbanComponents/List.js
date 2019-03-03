@@ -96,6 +96,7 @@ class List extends Component {
               href="#"
               onClick={e => {
                 e.stopPropagation();
+                e.preventDefault(); // prevent action/render from scrolling to the top of the page everytime
                 onClickAddACard();
               }}
               className="add-card-btn"

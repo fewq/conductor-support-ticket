@@ -1,4 +1,4 @@
-import { removeItemFromObject, removeItemFromArray } from "../utils/";
+import { removeItemFromObject, removeItemFromArray } from "../utils/index";
 import {
   UPDATE_CARD,
   CREATE_TASK,

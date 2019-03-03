@@ -87,6 +87,7 @@ const MyForm = (props, selectedFormType) => {
     </label>
     <input
       id="email"
+      class="ticket-form"
       placeholder="Enter your email"
       type="email"
       value={values.email}
@@ -109,6 +110,7 @@ const MyForm = (props, selectedFormType) => {
                     type="radio"
                     name="formType"
                     id={option}
+                    class="ticket-form"
                     value={option}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -131,7 +133,7 @@ const MyForm = (props, selectedFormType) => {
         Your Message
       </label>
       <textarea
-        id="description"
+        id="ticketdescription"
         placeholder="Tell us more about the issue."
         type="textarea"
         value={values.description}
@@ -147,13 +149,14 @@ const MyForm = (props, selectedFormType) => {
       <div>
         <button
           type="button"
-          className="outline"
+          id="outline"
+          className="form-button"
           onClick={handleReset}
           disabled={!dirty || isSubmitting}
         >
           Reset
         </button>
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" className="form-button" disabled={isSubmitting}>
           Submit
         </button>
       </div>

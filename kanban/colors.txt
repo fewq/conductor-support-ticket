@@ -1,2 +1,0 @@
-Header: #000000
-Background: #15150c
