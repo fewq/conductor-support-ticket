@@ -39,17 +39,17 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
+      <main className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           Welcome to the <b>ACNAPI Modern Ticket Support System</b>
-          <p class="subtitle">Powered by the Conductor</p>
+          <p className="subtitle">Powered by the Conductor</p>
         </header>
-        <body>
+        <div className="body">
           {/* This is where the actual components are loaded */}
           {mainComponent}
-        </body>
-      </div>
+        </div>
+      </main>
     );
   }
 }
