@@ -10,10 +10,10 @@ import {
   deleteTask
 } from "../../actions/kanban";
 
-const mapStateToProps = ({ domainData, appState }, { id }) => ({
+const mapStateToProps = ({ domainData, kanbanState }, { id }) => ({
   task: domainData.tasks.byId[id],
-  itemToEdit: appState.itemToEdit,
-  attributeToEdit: appState.attributeToEdit
+  itemToEdit: kanbanState.itemToEdit,
+  attributeToEdit: kanbanState.attributeToEdit
 });
 
 const mapDispatchToProps = (dispatch, { id }) => ({

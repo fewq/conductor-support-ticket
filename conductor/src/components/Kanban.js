@@ -34,7 +34,7 @@ const KanbanPropTypes = {
 
 const Kanban = props => (
   <div className="kanban" onClick={props.onBodyClick}>
-    <h1>Kanban here</h1>
+    {/* <h1>Kanban here</h1> */}
     <Board>
       {props.allLists.map((id, i) => (
         <ListContainer id={id} key={id} index={i} />

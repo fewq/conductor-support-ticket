@@ -10,8 +10,8 @@ const BoardPropTypes = {
 class Board extends Component {
   render() {
     return (
-      <div className="app-board-container">
-        <div className="app-board">{this.props.children}</div>
+      <div className="kanban-board-container">
+        <div className="kanban-board">{this.props.children}</div>
       </div>
     );
   }

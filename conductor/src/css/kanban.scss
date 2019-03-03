@@ -1,6 +1,6 @@
 // @import url(https://fonts.googleapis.com/css?family=Lobster);
 @import "../vendors/normalise";
-/*
+
 *::-moz-selection {
   background: #7ed0f5;
   color: white;
@@ -39,37 +39,26 @@ $header-color: #f7f7f7;
   @extend .full-cover;
   color: #5a5a5a;
   overflow: hidden;
-  background-color: #1976bb// #3f51b5; //#1976bb// #009688;
+  text-align: left;
 }
-a.source-code {
-  display: block;
-  position: absolute;
-  right: 10px;
-  bottom: 7px;
-  text-decoration: none;
-  color: #9ba5a7;
-  font-size: 14px;
-  &:hover {
-    color: $header-color;
-    text-decoration: underline;
-  }
-}
-.app-board-container {
+.kanban-board-container {
   flex-grow: 1;
   position: relative;
+  height: 100%;
 }
-.app-board {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.kanban-board {
+  //position: absolute;
+  //top: 0;
+  //bottom: 0;
+  //left: 0;
+  //right: 0;
   padding: 10px;
   white-space: nowrap;
   overflow-y: hidden;
   overflow-x: auto;
   padding-bottom: 10px;
   margin-bottom: 10px;
+  height: 100%;
 }
 .add-a-list-btn-container {
   flex-grow: 1;
@@ -113,7 +102,7 @@ a.source-code {
   flex: none;
   margin: 0;
   font : {
-    size: 16px;
+    size: 20px;
     weight: bold;
   }
   padding: 8px;
@@ -383,4 +372,3 @@ a.source-code {
     }
   }
 }
-*/
