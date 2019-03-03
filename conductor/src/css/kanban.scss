@@ -1,6 +1,10 @@
 // @import url(https://fonts.googleapis.com/css?family=Lobster);
-@import "../vendors/normalise";
+@import "./vendors/normalise";
+@import "./vendors/font-awesome/css/font-awesome.min.css";
 
+*::-webkit-scrollbar {
+  display: none;
+}
 *::-moz-selection {
   background: #7ed0f5;
   color: white;
@@ -47,11 +51,6 @@ $header-color: #f7f7f7;
   height: 100%;
 }
 .kanban-board {
-  //position: absolute;
-  //top: 0;
-  //bottom: 0;
-  //left: 0;
-  //right: 0;
   padding: 10px;
   white-space: nowrap;
   overflow-y: hidden;
@@ -83,7 +82,7 @@ $header-color: #f7f7f7;
   height: 100%;
   display: inline-block;
   margin-right: 10px;
-  overflow: hidden;
+  // overflow: hidden;
   &:last-child {
     margin-right: 0;
   }
@@ -102,7 +101,7 @@ $header-color: #f7f7f7;
   flex: none;
   margin: 0;
   font : {
-    size: 20px;
+    size: 18px;
     weight: bold;
   }
   padding: 8px;
@@ -176,6 +175,7 @@ $header-color: #f7f7f7;
   font-size: 16px;
   padding-top: 2px;
   padding-bottom: 2px;
+  margin-bottom: 0px;
   .title {
     padding-left: 5px;
   }
