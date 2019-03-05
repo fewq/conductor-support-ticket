@@ -133,7 +133,7 @@ const MyForm = (props, selectedFormType) => {
         Your Message
       </label>
       <textarea
-        id="ticketdescription"
+        id="description"
         placeholder="Tell us more about the issue."
         type="textarea"
         value={values.description}
