@@ -32,13 +32,13 @@ class Restricted extends Component {
     return (
       <div className="container">
         <h2>RESTRICTED AREA</h2>
+        <p>
+          Click <a href="/"> here</a> to go back home
+        </p>
         <button className="btn btn-primary" onClick={this.props.auth.logout}>
           Logout
         </button>
         {restrictedComponent}
-        <p>
-          Click <a href="/"> here</a> to go back home
-        </p>
       </div>
     );
   }
