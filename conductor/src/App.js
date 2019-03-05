@@ -42,10 +42,10 @@ class App extends Component {
       <main className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          Welcome to the <b>ACNAPI Modern Ticket Support System</b>
-          <p className="subtitle">Powered by the Conductor</p>
+          <b>ACNAPI Ticket Support System</b>
+          <p className="subtitle">Powered by the Conductor project</p>
         </header>
-        <div className="body">
+        <div className="App-body">
           {/* This is where the actual components are loaded */}
           {mainComponent}
         </div>

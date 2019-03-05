@@ -3,14 +3,14 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 100s linear;
-  height: 40vmin;
+  animation: App-logo-spin infinite 500s linear;
+  height: 10vmin;
   pointer-events: none;
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +34,7 @@
 
 .subtitle {
   color: #f6c645;
+  font-size: calc(5px + 2vmin);
 }
 
 /* 
@@ -50,8 +51,9 @@
 }
 */
 
-.body {
+.App-body {
   background-color: #282c34;
+  min-height: 100vh;
   color: white;
   text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
