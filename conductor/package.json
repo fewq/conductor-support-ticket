@@ -4,10 +4,18 @@
   "private": true,
   "dependencies": {
     "auth0-js": "^9.10.0",
+    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
+    "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
+    "concurrently": "^4.1.0",
+    "express": "^4.16.4",
     "formik": "1.2.0",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.11",
+    "mongodb": "^3.1.13",
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1",
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.2",
@@ -22,13 +30,18 @@
     "react-select": "^2.4.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "request": "^2.88.0",
     "yup": "^0.26.10"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"node backend/server/server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "frontendtest": "react-scripts test",
+    "eject": "react-scripts eject",
+    "backendtest_testenv": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha backend/server/tests/*.test.js",
+    "backendtest_prodenv": "export NODE_ENV=prod || SET \"NODE_ENV=prod\" && mocha backend/server/tests/*.test.js",
+    "test-watch": "nodemon --exec npm run backendtest_testenv"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,5 +51,16 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "expect": "^24.4.0",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.0"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
