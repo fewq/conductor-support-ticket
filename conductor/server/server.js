@@ -1,18 +1,40 @@
-require('./config/config.js');
-
-const _ = require('lodash');
+// set up express, cors, body parser
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const {ObjectID} = require('mongodb');
-
-var {mongoose} = require('./db/mongoose');
-var {Ticket} = require('./models/ticket');
-
-var app = express();
-const port = process.env.PORT;
-	
+const cors = require('cors');
+app.use(cors());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// set up Mongoose, the Object Relation Mapper for Mongodb
+const mongoose = require('mongoose');
+const config = require('./config/atlas.js');
+mongoose.Promise = global.Promise;
+mongoose.connect(config.DB, { useNewUrlParser: true }).then(
+  () => {console.log('Database is connected') },
+  err => { console.log('Can not connect to the database'+ err)}
+);
+
+// set up routes & port
+ const ticketRoutes = require('./ticket.route');
+ app.use('/ticket', ticketRoutes);
+ const PORT = 4000;
+
+// check if Server is running, 
+// if yes it will show "Database is connected"
+app.listen(PORT, function(){
+   console.log('Server is running on Port:',PORT);
+ });
+
+
+
+ /*
+ // require('./config/config.js');
+
+// const _ = require('lodash');
+// const {ObjectID} = require('mongodb');
+// var {Ticket} = require('./models/ticket');
 //Allows us to add a new document to the database, passing in a json from postman
 app.post('/tickets', (req, res) => {
   var ticket = new Ticket({
@@ -84,13 +106,7 @@ app.delete('/tickets/:id', (req, res) => {
 });
 
 //allows us to Update an existing ticket given the id
-app.patch('/tickets/:id', (req, res) => {
-   var id = req.params.id;
-   var body = _.pick(req.body, ['dateSubmitted', 'status','submittedBy','completedBy', 'description','categories']); //restrict the property that user can update.
-
-   if(!ObjectID.isValid(id)){
-      return res.status(404).send();
-   }
+app.patch('/tickets/:id', 
 
    Ticket.findByIdAndUpdate(id, {$set: body}, {new: true}).then((ticket) => {
       if(!ticket){
@@ -143,3 +159,4 @@ app.listen(port, () => {
 
 //exported so that servertest can run
 module.exports = {app};
+*/
