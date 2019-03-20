@@ -13,6 +13,5 @@ if (env === 'development') {
    process.env.PORT = 3000;
    process.env.MONGODB_URI = 'mongodb://localhost:27017/TicketManagerTest', {useNewUrlParser:true};
 } else {
-   // process.env.MONGODB_URI = "mongodb://testing:test123@ds113866.mlab.com:13866/heroku_sk8z5qss"
-   process.env.MONGODB_URI = "mongodb://user:123@cluster0-shard-00-00-aeopj.mongodb.net:27017,cluster0-shard-00-01-aeopj.mongodb.net:27017,cluster0-shard-00-02-aeopj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
+   process.env.MONGODB_URI = "mongodb://testing:test123@ds113866.mlab.com:13866/heroku_sk8z5qss"
 }

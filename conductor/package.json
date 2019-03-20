@@ -9,6 +9,7 @@
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
     "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "formik": "1.2.0",
     "jwt-decode": "^2.2.0",
@@ -34,13 +35,13 @@
     "yup": "^0.26.10"
   },
   "scripts": {
-    "start": "concurrently \"node backend/server/server.js\" \"react-scripts start\"",
+    "start": "concurrently \"node server/server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "frontendtest": "react-scripts test",
     "eject": "react-scripts eject",
-    "backendtest_testenv": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha backend/server/tests/*.test.js",
-    "backendtest_prodenv": "export NODE_ENV=prod || SET \"NODE_ENV=prod\" && mocha backend/server/tests/*.test.js",
+    "backendtest_testenv": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/tests/*.test.js",
+    "backendtest_prodenv": "export NODE_ENV=prod || SET \"NODE_ENV=prod\" && mocha server/tests/*.test.js",
     "test-watch": "nodemon --exec npm run backendtest_testenv"
   },
   "eslintConfig": {

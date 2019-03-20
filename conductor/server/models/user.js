@@ -1,5 +1,5 @@
+// NOT IMPLEMENTED YET. EXISTENCE DOES NOT AFFECT FUNCTIONALITY OF APP.
 import mongoose from 'mongoose';
-
 const userSchema = new mongoose.Schema({
   username: {
     type: String,

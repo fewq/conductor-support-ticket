@@ -2,8 +2,8 @@ const expect = require ('expect');
 const request = require ('supertest');
 
 const{ObjectID} = require('mongodb');
-const {app} = require ('./../server');
-const {Ticket} = require ('./../models/ticket');
+const {app} = require ('../server');
+const {Ticket} = require ('../models/ticket');
 
 const tickets = [{
    _id: new ObjectID(),

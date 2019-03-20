@@ -1,70 +1,12 @@
 import React from "react";
-import axios from 'axios';
-import { withFormik } from "formik";
 import categories from "./categories.js";
-import formType from "./formType.js";
-import * as Yup from "yup";
 import Select from "react-select";
-
 import { PropState, disableEnterButton } from "./helper";
 import makeAnimated from "react-select/lib/animated";
 import "../../css/form.css";
 
-/////////////////////////////////////////////////////
-
-// Validation Scheme with Yup //
-const formikEnhancer = withFormik({
-  validationSchema: Yup.object().shape({
-    // email: Yup.string()
-    //   .email("Invalid email address")
-    //   .required("Email is required!"),
-    topics: Yup.array()
-      .min(1, "Pick at 1 category")
-      .of(
-        Yup.object().shape({
-          label: Yup.string().required(),
-          value: Yup.string().required()
-        })
-      ),
-    description: Yup.string().required("Description Required!"),
-    formType: Yup.string().required("What is this feedback primarily for?")
-  }),
-  mapPropsToValues: props => ({
-    email: "",
-    topics: [],
-    description: "",
-    formType: "bug"
-  }),
-  handleSubmit: (values, { setSubmitting }) => {
-    const payload = {
-      ...values,
-      topics: values.topics.map(t => t.value)
-    };
-
-    axios.post('http://localhost:4000/ticket/add', payload)
-    .then(res => console.log(res.data));
-
-    // Test code for POST
-    /*
-    fetch("https://jsonplaceholder.typicode.com/posts", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));*/
-
-    // TODO: change static submit to database or else
-    setTimeout(() => {
-      alert(JSON.stringify(payload, null, 2));
-      setSubmitting(false);
-    }, 1000);
-  },
-  displayName: "Ticket Form"
-});
-
 // Form //
-const MyForm = (props, selectedFormType) => {
+export const MyForm = (props, selectedFormType) => {
   const {
     values,
     touched,
@@ -205,7 +147,3 @@ export class MySelect extends React.Component {
     );
   }
 }
-
-const TicketForm = formikEnhancer(MyForm);
-
-export default TicketForm;

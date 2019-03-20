@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from 'react-router-dom';
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -17,7 +18,10 @@ Window.setState = changes => {
   //updates the state via changes
   state = Object.assign({}, state, changes);
   //passes the state object to the App via the spread syntax
-  ReactDOM.render(<App {...state} />, document.getElementById("root"));
+  ReactDOM.render(
+    <BrowserRouter>
+    <App {...state} />
+    </BrowserRouter>, document.getElementById("root"));
 };
 
 //do not remove the next line, it prevents errors
