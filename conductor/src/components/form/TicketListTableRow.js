@@ -8,16 +8,21 @@ class TableRow extends Component {
     super(props);
     this.delete = this.delete.bind(this);
   }
+  
   delete() {
-    axios.get('http://localhost:4000/ticket/delete/'+this.props.obj._id)
+    axios.get('http://localhost:4000/ticket/delete/' + this.props.obj._id)
       .then(res => {
-        console.log('deleted');
+        console.log('deleted' + this.props.obj._id);
+        this.props.delete(this.props.indice);
       })
       .catch(err => console.log(err))
   }
   render() {
     return (
         <tr>
+          <td>
+            {this.props.indice}
+          </td>
           <td>
             {this.props.obj.formType}
           </td>

@@ -17,10 +17,14 @@ export default class Edit extends Component {
   componentDidMount() {
       axios.get('http://localhost:4000/ticket/edit/'+this.props.match.params.id)
           .then(response => {
+            console.log("retrieved json response for editing" );
+            console.log(response);
               this.setState({ 
-                formType: response.data.formType, 
-                topics: response.data.topics,
-                description: response.data.description });
+                formType: response.data.ticket.formType, 
+                topics: response.data.ticket.topics,
+                description: response.data.ticket.description });
+                console.log("retrieved state for editing" );
+                console.log(this.state);
           })
           .catch(function (error) {
               console.log(error);
