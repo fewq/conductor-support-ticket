@@ -11,7 +11,7 @@ import Task from "./Task";
 import { DragSource, DropTarget } from "react-dnd";
 import Types from "./staticTypes";
 
-let initialState; // initialState before begin DnD
+let initialState; // initialState before beginDrag DnD
 
 const dragSourceSpec = {
     beginDrag: ({ id, index, parentListId, curState }) => ({
@@ -21,26 +21,8 @@ const dragSourceSpec = {
       curState
     }),
 
-    isDragging: (props, monitor) => monitor.getItem().id === props.id,
+    isDragging: (props, monitor) => monitor.getItem().id === props.id
 
-    endDrag(props) {
-      const ticketTitle = props.card.title;
-      let status; /*
-      switch (props.parentListId) {
-        case "1":
-          console.log("1");
-          break;
-        case "2":
-          console.log("2");
-          break;
-        default:
-          console.log("0");
-      }*/
-      //axios.post("/api/notify", {
-      //ticketTitle
-      //});
-      //console.log(props);
-    }
     // endDrag (props) {
     // 	// if (!monitor.didDrop()) {props.replacePlaceholderWithCurDraggingCard(props.curState); return;}
     // 	// props.replacePlaceholderWithCurDraggingCard(props.curState);
@@ -176,9 +158,6 @@ class Card extends Component {
                 showEditor("description");
                 e.stopPropagation();
               }}
-              onClickNotify={() => {
-                this.props.onClickNotify(card.title);
-              }}
             />
           )}
           <div className="card-title-container">
@@ -306,7 +285,6 @@ Card.propTypes = {
   menuPosition: PropTypes.object.isRequired,
   onAddATask: PropTypes.func.isRequired,
   onToggleShowDetails: PropTypes.func.isRequired,
-  onClickNotify: PropTypes.func.isRequired,
   onClickDeleteCard: PropTypes.func.isRequired,
   curState: PropTypes.object.isRequired, // we want to preserve card state while/after Dn*/,
   isDragging: PropTypes.bool,
