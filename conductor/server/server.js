@@ -1,35 +1,81 @@
 // set up express, cors, body parser
-const express = require('express');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const nodemailer = require("nodemailer");
+
 const app = express();
-const bodyParser = require('body-parser');
-const cors = require('cors');
-app.use(cors());
-app.use(bodyParser.urlencoded({extended: true}));
+
+// Body Parser Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.post("/api/notify", (req, res) => {
+  const output = `
+    <p>Your ticket status: </p>
+  `;
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "rashad.green@ethereal.email",
+      pass: "3tgthkxNKmvs5hWjSB"
+    },
+    tls: {
+      rejectUnauthorized: false
+    } // necessary for sending from local host
+  });
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"Admin Test" <rashad.green@ethereal.email>', // sender address
+    to: "hfut07+7xzrkpohotcqs@sharklasers.com", // list of receivers
+    subject: "Test Notification", // Subject line
+    text: "Hello world?", // plain text body
+    html: output // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  });
+});
+
+app.use(cors());
+
 // set up Mongoose, the Object Relation Mapper for Mongodb
-const mongoose = require('mongoose');
-const config = require('./config/atlas.js');
+const mongoose = require("mongoose");
+const config = require("./config/atlas.js");
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true }).then(
-  () => {console.log('Database is connected') },
-  err => { console.log('Can not connect to the database'+ err)}
+  () => {
+    console.log("Database is connected");
+  },
+  err => {
+    console.log("Can not connect to the database" + err);
+  }
 );
 
 // set up routes & port
- const ticketRoutes = require('./ticket.route');
- app.use('/ticket', ticketRoutes);
- const PORT = 4000;
+const ticketRoutes = require("./ticket.route");
+app.use("/ticket", ticketRoutes);
 
-// check if Server is running, 
+const PORT = 3001;
+
+// check if Server is running,
 // if yes it will show "Database is connected"
-app.listen(PORT, function(){
-   console.log('Server is running on Port:',PORT);
- });
+app.listen(PORT, function() {
+  console.log("Server is running on Port:", PORT);
+});
 
-
-
- /*
+/*
  // require('./config/config.js');
 
 // const _ = require('lodash');

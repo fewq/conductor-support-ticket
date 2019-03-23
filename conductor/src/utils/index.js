@@ -8,7 +8,10 @@ export const removeItemFromObject = (item, obj) => {
 export const removeItemFromArray = (index, array) =>
   array.filter((val, i) => i !== index);
 
-export const swapCardIndex = (cardArray, {hoverID, hoverIndex, dragID, dragIndex}) => {
+export const swapCardIndex = (
+  cardArray,
+  { hoverID, hoverIndex, dragID, dragIndex }
+) => {
   const newArray = [...cardArray];
   newArray[dragIndex] = hoverID;
   newArray[hoverIndex] = dragID;
@@ -18,5 +21,6 @@ export const swapCardIndex = (cardArray, {hoverID, hoverIndex, dragID, dragIndex
 export const addItemToArray = (item, index, array) => {
   const newArray = [...array];
   newArray[index] = item;
+  console.log("send email");
   return newArray;
 };
