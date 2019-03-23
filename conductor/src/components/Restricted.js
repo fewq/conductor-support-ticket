@@ -7,7 +7,6 @@ import Kanban from "./Kanban.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Restricted extends Component {
-  state = {};
   render() {
     let restrictedComponent = "";
     switch (localStorage.role) {
@@ -31,15 +30,16 @@ class Restricted extends Component {
 
     return (
       <div className="container">
-        <h2>RESTRICTED AREA</h2>
-        <p>
+        {restrictedComponent}
+        <p className="mt-5">
           Click <a href="/"> here</a> to go back home
         </p>
-        <button className="btn btn-primary" onClick={this.props.auth.logout}>
+        <button className="btn btn-secondary" onClick={this.props.auth.logout}>
           Logout
         </button>
-        {restrictedComponent}
+        
       </div>
+
     );
   }
 }

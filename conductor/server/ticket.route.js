@@ -33,7 +33,7 @@ ticketRoutes.route('/:id').get((req, res) => {
         if(!ticket) {
             res.status(404).send("Data not found.");
         } else {
-            res.send({tickets});
+            res.send({ticket});
         }
     });
 });
@@ -55,10 +55,15 @@ ticketRoutes.route('/update/:id').post( (req, res) => {
             ticket.description = req.body.description;
             ticket.categories = req.body.topics;
             ticket.formType = req.body.formType;
+            ticket.statusToClient = req.body.statusToClient;
+            ticket.dateOfCreation = req.body.dateOfCreation;
+            ticket.createdBy = req.body.createdBy;
+            ticket.title = req.body.title;
             
             ticket.save()
                 .then(ticket => {
-                    res.json('Update complete.');
+                    console.log('Update complete.');
+                    console.log(res.data);
                 })
                 .catch(err => {
                     res.status(400).send("unable to update.");

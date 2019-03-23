@@ -3,20 +3,29 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 let Ticket = new Schema({
-  // dateSubmitted: {
-  //   type: String,
-  // },
-  // status: {
-  //   type: String,
-  // },
-  // submittedBy: {
-  //   type: String //email or username
-  // },
-  // completedBy: {
-  //   type: String //name of employee
-  // },
+  dateOfCreation: {
+    type: Date,
+  },
+  statusToClient: {
+    type: String,
+  },
+  statusToAdmin: {
+    type: String,
+  },
+  createdBy: {
+    type: String, //email or usertitle
+  },
+  completedBy: {
+    type: String, //name of employee
+  },
+  dateOfCompletion: {
+    type: Date,
+  },
   description: {
-    type: String, 
+    type: Array, 
+  },
+  title: {
+    type: String,
   },
   topics: {
     type: Array,
