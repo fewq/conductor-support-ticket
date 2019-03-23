@@ -31,10 +31,10 @@ class Restricted extends Component {
     return (
       <div className="container">
         {restrictedComponent}
-        <p>
+        <p className="mt-5">
           Click <a href="/"> here</a> to go back home
         </p>
-        <button className="btn btn-primary" onClick={this.props.auth.logout}>
+        <button className="btn btn-secondary" onClick={this.props.auth.logout}>
           Logout
         </button>
         

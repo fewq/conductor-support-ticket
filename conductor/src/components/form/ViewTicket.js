@@ -24,39 +24,41 @@ export default class TicketList extends Component {
         this.props.history.push(path);
       }
 
-    delete() {
-        axios.get('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
-          .then(res => {
-            console.log('deleted' + this.state.ticket._id);
-            this.routeChange();
+    // delete() {
+    //     axios.get('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
+    //       .then(res => {
+    //         console.log('deleted' + this.state.ticket._id);
+    //         this.routeChange();
 
-          })
-          .catch(err => console.log(err))
-      }
+    //       })
+    //       .catch(err => console.log(err))
+    //   }
 
     renderTopics() {
         return this.state.ticket.topics.map((obj, i) => {
-            return <span class="badge badge-pill badge-info"> {obj} </span>
+            return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>
         });
     }
 
     render() {
         
         return(
-            <div className="container-fluid">
+            <div className="container-fluid" >
                 <div>
-                    <h3> {this.state.ticket.title} <span class="badge badge-pill badge-secondary"> {this.state.ticket.statusToClient} </span></h3>
-                    <div className="d-flex justify-content-center">
-                    { this.renderTopics() }
+                    <h3> {this.state.ticket.title} </h3>
+                    <p> Submitted on: {this.state.displayDate} <span class="badge badge-secondary mr-2"> {this.state.ticket.statusToClient} </span> </p>
+                    <div className="d-flex justify-content-center my-2">
+                        { this.renderTopics() }          
                     </div>
-                    <div>
-                        <p> {this.state.displayDate} </p>
+                    <div className="my-5 mb-2">
                         <h4> Description </h4>
                         <p> {this.state.ticket.description} </p>
                     </div>
                 </div>
+                <div className="my-2">
                 <Link to={"/edit/"+this.state.ticket._id} className="btn btn-light">Edit Description</Link>
                 <button onClick={this.alert} className="btn btn-danger">Delete Ticket</button>
+                </div>
             </div>
 
         )
