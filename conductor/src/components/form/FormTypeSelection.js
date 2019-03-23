@@ -44,7 +44,7 @@ export default class FormTypeSelection extends Component {
         <div>
           <div>
             {this.state.isShow || this.state.formTypeSelected ? (
-              <TicketForm />
+              <TicketForm createdBy={this.props.name} />
             ) : null}
           </div>
         </div>

@@ -14,7 +14,6 @@ export const passFormType = formType => {
 
 };
 
-
 export const disableEnterButton = (event) => {
   if (event.target.type !== 'textarea') {
     if (event.which === 13 ) {
@@ -28,3 +27,15 @@ export const disableEnterButton = (event) => {
   }
 
 };
+
+export const convertDateToString = date => {
+  let objDate = new Date(date);
+  var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return objDate.toLocaleDateString("en-US", dateOptions);
+}
+
+export const renderTopics = topics => {
+  return topics.map( (obj, i) => {
+    return <span class="badge badge-pill badge-info"> {obj} </span>
+});
+}

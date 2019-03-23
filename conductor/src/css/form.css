@@ -21,7 +21,7 @@ form#ticket-form {
 label {
   display: block;
   padding: 0.8rem;
-  margin: 0.8rem;
+  margin: 0.5rem;
   color: white;
   font-weight: 400;
   font-size: 16px;
@@ -32,7 +32,7 @@ label {
   color: black;
 }
 
-input.ticket-form,
+.ticket-form > input, 
 textarea#description {
   padding: 12px;
   margin-bottom: 1rem;
@@ -47,9 +47,15 @@ textarea#description {
   box-sizing: border-box; /* Make sure that padding and width stays in place */
 }
 
-#category-select {
+#category-select, input[type="text"] {
   width: 500px;
   max-width: 100%;
+}
+
+input[type="text"] {
+  padding: 12px;
+  height: 3em;
+  border-radius: 4px;
 }
 
 .radio-group {

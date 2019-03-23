@@ -3,15 +3,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import logo from "../../img/acnapi.png";
 
-import EditTicket from "./EditTicket.js";
-import FormTypeSelection from "./FormTypeSelection.js";
 import TicketList from "./TicketList.js";
+import EditTicket from "./EditTicket.js";
+import ViewTicket from "./ViewTicket.js";
+import FormTypeSelection from "./FormTypeSelection.js";
+
 
 class NavBar extends Component {
   render() {
     return (
       <Router>
-        <div className="container">
+        <div className="container-fluid">
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <a
               className="navbar-brand"
@@ -41,6 +43,7 @@ class NavBar extends Component {
           <br />
           <Route path="/restricted" exact component={TicketList} />
           <Route path="/edit/:id" component={EditTicket} />
+          <Route path="/view/:id" component={ViewTicket} />
           <Route path="/create" component={FormTypeSelection} />
         </div>
       </Router>
