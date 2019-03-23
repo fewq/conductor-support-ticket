@@ -10,11 +10,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// EMAIL SENDER
+///////////////////////////// EMAIL SENDER ///////////////////////////
 app.post("/api/notify", (req, res) => {
+  // for now response is empty
   const output = `
-    <h3>Ticket Title: ${req.body.ticketTitle}</h3>
-    <p>Your ticket status: </p>
+    <h3>Ticket Title: ${req.body.title}</h3>
+    <p>Your ticket status: ${req.body.status}</p>
   `;
 
   // create reusable transporter object using the default SMTP transport
@@ -36,7 +37,7 @@ app.post("/api/notify", (req, res) => {
     from: '"Admin Test" <rashad.green@ethereal.email>', // sender address
     to: "hfut07+7xzrkpohotcqs@sharklasers.com", // list of receivers
     subject: "Test Notification", // Subject line
-    text: "Hello world?", // plain text body
+    text: "Testing", // plain text body
     html: output // html body
   };
 
@@ -50,7 +51,7 @@ app.post("/api/notify", (req, res) => {
   });
 });
 
-// DATABASE
+///////////////////////////// DATABASE ///////////////////////////
 app.use(cors());
 
 // set up Mongoose, the Object Relation Mapper for Mongodb
