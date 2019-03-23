@@ -39,12 +39,14 @@ const Kanban = props => (
       {props.allLists.map((id, i) => (
         <ListContainer id={id} key={id} index={i} />
       ))}
+      {/* Adding more lists/status 
       <AddList
         onClickAddAList={props.onClickAddAList}
         onClickSaveList={props.onClickSaveList}
         itemToEdit={props.itemToEdit}
         attributeToEdit={props.attributeToEdit}
       />
+      */}
     </Board>
   </div>
 );
