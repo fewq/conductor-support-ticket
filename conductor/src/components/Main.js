@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 export default class Main extends Component {
   constructor(props) {
@@ -8,18 +7,6 @@ export default class Main extends Component {
     this.state = {
       username: null // to get username from Auth0
     };
-
-    this.handle = this.handle.bind(this);
-  }
-
-  async handle(e) {
-    e.preventDefault();
-
-    const { username } = this.state;
-
-    const email = await axios.post("/api/notify", {
-      username
-    });
   }
 
   render() {
@@ -40,12 +27,6 @@ export default class Main extends Component {
             Login
           </button>
         )}
-
-        <h3>Test Email</h3>
-
-        <form onSubmit={this.handle}>
-          <button type="submit">Submit</button>
-        </form>
       </div>
     );
   }

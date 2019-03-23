@@ -21,6 +21,5 @@ export const swapCardIndex = (
 export const addItemToArray = (item, index, array) => {
   const newArray = [...array];
   newArray[index] = item;
-  console.log("send email");
   return newArray;
 };

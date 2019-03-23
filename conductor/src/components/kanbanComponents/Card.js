@@ -10,8 +10,9 @@ import Editor from "./Editor";
 import Task from "./Task";
 import { DragSource, DropTarget } from "react-dnd";
 import Types from "./staticTypes";
+import axios from "axios";
 
-let initialState; // initialState before beginDrag DnD
+let initialState; // initialState before begin DnD
 
 const dragSourceSpec = {
     beginDrag: ({ id, index, parentListId, curState }) => ({
@@ -21,8 +22,15 @@ const dragSourceSpec = {
       curState
     }),
 
-    isDragging: (props, monitor) => monitor.getItem().id === props.id
+    isDragging: (props, monitor) => monitor.getItem().id === props.id,
 
+    endDrag(props) {
+      const ticketTitle = props.card.title;
+      axios.post("/api/notify", {
+        ticketTitle
+      });
+      console.log(props);
+    }
     // endDrag (props) {
     // 	// if (!monitor.didDrop()) {props.replacePlaceholderWithCurDraggingCard(props.curState); return;}
     // 	// props.replacePlaceholderWithCurDraggingCard(props.curState);
@@ -98,6 +106,16 @@ class Card extends Component {
       this.props.onSetState(initialState);
       initialState = undefined;
     }
+  }
+  //this.handle = this.handle.bind(this);
+  async sendEmail(e) {
+    e.preventDefault();
+
+    //const { username } = this.state;
+
+    const email = await axios.post("/api/notify", {
+      //username
+    });
   }
 
   render() {

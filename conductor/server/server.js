@@ -10,8 +10,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// EMAIL SENDER
 app.post("/api/notify", (req, res) => {
   const output = `
+    <h3>Ticket Title: ${req.body.ticketTitle}</h3>
     <p>Your ticket status: </p>
   `;
 
@@ -48,6 +50,7 @@ app.post("/api/notify", (req, res) => {
   });
 });
 
+// DATABASE
 app.use(cors());
 
 // set up Mongoose, the Object Relation Mapper for Mongodb
