@@ -71,7 +71,7 @@ mongoose.connect(config.DB, { useNewUrlParser: true }).then(
 const ticketRoutes = require("./ticket.route");
 app.use("/ticket", ticketRoutes);
 
-const PORT = 3001;
+const PORT = 4000;
 
 // check if Server is running,
 // if yes it will show "Database is connected"
