@@ -25,9 +25,8 @@ const mapDispatchToProps = (dispatch, { id }) => ({
   onClickAddACard: () => dispatch(showEditor(id, "new card")),
   onClickSave: cardTitle => dispatch(createCard(cardTitle, id)),
   onClickDeleteList: () => dispatch(deleteList(id)),
-  handleOnMoveCard: (parentListId, cardIndex, newCardIndex) => {
-    dispatch(moveCard(parentListId, cardIndex, id, newCardIndex));
-  }
+  handleOnMoveCard: (parentListId, cardIndex, newCardIndex) =>
+    dispatch(moveCard(parentListId, cardIndex, id, newCardIndex))
 });
 
 export default connect(

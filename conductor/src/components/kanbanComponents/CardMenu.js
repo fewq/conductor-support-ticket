@@ -9,7 +9,6 @@ const cardMenuPropTypes = {
   onClickEditTitle: PropTypes.func /*.isRequired*/,
   onClickEditDescription: PropTypes.func,
   onClickDeleteCard: PropTypes.func /*.isRequired*/,
-  onClickNotify: PropTypes.func /*.isRequired*/,
   menuPosition: PropTypes.object /*.isRequired*/
 };
 
@@ -34,9 +33,6 @@ const CardMenu = props => (
     </div>
     <div className="action" onClick={props.onClickDeleteCard}>
       Delete card...
-    </div>
-    <div className="action" onClick={props.onClickNotify}>
-      Notify user...
     </div>
   </div>
 );
