@@ -39,7 +39,7 @@ class App extends Component {
     }
 
     return (
-      <main className="App">
+      <main className="App" >
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <b>ACNAPI Ticket Support System</b>

@@ -17,7 +17,7 @@ const formikEnhancer = withFormik({
     //   .email("Invalid email address")
     //   .required("Email is required!"),
     topics: Yup.array()
-      .min(1, "Pick at 1 category")
+      .min(1, "Pick at least 1 category")
       .of(
         Yup.object().shape({
           label: Yup.string().required(),
@@ -59,7 +59,7 @@ const formikEnhancer = withFormik({
 });
 
 // Form //
-const MyForm = (props, selectedFormType) => {
+const MyForm = (props) => {
   const {
     values,
     touched,
@@ -80,23 +80,6 @@ const MyForm = (props, selectedFormType) => {
       onKeyPress={disableEnterButton}
     >
       <h1 class="subtitle">Ticket Form</h1>
-      {/*     
-    <label htmlFor="email" style={{ display: "block" }}>
-        Email
-    </label>
-    <input
-      id="email"
-      class="ticket-form"
-      placeholder="Enter your email"
-      type="email"
-      value={values.email}
-      onChange={handleChange}
-      onBlur={handleBlur}
-    />
-    {errors.email && touched.email && (
-      <div style={{ color: "red", marginTop: ".5rem" }}>{errors.email}</div>
-    )} */}
-
       <div class="radio-group">
         <label>Ticket Type</label>
         <div class="radio-container">
@@ -109,7 +92,6 @@ const MyForm = (props, selectedFormType) => {
                     type="radio"
                     name="formType"
                     id={option}
-                    class="ticket-form"
                     value={option}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -150,14 +132,7 @@ const MyForm = (props, selectedFormType) => {
         onChange={handleChange}
         onBlur={handleBlur}
       />
-
-
-      {errors.description && touched.description && (
-        <div style={{ color: "red", marginTop: ".5rem" }}>
-          {errors.descriptionl}
-        </div>
-      )}
-
+    
       <div>
         <button
           type="button"
@@ -168,7 +143,8 @@ const MyForm = (props, selectedFormType) => {
         >
           Reset
         </button>
-        <button type="submit" className="form-button" disabled={isSubmitting}>
+        <button type="submit" className="form-button" disabled={isSubmitting}
+        >
           Submit
         </button>
       </div>
@@ -219,6 +195,8 @@ const CreateTicketForm = formikEnhancer(MyForm);
 export default class TicketForm extends Component {
   constructor(props) {
     super(props);
+    
+    // still working on retrieving user info
     this.state = {
       createdBy: this.props.name
     }

@@ -9,7 +9,7 @@ export default class Dashboard extends Component {
     render() {
         return(
             <div>
-            <NavBar />
+            <NavBar props={this.props} />
             </div>
         );
     } 

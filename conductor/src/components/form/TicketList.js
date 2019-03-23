@@ -41,15 +41,14 @@ export default class TicketList extends Component {
     return (
       <div>
         <h3 align="center">Ticket List</h3>
-        <table className="table table-striped text-white" style={{ marginTop: 20 }}>
+        <table className="table table-striped  text-white">
           <thead>
             <tr>
-              <th></th>
+              <th>Date Submitted</th>
               <th>Ticket type</th>
-              <th>Topics</th>
               <th>Title</th>
               <th>Status</th>
-              <th>Date Submitted</th>
+              <th>Ticket ID</th>
               <th colSpan="2">Action</th>
             </tr>
           </thead>

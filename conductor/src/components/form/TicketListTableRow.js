@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { convertDateToString, renderTopics } from "./helper";
 
 
 class TableRow extends Component {
   constructor(props) {
     super(props);
     this.delete = this.delete.bind(this);
+    this.state = {ticket: this.props.obj};
   }
   
   delete() {
@@ -20,19 +22,15 @@ class TableRow extends Component {
 
 
   render() {
-    let objDate = new Date(this.props.obj.dateOfCreation);
-    var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    let displayDate = objDate.toLocaleDateString("en-US", dateOptions);
+   
+    let displayDate = convertDateToString(this.props.obj.dateOfCreation);
     return (
         <tr>
           <td>
-            {this.props.indice}
+            {displayDate}
           </td>
           <td>
             {this.props.obj.formType}
-          </td>
-          <td>
-            {this.props.obj.topics}
           </td>
           <td>
             {this.props.obj.title}
@@ -41,10 +39,15 @@ class TableRow extends Component {
             {this.props.obj.statusToClient}
           </td>
           <td>
-            {displayDate}
+            <span class="badge badge-secondary">{this.props.obj._id}</span>
           </td>
           <td>
-          <Link to={"/edit/"+this.props.obj._id} className="btn btn-primary">Edit</Link>
+            <Link to={{ 
+              pathname:`/view/${this.props.obj._id}`, 
+              state: { 
+                ticket: this.props.obj
+              }
+              }} className="btn btn-primary">View</Link>
           </td>
           <td>
             <button onClick={this.delete} className="btn btn-danger">Delete</button>
