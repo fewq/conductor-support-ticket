@@ -17,7 +17,12 @@ class TableRow extends Component {
       })
       .catch(err => console.log(err))
   }
+
+
   render() {
+    let objDate = new Date(this.props.obj.dateOfCreation);
+    var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    let displayDate = objDate.toLocaleDateString("en-US", dateOptions);
     return (
         <tr>
           <td>
@@ -30,7 +35,13 @@ class TableRow extends Component {
             {this.props.obj.topics}
           </td>
           <td>
-            {this.props.obj.description}
+            {this.props.obj.title}
+          </td>
+          <td>
+            {this.props.obj.statusToClient}
+          </td>
+          <td>
+            {displayDate}
           </td>
           <td>
           <Link to={"/edit/"+this.props.obj._id} className="btn btn-primary">Edit</Link>

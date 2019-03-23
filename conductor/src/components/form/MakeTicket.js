@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import axios from 'axios';
 import { withFormik } from "formik";
 import categories from "./categories.js";
@@ -9,8 +9,6 @@ import Select from "react-select";
 import { PropState, disableEnterButton } from "./helper";
 import makeAnimated from "react-select/lib/animated";
 import "../../css/form.css";
-
-/////////////////////////////////////////////////////
 
 // Validation Scheme with Yup //
 const formikEnhancer = withFormik({
@@ -26,37 +24,34 @@ const formikEnhancer = withFormik({
           value: Yup.string().required()
         })
       ),
+    title: Yup.string().required("Title Required!"),
     description: Yup.string().required("Description Required!"),
     formType: Yup.string().required("What is this feedback primarily for?")
   }),
   mapPropsToValues: props => ({
     email: "",
     topics: [],
+    title: "",
     description: "",
     formType: "bug"
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
       ...values,
-      topics: values.topics.map(t => t.value)
+      topics: values.topics.map(t => t.value),
+      statusToClient: "Pending Admin",
+      dateOfCreation: new Date(),
     };
 
     axios.post('http://localhost:4000/ticket/add', payload)
-    .then(res => console.log(res.data));
-
-    // Test code for POST
-    /*
-    fetch("https://jsonplaceholder.typicode.com/posts", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));*/
-
-    // TODO: change static submit to database or else
+    .then(res => {
+      console.log("form received the following payload:");
+      console.log(payload);
+      console.log(res.data);
+      console.log(res.body);
+    });
+    
     setTimeout(() => {
-      alert(JSON.stringify(payload, null, 2));
       setSubmitting(false);
     }, 1000);
   },
@@ -133,17 +128,30 @@ const MyForm = (props, selectedFormType) => {
         error={errors.topics}
         touched={touched.topics}
       />
+      <label htmlFor="name" style={{ display: "block" }}>
+        Title
+      </label>
+      <input 
+        id="title" 
+        placeholder="Summary of the issue" 
+        type="text"
+        value={values.title}
+        onChange={handleChange}
+        onBlur={handleBlur}
+       />
+
       <label htmlFor="description" style={{ display: "block" }}>
         Your Message
       </label>
       <textarea
         id="description"
-        placeholder="Tell us more about the issue."
-        type="textarea"
+        placeholder="Tell us more about the issue"
         value={values.description}
         onChange={handleChange}
         onBlur={handleBlur}
       />
+
+
       {errors.description && touched.description && (
         <div style={{ color: "red", marginTop: ".5rem" }}>
           {errors.descriptionl}
@@ -206,6 +214,21 @@ export class MySelect extends React.Component {
   }
 }
 
-const TicketForm = formikEnhancer(MyForm);
+const CreateTicketForm = formikEnhancer(MyForm);
 
-export default TicketForm;
+export default class TicketForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      createdBy: this.props.name
+    }
+  }
+
+  render() {
+    return(
+      <div>
+      <CreateTicketForm createdBy={this.state.createdBy} />
+      </div>
+    )
+  }
+}

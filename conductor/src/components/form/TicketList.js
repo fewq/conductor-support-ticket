@@ -47,7 +47,9 @@ export default class TicketList extends Component {
               <th></th>
               <th>Ticket type</th>
               <th>Topics</th>
-              <th>Description</th>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Date Submitted</th>
               <th colSpan="2">Action</th>
             </tr>
           </thead>

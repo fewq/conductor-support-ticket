@@ -7,7 +7,6 @@ import Kanban from "./Kanban.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Restricted extends Component {
-  state = {};
   render() {
     let restrictedComponent = "";
     switch (localStorage.role) {
