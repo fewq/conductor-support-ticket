@@ -19,9 +19,35 @@ class Restricted extends Component {
         );
         break;
 
-      case "user":
-        console.log("logged in as user");
+      case "tester":
+        console.log("logged in as test");
+        restrictedComponent = (
+          <Provider store={store}>
+            <Kanban />
+          </Provider>
+        );
+        break;
+
+      case "dev":
+        console.log("logged in as dev");
+        restrictedComponent = (
+          <Provider store={store}>
+            <Kanban />
+          </Provider>
+        );
+        break;
+
+      case "ba":
+        console.log("logged in as ba");
+        restrictedComponent = (
+          <Provider store={store}>
+            <Kanban />
+          </Provider>
+        );
+        break;
+
       case "client":
+        console.log("logged in as client");
         restrictedComponent = <Dashboard />;
         break;
       default:
