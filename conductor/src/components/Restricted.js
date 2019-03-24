@@ -20,7 +20,7 @@ class Restricted extends Component {
         break;
 
       case "tester":
-        console.log("logged in as test");
+        console.log("logged in as tester");
         restrictedComponent = (
           <Provider store={store}>
             <Kanban />
