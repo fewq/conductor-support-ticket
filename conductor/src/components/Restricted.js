@@ -21,10 +21,11 @@ class Restricted extends Component {
 
       case "user":
         console.log("logged in as user");
+      case "client":
         restrictedComponent = <Dashboard />;
         break;
       default:
-        console.log("not admin or user");
+        console.log("not admin or client");
         break;
     }
 
@@ -37,9 +38,7 @@ class Restricted extends Component {
         <button className="btn btn-secondary" onClick={this.props.auth.logout}>
           Logout
         </button>
-        
       </div>
-
     );
   }
 }
