@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { withFormik } from "formik";
 import categories from "./categories.js";
 import formType from "./formType.js";
@@ -40,17 +40,16 @@ const formikEnhancer = withFormik({
       ...values,
       topics: values.topics.map(t => t.value),
       statusToClient: "Pending Admin",
-      dateOfCreation: new Date(),
+      dateOfCreation: new Date()
     };
 
-    axios.post('http://localhost:4000/ticket/add', payload)
-    .then(res => {
+    axios.post("http://localhost:4000/ticket/add", payload).then(res => {
       console.log("form received the following payload:");
       console.log(payload);
       console.log(res.data);
       console.log(res.body);
     });
-    
+
     setTimeout(() => {
       setSubmitting(false);
     }, 1000);
@@ -59,7 +58,7 @@ const formikEnhancer = withFormik({
 });
 
 // Form //
-const MyForm = (props) => {
+const MyForm = props => {
   const {
     values,
     touched,
@@ -113,14 +112,14 @@ const MyForm = (props) => {
       <label htmlFor="name" style={{ display: "block" }}>
         Title
       </label>
-      <input 
-        id="title" 
-        placeholder="Summary of the issue" 
+      <input
+        id="title"
+        placeholder="Summary of the issue"
         type="text"
         value={values.title}
         onChange={handleChange}
         onBlur={handleBlur}
-       />
+      />
 
       <label htmlFor="description" style={{ display: "block" }}>
         Your Message
@@ -132,18 +131,22 @@ const MyForm = (props) => {
         onChange={handleChange}
         onBlur={handleBlur}
       />
-    
+
       <div>
         <button
           type="button"
-          id="outline"
+          id="reset"
           className="form-button"
           onClick={handleReset}
           disabled={!dirty || isSubmitting}
         >
           Reset
         </button>
-        <button type="submit" className="form-button" disabled={isSubmitting}
+        <button
+          type="submit"
+          className="form-button"
+          id="submit"
+          disabled={isSubmitting}
         >
           Submit
         </button>
@@ -195,18 +198,18 @@ const CreateTicketForm = formikEnhancer(MyForm);
 export default class TicketForm extends Component {
   constructor(props) {
     super(props);
-    
+
     // still working on retrieving user info
     this.state = {
       createdBy: this.props.name
-    }
+    };
   }
 
   render() {
-    return(
+    return (
       <div>
-      <CreateTicketForm createdBy={this.state.createdBy} />
+        <CreateTicketForm createdBy={this.state.createdBy} />
       </div>
-    )
+    );
   }
 }
