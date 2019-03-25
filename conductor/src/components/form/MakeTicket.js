@@ -5,6 +5,7 @@ import categories from "./categories.js";
 import formType from "./formType.js";
 import * as Yup from "yup";
 import Select from "react-select";
+import jwtDecode from "jwt-decode";
 
 import { PropState, disableEnterButton } from "./helper";
 import makeAnimated from "react-select/lib/animated";
@@ -198,6 +199,10 @@ const CreateTicketForm = formikEnhancer(MyForm);
 export default class TicketForm extends Component {
   constructor(props) {
     super(props);
+    //start of TODO
+    let newStuff = jwtDecode(localStorage.getItem("id_token"));
+    console.log(newStuff);
+    //end of TODO
 
     // still working on retrieving user info
     this.state = {
