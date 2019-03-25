@@ -79,7 +79,7 @@ app.listen(PORT, function() {
   console.log("Server is running on Port:", PORT);
 });
 
-/*
+/* SEAN local database part
  // require('./config/config.js');
 
 // const _ = require('lodash');
