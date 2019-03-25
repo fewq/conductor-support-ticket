@@ -27,6 +27,18 @@ ticketRoutes.route('/').get((req, res) => {
     });
 });
 
+// get all tickets from a specific email
+ticketRoutes.route('/:email').get((req, res) => {
+    Ticket.find({"createdBy" : req.params.email}).then((tickets) => {
+        console.log(req.params.email);
+        res.send({
+            tickets
+        });
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
+
 // get specific tickets
 ticketRoutes.route('/:id').get((req, res) => {
     Ticket.findById(req.params.id).then((err, ticket) => {

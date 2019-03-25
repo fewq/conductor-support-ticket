@@ -29,12 +29,12 @@ const formikEnhancer = withFormik({
     description: Yup.string().required("Description Required!"),
     formType: Yup.string().required("What is this feedback primarily for?")
   }),
-  mapPropsToValues: props => ({
-    email: "",
+  mapPropsToValues: (props) => ({
+    createdBy: props.userEmail,
     topics: [],
     title: "",
     description: "",
-    formType: "bug"
+    formType: "bug",
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
@@ -59,7 +59,7 @@ const formikEnhancer = withFormik({
 });
 
 // Form //
-const MyForm = props => {
+const MyForm = (props) => {
   const {
     values,
     touched,
@@ -200,20 +200,20 @@ export default class TicketForm extends Component {
   constructor(props) {
     super(props);
     //start of TODO
-    let newStuff = jwtDecode(localStorage.getItem("id_token"));
-    console.log(newStuff);
+    let idToken = jwtDecode(localStorage.getItem("id_token"));
+    var email = idToken.email;
     //end of TODO
 
     // still working on retrieving user info
     this.state = {
-      createdBy: this.props.name
+      userEmail: email
     };
   }
 
   render() {
     return (
       <div>
-        <CreateTicketForm createdBy={this.state.createdBy} />
+        <CreateTicketForm userEmail={this.state.userEmail} />
       </div>
     );
   }

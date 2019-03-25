@@ -1,19 +1,22 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import jwtDecode from "jwt-decode";
+
 import TableRow from './TicketListTableRow';
 
 export default class TicketList extends Component {
   constructor(props) {
     super(props);
-    this.state = {ticket: []};
+    let idToken = jwtDecode(localStorage.getItem("id_token"));
+    var email = idToken.email;
+    this.state = {ticket: [], email: email};
   }
   componentDidMount(){
     this.refresh();
   }
 
   refresh = () => {
-    axios.get('http://localhost:4000/ticket')
+    axios.get('http://localhost:4000/ticket/' + this.state.email)
       .then(response => {
         console.log("refreshing");
         console.log(response);
