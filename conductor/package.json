@@ -43,7 +43,7 @@
     "test": "react-scripts test",
     "frontendtest": "react-scripts test",
     "eject": "react-scripts eject",
-    "backendtest": "mocha server/tests/*.test.js --timeout 10000",
+    "backendtest": "mocha server/tests/*.test.js --timeout 10000"
   },
   "eslintConfig": {
     "extends": "react-app"
