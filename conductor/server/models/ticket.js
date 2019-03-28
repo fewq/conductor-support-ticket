@@ -22,7 +22,7 @@ let Ticket = new Schema({
     type: Date,
   },
   description: {
-    type: Array, 
+    type: String, 
   },
   title: {
     type: String,
