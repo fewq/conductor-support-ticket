@@ -16,7 +16,7 @@ export default class TicketList extends Component {
   }
 
   refresh = () => {
-    axios.get('http://localhost:4000/ticket/' + this.state.email)
+    axios.get('http://localhost:4000/ticket/email/' + this.state.email)
       .then(response => {
         console.log("refreshing");
         console.log(response);
