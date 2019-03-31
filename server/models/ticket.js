@@ -32,6 +32,9 @@ let Ticket = new Schema({
   },
   formType: {
     type: String
+  },
+  attachments: {
+    type: Array
   }
 });
 

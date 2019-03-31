@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import axios from "axios";
+
+// form state management & validation library 
 import { withFormik } from "formik";
-import categories from "./categories.js";
-import formType from "./formType.js";
 import * as Yup from "yup";
-import Select from "react-select";
+
+// individual form components
+import formType from "./formType.js";
+import MySelect from "./MySelect.js"
+import { disableEnterButton, getFilePreview } from "./helper";
+import Dropzone from "react-dropzone";
+import {baseStyle, activeStyle, acceptStyle, rejectStyle} from "./Dropzone";
+
+// for retrieving user's email
 import jwtDecode from "jwt-decode";
 
-import { PropState, disableEnterButton } from "./helper";
-import makeAnimated from "react-select/lib/animated";
 import "../../css/form.css";
+
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
 // Validation Scheme with Yup //
 const formikEnhancer = withFormik({
@@ -27,7 +35,8 @@ const formikEnhancer = withFormik({
       ),
     title: Yup.string().required("Title Required!"),
     description: Yup.string().required("Description Required!"),
-    formType: Yup.string().required("What is this feedback primarily for?")
+    formType: Yup.string().required("What is this feedback primarily for?"),
+    attachments: Yup.array(),
   }),
   mapPropsToValues: (props) => ({
     createdBy: props.userEmail,
@@ -35,13 +44,15 @@ const formikEnhancer = withFormik({
     title: "",
     description: "",
     formType: "bug",
+    attachments: []
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const payload = {
       ...values,
       topics: values.topics.map(t => t.value),
+      attachments: values.attachments.map(a => a.value),
       statusToClient: "Pending Admin",
-      dateOfCreation: new Date()
+      dateOfCreation: new Date(),
     };
 
     axios.post("http://localhost:4000/ticket/add", payload).then(res => {
@@ -60,6 +71,8 @@ const formikEnhancer = withFormik({
 
 // Form //
 const MyForm = (props) => {
+
+  // formik basic props & state management
   const {
     values,
     touched,
@@ -134,6 +147,35 @@ const MyForm = (props) => {
       />
 
       <div>
+        <label>File Upload</label>
+        <Dropzone multiple id="files" accept="image/*"
+        style={baseStyle} acceptStyle={acceptStyle} rejectStyle={rejectStyle} activeStyle={activeStyle}
+        onDrop={(acceptedFiles) => {
+          setFieldValue("attachments", values.attachments.concat(acceptedFiles));
+        }}>
+        {({getRootProps, getInputProps, isDragActive, isDragReject}) => (
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {!isDragActive && 'Click here or drop a file to upload!'}
+            {isDragActive && !isDragReject && "File type ok!"}
+            {isDragReject && "File type not accepted, sorry!"}
+            {values.attachments.map((file, i) => (
+              <div>
+                <img src={getFilePreview(file)}
+                  alt={file.name}
+                  className="img-thumbnail mt-2"
+                  height={200}
+                  width={200} />
+                <p className="text-white">
+                  {i}. {file.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+        </Dropzone>
+      </div>
+      <div>
         <button
           type="button"
           id="reset"
@@ -153,46 +195,11 @@ const MyForm = (props) => {
         </button>
       </div>
 
-      {/* <PropState {...props} /> */}
     </form>
   );
 };
 
-// React-select component modified to fit Formik
-export class MySelect extends React.Component {
-  handleChange = value => {
-    // this is going to call setFieldValue and manually update values.topcis
-    this.props.onChange("topics", value);
-  };
 
-  handleBlur = () => {
-    // this is going to call setFieldTouched and manually update touched.topcis
-    this.props.onBlur("topics", true);
-  };
-
-  render() {
-    return (
-      <div>
-        <label htmlFor="topic">Category of issue</label>
-        <Select
-          id="category-select"
-          options={categories}
-          isMulti
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          value={this.props.value}
-          closeMenuOnSelect={false}
-          components={makeAnimated()}
-        />
-        {!!this.props.error && this.props.touched && (
-          <div style={{ color: "red", marginTop: ".5rem" }}>
-            {this.props.error}
-          </div>
-        )}
-      </div>
-    );
-  }
-}
 
 const CreateTicketForm = formikEnhancer(MyForm);
 

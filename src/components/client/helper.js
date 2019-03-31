@@ -39,3 +39,14 @@ export const renderTopics = topics => {
     return <span class="badge badge-pill badge-info"> {obj} </span>
 });
 }
+
+// doesn't work as intended yet
+export const getFilePreview = (file) => {
+  // console.log("Reading file")
+  // let reader = new FileReader();
+  // reader.onloadend = () => {
+  //   console.log(reader.result);
+  //   return reader.result;
+  // }
+ 
+}

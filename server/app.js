@@ -75,4 +75,5 @@ mongoose.connect(config.DB, {
 const ticketRoutes = require("./routers/ticket.route");
 app.use("/ticket", ticketRoutes);
 
+
 module.exports = app;
