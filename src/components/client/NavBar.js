@@ -42,7 +42,7 @@ class NavBar extends Component {
           </nav>
           <br />
           <Route path="/dashboard" exact component={TicketList} />
-          <Route path="/edit/:id" component={EditTicket} />
+          <Route path="/update/:id" component={EditTicket} />
           <Route path="/view/:id" component={ViewTicket} />
           <Route path="/create" component={FormTypeSelection} />
         </div>

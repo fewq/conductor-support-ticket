@@ -6,7 +6,6 @@ export default class Edit extends Component {
     super(props);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-
     this.state = {
       formType: "",
       topics: [],
@@ -15,20 +14,20 @@ export default class Edit extends Component {
   }
 
   componentDidMount() {
-      axios.get('http://localhost:4000/ticket/edit/'+this.props.match.params.id)
-          .then(response => {
-            console.log("retrieved json response for editing" );
-            console.log(response);
-              this.setState({ 
-                formType: response.data.ticket.formType, 
-                topics: response.data.ticket.topics,
-                description: response.data.ticket.description });
-                console.log("retrieved state for editing" );
-                console.log(this.state);
-          })
-          .catch(function (error) {
-              console.log(error);
-          })
+    axios.get('http://localhost:4000/ticket/view/'+this.props.match.params.id)
+        .then(response => {
+          console.log("retrieved json response for editing" );
+          console.log(response);
+            this.setState({ 
+              formType: response.data.formType, 
+              topics: response.data.topics,
+              description: response.data.description });
+              console.log("retrieved state for editing" );
+              console.log(this.state);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
     }
 
   onChangeDescription(e) {
@@ -44,8 +43,11 @@ export default class Edit extends Component {
       topics: this.state.topics,
       description: this.state.description
     };
-    axios.post('http://localhost:4000/ticket/update/'+this.props.match.params.id, obj)
-        .then(res => console.log(res.data));
+    axios.patch('http://localhost:4000/ticket/update/'+this.props.match.params.id)
+        .then(res => console.log(res.data))
+        .catch(function (error) {
+          console.log(error);
+      })
     
     this.props.history.push('/restricted');
   }

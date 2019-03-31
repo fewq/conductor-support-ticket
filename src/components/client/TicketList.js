@@ -20,7 +20,7 @@ export default class TicketList extends Component {
       .then(response => {
         console.log("refreshing");
         console.log(response);
-        this.setState({ ticket: response.data.tickets });
+        this.setState({ ticket: response.data });
       })
       .catch( (error , response) => {
         console.log(error);
