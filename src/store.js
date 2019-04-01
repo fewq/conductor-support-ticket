@@ -20,7 +20,7 @@ const initialState = {
     shouldShowCardMenu: false
   }
 };
-
+console.log("Store: ", domainData);
 let store = createStore(
   kanbanReducers,
   initialState,
