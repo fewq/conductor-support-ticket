@@ -26,10 +26,10 @@ statusUpdateRoutes.route('/getall').get(async (req, res) => {
 });
 
 // GET: Retrieve all statusUpdates for a specific ticket
-statusUpdateRoutes.route('/email/:email').get( async (req, res) => {
+statusUpdateRoutes.route('/ticketid/:id').get( async (req, res) => {
     try {
         const statusUpdates = await StatusUpdate.find({
-            createdBy: req.params.email,
+            ticketId: req.params.id,
         });
         if (statusUpdates.length == 0) {
             return res.status(404).send()
