@@ -58,6 +58,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.1",
     "expect": "^24.4.0",
     "mocha": "^6.0.2",
     "nodemon": "^1.18.10",

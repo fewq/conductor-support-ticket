@@ -16,6 +16,7 @@ import {baseStyle, activeStyle, acceptStyle, rejectStyle} from "./Dropzone";
 import jwtDecode from "jwt-decode";
 
 import "../../css/form.css";
+import "../../css/vendors/font-awesome/css/font-awesome.min.css"
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
@@ -161,13 +162,15 @@ const MyForm = (props) => {
             {isDragReject && "File type not accepted, sorry!"}
             {values.attachments.map((file, i) => (
               <div>
-                <img src={getFilePreview(file)}
+                <div style={{display:'flex'}}> </div>
+                <i
                   alt={file.name}
-                  className="img-thumbnail mt-2"
+                  className={getFilePreview(file)}  
                   height={200}
-                  width={200} />
+                  width={200}
+                  />
                 <p className="text-white">
-                  {i}. {file.name}
+                {i}. {file.name}
                 </p>
               </div>
             ))}
