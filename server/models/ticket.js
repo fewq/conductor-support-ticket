@@ -2,6 +2,23 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
+let TicketUpdate = new Schema({
+  dateOfUpdate: {
+    type: Date
+  },
+  attendedBy: {
+    type: String    // can modify the attendedBy field 
+                    // to show email or name to client.
+  },
+  comments: {
+    type: String
+  },
+  acknowledgedByClient: {
+    type: Boolean
+  }, 
+})
+
 let Ticket = new Schema({
   dateOfCreation: {
     type: Date,
@@ -32,7 +49,12 @@ let Ticket = new Schema({
   },
   formType: {
     type: String
+  },
+  updates: {
+    type: TicketUpdate,
   }
 });
+
+
 
 module.exports = mongoose.model('Ticket', Ticket);

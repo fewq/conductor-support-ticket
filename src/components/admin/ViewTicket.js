@@ -56,7 +56,7 @@ export default class TicketList extends Component {
                     </div>
                 </div>
                 <div className="my-2">
-                <Link to={"/update/"+this.state.ticket._id} className="btn btn-light">Edit Description</Link>
+                <Link to={"/update/"+this.state.ticket._id} className="btn btn-light">Update Ticket Status</Link>
                 <button onClick={this.alert} className="btn btn-danger">Delete Ticket</button>
                 </div>
             </div>
