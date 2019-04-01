@@ -23,23 +23,27 @@ const formikEnhancer = withFormik({
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log("Submitting edit ticket form on admin's side.");
+    var newStatusToClient = {"statusToClient" : values.statusToClient}; 
     var payload = {
       ...values,
       dateOfUpdate: new Date()
     };
-    console.log(payload);
-    var ticketId = values.ticketId;
-    delete payload["ticketId"];
-    console.log("remove unnecessary ticket id.");
-    console.log(payload);
-    console.log("Ticket Id is:");
-    console.log(ticketId);
 
-    axios
-      .patch("http://localhost:4000/ticket/update" + ticketId, payload)
+    console.log(newStatusToClient);
+    console.log(payload);
+
+    var ticketId = values.ticketId;
+    
+
+    axios.post("http://localhost:4000/status/add", payload)
       .then(res => {
-        console.log("Updating ticket with the following info:");
-        console.log(payload);
+        console.log("Adding new ticket status update with the following info:");
+        console.log(res.data);
+      });
+      
+    axios.patch("http://localhost:4000/ticket/update/" + ticketId, newStatusToClient)
+      .then(res => {
+        console.log("Changed status of ticket to client");
         console.log(res.data);
       });
 
@@ -141,8 +145,8 @@ export default class Edit extends Component {
   constructor(props) {
     super(props);
     let email = "";
-    // let idToken = jwtDecode(localStorage.getItem("id_token"));
-    // email = idToken.email;
+    let idToken = jwtDecode(localStorage.getItem("id_token"));
+    email = idToken.email;
     this.state = {
       statusToClient: "",
       updates: [],

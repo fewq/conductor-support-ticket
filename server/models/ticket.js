@@ -2,22 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-let TicketUpdate = new Schema({
-  dateOfUpdate: {
-    type: Date
-  },
-  attendedBy: {
-    type: String    // can modify the attendedBy field 
-                    // to show email or name to client.
-  },
-  comments: {
-    type: String
-  },
-  acknowledgedByClient: {
-    type: Boolean
-  }, 
-})
+const StatusUpdate = require('./statusUpdate.js');
 
 let Ticket = new Schema({
   dateOfCreation: {
@@ -51,9 +36,11 @@ let Ticket = new Schema({
     type: String
   },
   updates: {
-    type: TicketUpdate,
-  }
-});
+    type: Array,
+  },
+}, {
+    collection: 'tickets'
+  });
 
 
 
