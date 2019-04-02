@@ -69,7 +69,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
 
     listCard[String(i)] = String(i);
   }
-  console.log("List ", listCard);
+  //console.log("List ", listCard);
 
   const initialState = {
     domainData: {
