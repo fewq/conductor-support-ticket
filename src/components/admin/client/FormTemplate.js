@@ -1,62 +1,12 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { withFormik } from "formik";
+import React from "react";
 import categories from "./categories.js";
-import formType from "./formType.js";
-import * as Yup from "yup";
 import Select from "react-select";
-import jwtDecode from "jwt-decode";
-
 import { PropState, disableEnterButton } from "./helper";
 import makeAnimated from "react-select/lib/animated";
 import "../../css/form.css";
 
-// Validation Scheme with Yup //
-const formikEnhancer = withFormik({
-  validationSchema: Yup.object().shape({
-    topics: Yup.array()
-      .min(1, "Pick at least 1 category")
-      .of(
-        Yup.object().shape({
-          label: Yup.string().required(),
-          value: Yup.string().required()
-        })
-      ),
-    title: Yup.string().required("Title Required!"),
-    description: Yup.string().required("Description Required!"),
-    formType: Yup.string().required("What is this feedback primarily for?")
-  }),
-  mapPropsToValues: (props) => ({
-    createdBy: props.userEmail,
-    topics: [],
-    title: "",
-    description: "",
-    formType: "bug",
-  }),
-  handleSubmit: (values, { setSubmitting }) => {
-    const payload = {
-      ...values,
-      topics: values.topics.map(t => t.value),
-      statusToClient: "Pending Admin",
-      dateOfCreation: new Date()
-    };
-
-    axios.post("http://localhost:4000/ticket/add", payload).then(res => {
-      console.log("form received the following payload:");
-      console.log(payload);
-      console.log(res.data);
-      console.log(res.body);
-    });
-
-    setTimeout(() => {
-      setSubmitting(false);
-    }, 1000);
-  },
-  displayName: "Ticket Form"
-});
-
 // Form //
-const MyForm = (props) => {
+export const MyForm = (props, selectedFormType) => {
   const {
     values,
     touched,
@@ -72,11 +22,28 @@ const MyForm = (props) => {
   } = props;
   return (
     <form
-      id="make-ticket-form"
+      id="ticket-form"
       onSubmit={handleSubmit}
       onKeyPress={disableEnterButton}
     >
       <h1 class="subtitle">Ticket Form</h1>
+      {/*     
+    <label htmlFor="email" style={{ display: "block" }}>
+        Email
+    </label>
+    <input
+      id="email"
+      class="ticket-form"
+      placeholder="Enter your email"
+      type="email"
+      value={values.email}
+      onChange={handleChange}
+      onBlur={handleBlur}
+    />
+    {errors.email && touched.email && (
+      <div style={{ color: "red", marginTop: ".5rem" }}>{errors.email}</div>
+    )} */}
+
       <div class="radio-group">
         <label>Ticket Type</label>
         <div class="radio-container">
@@ -89,6 +56,7 @@ const MyForm = (props) => {
                     type="radio"
                     name="formType"
                     id={option}
+                    class="ticket-form"
                     value={option}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -107,48 +75,39 @@ const MyForm = (props) => {
         error={errors.topics}
         touched={touched.topics}
       />
-      <label htmlFor="name" style={{ display: "block" }}>
-        Title
-      </label>
-      <input
-        id="title"
-        placeholder="Summary of the issue"
-        type="text"
-        value={values.title}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-
       <label htmlFor="description" style={{ display: "block" }}>
         Your Message
       </label>
       <textarea
         id="description"
-        placeholder="Tell us more about the issue"
+        placeholder="Tell us more about the issue."
+        type="textarea"
         value={values.description}
         onChange={handleChange}
         onBlur={handleBlur}
       />
+      {errors.description && touched.description && (
+        <div style={{ color: "red", marginTop: ".5rem" }}>
+          {errors.descriptionl}
+        </div>
+      )}
 
       <div>
         <button
           type="button"
-          id="reset"
+          id="outline"
           className="form-button"
           onClick={handleReset}
           disabled={!dirty || isSubmitting}
         >
           Reset
         </button>
-        <button
-          type="submit"
-          className="form-button"
-          id="submit"
-          disabled={isSubmitting}
-        >
+        <button type="submit" className="form-button" disabled={isSubmitting}>
           Submit
         </button>
       </div>
+
+      {/* <PropState {...props} /> */}
     </form>
   );
 };
@@ -184,31 +143,6 @@ export class MySelect extends React.Component {
             {this.props.error}
           </div>
         )}
-      </div>
-    );
-  }
-}
-
-const CreateTicketForm = formikEnhancer(MyForm);
-
-export default class TicketForm extends Component {
-  constructor(props) {
-    super(props);
-    //start of TODO
-    let idToken = jwtDecode(localStorage.getItem("id_token"));
-    var email = idToken.email;
-    //end of TODO
-
-    // still working on retrieving user info
-    this.state = {
-      userEmail: email
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <CreateTicketForm userEmail={this.state.userEmail} />
       </div>
     );
   }

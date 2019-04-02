@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const StatusUpdate = require('./statusUpdate.js');
+
 let Ticket = new Schema({
   dateOfCreation: {
     type: Date,
@@ -32,7 +34,14 @@ let Ticket = new Schema({
   },
   formType: {
     type: String
-  }
-});
+  },
+  updates: {
+    type: Array,
+  },
+}, {
+    collection: 'tickets'
+  });
+
+
 
 module.exports = mongoose.model('Ticket', Ticket);
