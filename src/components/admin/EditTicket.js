@@ -17,19 +17,22 @@ const formikEnhancer = withFormik({
   mapPropsToValues: props => ({
     attendedBy: props.ticket.attendedBy,
     ticketId: props.ticket.ticketId,
-    statusToClient: props.ticket.statusToClient,
+    prevStatusToClient: props.ticket.statusToClient,
+    statusToClient: "",
+    // status to admin not implemented yet, as the appropriate types of status are not confirmed yet.
     statusToAdmin: props.ticket.statusToAdmin,
     comments: ""
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log("Submitting edit ticket form on admin's side.");
-    var newStatusToClient = {"statusToClient" : values.statusToClient}; 
+    var newTicketStatusToClient = {"statusToClient" : values.statusToClient}; 
+    
     var payload = {
       ...values,
       dateOfUpdate: new Date()
     };
 
-    console.log(newStatusToClient);
+    console.log(newTicketStatusToClient);
     console.log(payload);
 
     var ticketId = values.ticketId;
@@ -41,7 +44,7 @@ const formikEnhancer = withFormik({
         console.log(res.data);
       });
       
-    axios.patch("http://localhost:4000/ticket/update/" + ticketId, newStatusToClient)
+    axios.patch("http://localhost:4000/ticket/update/" + ticketId, newTicketStatusToClient)
       .then(res => {
         console.log("Changed status of ticket to client");
         console.log(res.data);

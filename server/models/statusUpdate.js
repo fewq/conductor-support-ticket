@@ -2,6 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let StatusUpdate = new Schema({
+  prevStatusToClient: {
+    type: String,
+  },
+  statusToClient: {
+    type: String,
+  },
+  statusToAdmin: {
+    type: String,
+  },
   ticketId: {
     type: String
   },
