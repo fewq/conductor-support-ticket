@@ -1,5 +1,3 @@
-import taskList from "./getData";
-
 export default {
   lists: {
     byId: {
@@ -53,6 +51,47 @@ export default {
     }
   },
   tasks: {
-    byId: taskList
+    byId: {
+      "0": {
+        id: "0",
+        name: "Click to edit or delete",
+        done: true
+      },
+      "1": {
+        id: "1",
+        name: "Click check button to toggle complete",
+        done: false
+      },
+      "2": {
+        id: "2",
+        name: "Click on the top right icon to view the card menu",
+        done: false
+      },
+      "3": {
+        id: "3",
+        name: "Drag and drop card",
+        done: false
+      },
+      "4": {
+        id: "4",
+        name: "Task",
+        done: false
+      },
+      "5": {
+        id: "5",
+        name: "Task",
+        done: false
+      },
+      "6": {
+        id: "6",
+        name: "Task",
+        done: false
+      },
+      "7": {
+        id: "7",
+        name: "Task",
+        done: false
+      }
+    }
   }
 };
