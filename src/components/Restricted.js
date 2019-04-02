@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { timingSafeEqual } from "crypto";
-import { Provider } from "react-redux";
-import store from "../store";
 import ClientDashboard from "./client/Dashboard.js";
-import AdminDashboard from "./admin/Dashboard.js"
+import AdminDashboard from "./admin/Dashboard.js";
 import Kanban from "./Kanban.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,29 +16,17 @@ class Restricted extends Component {
 
       case "tester":
         console.log("logged in as tester");
-        restrictedComponent = (
-          <Provider store={store}>
-            <Kanban />
-          </Provider>
-        );
+        restrictedComponent = <Kanban />;
         break;
 
       case "dev":
         console.log("logged in as dev");
-        restrictedComponent = (
-          <Provider store={store}>
-            <Kanban />
-          </Provider>
-        );
+        restrictedComponent = <Kanban />;
         break;
 
       case "ba":
         console.log("logged in as ba");
-        restrictedComponent = (
-          <Provider store={store}>
-            <Kanban />
-          </Provider>
-        );
+        restrictedComponent = <Kanban />;
         break;
 
       case "client":

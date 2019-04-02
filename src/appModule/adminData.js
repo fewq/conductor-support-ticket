@@ -1,18 +1,42 @@
 import axios from "axios";
 
-var tickets;
-var numberOfTickets;
-var cardsById;
-var taskList;
+let test = "before";
+let taskList;
 
-let load = new Promise(resolve => {
-  axios
-    .get("http://localhost:4000/ticket/getall")
-    .then(response => {
+function getData() {
+  return new Promise((resolve, reject) => {
+    console.log("doing promise");
+    test = "after";
+  });
+}
+
+async function waitData() {
+  await getData();
+}
+
+function getDat() {
+  return axios.get("http://localhost:4000/ticket/getall");
+}
+
+async function i() {
+  try {
+    await getDat();
+    test = "after";
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+i();
+
+async function fetchData() {
+  await axios.get("http://localhost:4000/ticket/getall");
+  /*.then(response => {
       console.log("retrieving data for admin kanban.");
       //tickets = response.data.tickets;
       console.log(response);
-      numberOfTickets = response.data.length;
+      let numberOfTickets = response.data.length;
+      return numberOfTickets;
       /*
       // create cards based on tickets found in database
       cardsById = tickets.map((object, i) => {
@@ -23,11 +47,9 @@ let load = new Promise(resolve => {
           tasks: [String(i)]
         };
       });
-  
       console.log("cardsById");
       console.log(cardsById);
   
-  */
       // create sample tasks for cards that are not done yet
       const createTasks = input => {
         let sampleTasks = {};
@@ -42,14 +64,16 @@ let load = new Promise(resolve => {
         return sampleTasks;
       };
 
-      taskList = createTasks(8);
+      taskList = createTasks(2);
       console.log(taskList);
+      
     })
-    .then(resolve)
     .catch((error, response) => {
       console.log(error);
-    });
-});
+    });*/
+  test = "after";
+  console.log(test);
+}
 
 export default {
   lists: {
@@ -99,7 +123,7 @@ export default {
       },
       "4": {
         id: "4",
-        title: "TODO",
+        title: test,
         description: "Description",
         tasks: ["4"]
       }
