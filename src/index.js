@@ -43,8 +43,34 @@ let appInitialState = {
   auth
 };
 
+// populate store from DB
 axios.get("http://localhost:4000/ticket/getall").then(response => {
-  console.log(response);
+  let numberOfTickets = response.data.length;
+  let tickets = response.data;
+  let cardList = tickets.map((object, i) => {
+    return {
+      id: String(i),
+      title: object.title,
+      description: object.description,
+      tasks: [String(i)]
+    };
+  });
+
+  // TODO update dynamically (depending on status)
+  let listCard = [];
+
+  let taskList = {};
+  for (let i = 0; i < numberOfTickets; i++) {
+    taskList[String(i)] = {
+      id: String(i),
+      name: "Click to edit or delete",
+      done: false
+    };
+
+    listCard[String(i)] = String(i);
+  }
+  console.log("List ", listCard);
+
   const initialState = {
     domainData: {
       lists: {
@@ -65,29 +91,14 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
         allLists: ["0", "1", "2"]
       },
       cards: {
-        // intending to replace as
-        // byId: cardsById
-        byId: {
-          "0": {
-            id: "0",
-            title: "TODO 1",
-            description: "Description",
-            tasks: ["0"]
-          }
-        }
+        byId: cardList
       },
       tasks: {
-        byId: {
-          "0": {
-            id: "0",
-            name: "Click to edit or delete",
-            done: true
-          }
-        }
+        byId: taskList
       }
     },
     kanbanState: {
-      listCards: { "0": ["0"], "1": [], "2": [] },
+      listCards: { "0": listCard, "1": [], "2": [] },
       selectedCard: "ID_OF_CARD_IN_FOCUS",
       itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
       attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"
