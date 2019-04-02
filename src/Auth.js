@@ -5,12 +5,14 @@ import jwtDecode from "jwt-decode";
 const LOGIN_SUCCESS_PAGE = "/restricted"; //restricted area
 const LOGIN_FAILURE_PAGE = "/"; //homepage
 
+var env = require("./env");
+
 //regular class that contains auth0 property
 export default class Auth {
   // local variable hold the auth0 object
   auth0 = new auth0.WebAuth({
     domain: "conductor.au.auth0.com",
-    clientID: "m28JIY4vvRBiX09GZY4YHpDTI7Bxp7zL",
+    clientID: env.AUTH_TOKEN,
     redirectUri: "http://localhost:3000/callback",
     audience: "https://conductor.au.auth0.com/userinfo", //specifies what kind of user
     responseType: "token id_token",
