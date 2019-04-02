@@ -8,7 +8,7 @@ code {
 }
 
 /* form */
-form#ticket-form {
+form#make-ticket-form {
   margin-top: 2rem;
   border-radius: 6px;
   display: flex;
@@ -32,7 +32,7 @@ label {
   color: black;
 }
 
-.ticket-form > input, 
+.make-ticket-form, .update-ticket-form > input, 
 textarea#description {
   padding: 12px;
   margin-bottom: 1rem;
@@ -83,12 +83,7 @@ input[type="radio"] {
   margin: 0.6rem;
 }
 
-input[type="email"],
-select {
-  text-align: center;
-}
-
-textarea#ticketdescription {
+textarea#description, textarea#comments {
   height: 4em;
   transition: all 0.5s ease;
   text-align: left;
@@ -96,7 +91,7 @@ textarea#ticketdescription {
   font-family: "Roboto";
 }
 
-textarea#ticketdescription:focus {
+textarea#description:focus {
   height: 6em;
 }
 
