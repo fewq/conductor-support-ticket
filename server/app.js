@@ -20,6 +20,7 @@ app.post("/api/notify", (req, res) => {
   const output = `
     <h3>Ticket Title: ${req.body.title}</h3>
     <p>Your ticket status: ${req.body.status}</p>
+    <p>Message: ${req.body.message}</p>
   `;
 
   // create reusable transporter object using the default SMTP transport
@@ -39,7 +40,7 @@ app.post("/api/notify", (req, res) => {
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"Admin Test" <rashad.green@ethereal.email>', // sender address
-    to: "hfut07+7xzrkpohotcqs@sharklasers.com", // list of receivers
+    to:  req.body.receiver, // list of receivers
     subject: "Test Notification", // Subject line
     text: "Testing", // plain text body
     html: output // html body

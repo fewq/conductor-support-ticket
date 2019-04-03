@@ -12,7 +12,6 @@ export default class TicketList extends Component {
         this.state = {
             ticket: ticket,
             displayDate: displayDate,
-            acknowledged: false,
             statusUpdates: [],
         };
         
@@ -25,7 +24,9 @@ export default class TicketList extends Component {
                 console.log("querying for relevant updates");
                 console.log(response);
                 if (response.data != null) {
-                    this.setState({ statusUpdates: response.data, acknowledged: true });
+                    this.setState({ 
+                        statusUpdates: response.data, 
+                    });
                     console.log("updated state");
                     console.log(this.state);
                 }

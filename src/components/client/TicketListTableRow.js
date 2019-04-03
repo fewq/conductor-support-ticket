@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { convertDateToString, renderTopics } from "./helper";
+import { convertDateToString } from "./helper";
 
 
 class TableRow extends Component {

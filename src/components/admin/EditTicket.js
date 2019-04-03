@@ -42,13 +42,15 @@ const formikEnhancer = withFormik({
       .then(res => {
         console.log("Adding new ticket status update with the following info:");
         console.log(res.data);
-      });
+      })
+      .catch(res => console.log(res));
       
     axios.patch("http://localhost:4000/ticket/update/" + ticketId, newTicketStatusToClient)
       .then(res => {
         console.log("Changed status of ticket to client");
         console.log(res.data);
-      });
+      })
+      .catch(res => console.log(res));
 
     setTimeout(() => {
       setSubmitting(false);
