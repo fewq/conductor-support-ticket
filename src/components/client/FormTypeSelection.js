@@ -1,3 +1,5 @@
+// can be scrapped haha
+
 import React, { Component } from "react";
 import TicketForm from "./MakeTicket.js";
 

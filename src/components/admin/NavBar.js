@@ -6,7 +6,7 @@ import logo from "../../img/acnapi.png";
 import TicketList from "./TicketList.js";
 import EditTicket from "./EditTicket.js";
 import ViewTicket from "./ViewTicket.js";
-import { kanban } from "./helper";
+import { kanban } from "../helper";
 
 
 class NavBar extends Component {

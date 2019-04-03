@@ -1,25 +1,63 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { convertDateToString, renderTopics } from "./helper";
-
+import { convertDateToString } from "../helper";
+import jwtDecode from "jwt-decode"; 
 
 class TableRow extends Component {
   constructor(props) {
     super(props);
-    this.delete = this.delete.bind(this);
-    this.state = {ticket: this.props.obj};
-  }
-  
-  delete() {
-    axios.get('http://localhost:4000/ticket/delete/' + this.props.obj._id)
-      .then(res => {
-        console.log('deleted' + this.props.obj._id);
-        this.props.delete(this.props.indice);
-      })
-      .catch(err => console.log(err))
+    const idToken = jwtDecode(localStorage.getItem("id_token"));
+    const email = idToken.email;
+    this.state = {ticket: this.props.obj, attendedBy: email};
   }
 
+      // Upon confirmation to delete, the ticket will be deleted,
+    // a status update will be created, and an email will be sent.
+    
+    // form modal pop up to be implemented later for inputting comments.
+    alert = () => {
+      let ticketId = this.props.obj._id
+      if(window.confirm('Are you sure you want to delete this ticket?')) {
+          axios.delete('http://localhost:4000/ticket/delete/' + ticketId)
+              .then(res => {
+                  console.log('deleted' + ticketId);
+
+              });
+          
+          let status = "Closed";
+          let sender = this.state.attendedBy
+          var update = {
+              statusToClient: status,
+              statusToAdmin: status,
+              ticketId: ticketId,
+              attendedBy: sender,
+              dateOfUpdate: new Date(),
+          }
+          
+          axios.post('http://localhost:4000/status/add', update)
+              .then(res => {
+                  console.log("posting status update")
+                  console.log(res);
+              })
+              .catch(err => console.log(err))
+          
+          // set email content
+          let receiver = this.state.ticket.createdBy;
+          let title = "Close Ticket " + ticketId;
+          let message = "Closed by" + sender;
+
+          axios.post("/api/notify", {
+              title,
+              status,
+              receiver,
+              message
+            });
+          
+          // for refreshing the table
+          this.props.delete(this.props.indice);
+      }
+  }
 
   render() {
    
@@ -53,7 +91,7 @@ class TableRow extends Component {
               }} className="btn btn-primary">View</Link>
           </td>
           <td>
-            <button onClick={this.delete} className="btn btn-danger">Delete</button>
+            <button onClick={this.alert} className="btn btn-danger">Delete</button>
           </td>
         </tr>
     );
