@@ -1,6 +1,7 @@
 const app = require('./app')
 const PORT = 4000;
 
+
 // check if Server is running,
 // if yes it will show "Database is connected"
 app.listen(PORT, function() {

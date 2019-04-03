@@ -14,6 +14,7 @@ let Ticket = new Schema({
   },
   createdBy: {
     type: String, //email or usertitle
+    required:true
   },
   completedBy: {
     type: String, //name of employee
@@ -32,7 +33,16 @@ let Ticket = new Schema({
   },
   formType: {
     type: String
+  },
+  fileUpload: {
+    type:Buffer
   }
 });
+
+Ticket.methods.toJSON = function () {
+  const ticket = this
+  const ticketObject = ticket.toObject()
+  return ticketObject
+}
 
 module.exports = mongoose.model('Ticket', Ticket);
