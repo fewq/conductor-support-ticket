@@ -19,6 +19,7 @@
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.20",
     "morgan": "^1.9.1",
+    "multer": "^1.4.1",
     "node-sass": "^4.11.0",
     "nodemailer": "^5.1.1",
     "prop-types": "^15.7.2",
@@ -44,7 +45,8 @@
     "test": "react-scripts test",
     "frontendtest": "react-scripts test",
     "eject": "react-scripts eject",
-    "backendtest": "mocha server/tests/*.test.js --timeout 10000 --exit"
+    "backendtest": "mocha server/tests/*.test.js --timeout 10000 --exit",
+    "backend": "nodemon server/server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
