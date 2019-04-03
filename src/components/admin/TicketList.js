@@ -2,43 +2,61 @@ import React, { Component } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-import TableRow from './TicketListTableRow';
+import TableRow from "./TicketListTableRow";
 
 export default class TicketList extends Component {
   constructor(props) {
     super(props);
     let idToken = jwtDecode(localStorage.getItem("id_token"));
     var email = idToken.email;
-    this.state = {ticket: [], email: email};
+    this.state = { ticket: [], email: email };
   }
-  componentDidMount(){
+  componentDidMount() {
     this.refresh();
   }
 
   refresh = () => {
-    axios.get('http://localhost:4000/ticket/getall')
+    axios
+      .get("http://localhost:4000/ticket/getall")
       .then(response => {
         console.log("refreshing");
         console.log(response);
         this.setState({ ticket: response.data });
       })
-      .catch( (error , response) => {
+      .catch((error, response) => {
         console.log(error);
-      })
-  }
+      });
+  };
 
-
-  
-  tabRow(object, i){
+  tabRow(object, i) {
     return this.state.ticket.map((object, i) => {
-      return <TableRow obj={object} key={i} indice={i} delete ={ (ind) => this.deleteItem(ind)} />;
+      return (
+        <TableRow
+          obj={object}
+          key={i}
+          indice={i}
+          delete={ind => this.deleteItem(ind)}
+        />
+      );
     });
   }
 
-  deleteItem(index){
-		this.setState({ticket : this.state.ticket.filter((_,i) => i !== index)});
-	}
+  deleteItem(index) {
+    this.setState({ ticket: this.state.ticket.filter((_, i) => i !== index) });
+  }
 
+  textClusterRequest = () => {
+    axios
+      .get("http://localhost:4000/ticket/getall")
+      .then(response => {
+        console.log("text cluster request");
+        console.log(response);
+        this.setState({ ticket: response.data });
+      })
+      .catch((error, response) => {
+        console.log(error);
+      });
+  };
 
   render() {
     return (
@@ -52,13 +70,19 @@ export default class TicketList extends Component {
               <th>Ticket type</th>
               <th>Title</th>
               <th>Status</th>
-              <th>Ticket ID</th>     
+              <th>Ticket ID</th>
               <th colSpan="2">Action</th>
+              <th>
+                <button
+                  onClick={() => this.textClusterRequest()}
+                  className="btn btn-info"
+                >
+                  Text Clustering
+                </button>
+              </th>
             </tr>
           </thead>
-          <tbody>
-            {  this.tabRow() }
-          </tbody>
+          <tbody>{this.tabRow()}</tbody>
         </table>
       </div>
     );
