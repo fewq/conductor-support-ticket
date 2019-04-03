@@ -6,7 +6,7 @@ import logo from "../../img/acnapi.png";
 import TicketList from "./TicketList.js";
 import EditTicket from "./EditTicket.js";
 import ViewTicket from "./ViewTicket.js";
-import FormTypeSelection from "./FormTypeSelection.js";
+import { kanban } from "./helper";
 
 
 class NavBar extends Component {
@@ -29,12 +29,12 @@ class NavBar extends Component {
               <ul className="navbar-nav mr-auto">
                 <li className="navbar-item">
                   <Link to="/dashboard" className="nav-link">
-                    Manage Tickets
+                    Table View
                   </Link>
                 </li>
                 <li className="navbar-item">
-                  <Link to="/create" className="nav-link">
-                    Create Ticket
+                  <Link to="/kanban" className="nav-link">
+                    Kanban
                   </Link>
                 </li>
               </ul>
@@ -42,9 +42,9 @@ class NavBar extends Component {
           </nav>
           <br />
           <Route path="/dashboard" exact component={TicketList} />
+          <Route path="/kanban" component={kanban} />
           <Route path="/update/:id" component={EditTicket} />
           <Route path="/view/:id" component={ViewTicket} />
-          <Route path="/create" component={FormTypeSelection} />
         </div>
       </Router>
     );

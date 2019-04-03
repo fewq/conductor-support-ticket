@@ -9,8 +9,30 @@ export default class TicketList extends Component {
         super(props);
         const {ticket} = this.props.location.state;
         const displayDate = convertDateToString(ticket.dateOfCreation);
-        this.state = {ticket: ticket, displayDate: displayDate};
+        this.state = {
+            ticket: ticket,
+            displayDate: displayDate,
+            acknowledged: false,
+            statusUpdates: [],
+        };
+        
         this.routeChange = this.routeChange.bind(this);
+    }
+
+    componentWillMount() {
+        axios.get('http://localhost:4000/status/ticketid/' + this.state.ticket._id)
+            .then((response) => {
+                console.log("querying for relevant updates");
+                console.log(response);
+                if (response.data != null) {
+                    this.setState({ statusUpdates: response.data, acknowledged: true });
+                    console.log("updated state");
+                    console.log(this.state);
+                }
+            })
+            .catch( (error , response) => {
+                console.log(error);
+            });
     }
 
     alert() {
@@ -24,24 +46,25 @@ export default class TicketList extends Component {
         this.props.history.push(path);
       }
 
-    // delete() {
-    //     axios.get('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
-    //       .then(res => {
-    //         console.log('deleted' + this.state.ticket._id);
-    //         this.routeChange();
+    delete() {
+        axios.get('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
+          .then(res => {
+            console.log('deleted' + this.state.ticket._id);
+            // this.routeChange();
 
-    //       })
-    //       .catch(err => console.log(err))
-    //   }
-
+          })
+          .catch(err => console.log(err))
+      }
+    
     renderTopics() {
-        return this.state.ticket.topics.map((obj, i) => {
-            return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>
-        });
+        if (this.state.statusUpdates.length != 0) {
+            return this.state.ticket.topics.map((obj, i) => {
+                return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>
+            });
+        }
     }
 
     render() {
-        
         return(
             <div className="container-fluid" >
                 <div>
@@ -54,9 +77,41 @@ export default class TicketList extends Component {
                         <h4> Description </h4>
                         <p> {this.state.ticket.description} </p>
                     </div>
+                    
                 </div>
+                {this.state.statusUpdates.map((obj, i) => 
+                    <div>
+                        <p>Update History</p>
+                        <table className="table table-striped text-white">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Attended By</th>
+                                    <th>Comments</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td>
+                                    {obj.dateOfUpdate}
+                                </td>
+                                <td>
+                                    {obj.attendedBy}
+                                </td>
+                                <td>
+                                    {obj.comments}
+                                </td>
+                                <td>
+                                    Some status field to be implemented later.
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                    )
+                }
+
                 <div className="my-2">
-                <Link to={"/edit/"+this.state.ticket._id} className="btn btn-light">Edit Description</Link>
+                <Link to={"/update/"+this.state.ticket._id} className="btn btn-light">Edit Description</Link>
                 <button onClick={this.alert} className="btn btn-danger">Delete Ticket</button>
                 </div>
             </div>

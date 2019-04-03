@@ -14,6 +14,9 @@ import "../../css/form.css";
 // Validation Scheme with Yup //
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
+    // email: Yup.string()
+    //   .email("Invalid email address")
+    //   .required("Email is required!"),
     topics: Yup.array()
       .min(1, "Pick at least 1 category")
       .of(
@@ -72,7 +75,7 @@ const MyForm = (props) => {
   } = props;
   return (
     <form
-      id="make-ticket-form"
+      id="ticket-form"
       onSubmit={handleSubmit}
       onKeyPress={disableEnterButton}
     >
@@ -149,6 +152,8 @@ const MyForm = (props) => {
           Submit
         </button>
       </div>
+
+      {/* <PropState {...props} /> */}
     </form>
   );
 };

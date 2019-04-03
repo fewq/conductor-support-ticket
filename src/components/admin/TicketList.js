@@ -16,7 +16,7 @@ export default class TicketList extends Component {
   }
 
   refresh = () => {
-    axios.get('http://localhost:4000/ticket/email/' + this.state.email)
+    axios.get('http://localhost:4000/ticket/getall')
       .then(response => {
         console.log("refreshing");
         console.log(response);
@@ -48,10 +48,11 @@ export default class TicketList extends Component {
           <thead>
             <tr>
               <th>Date Submitted</th>
+              <th>Submitted By</th>
               <th>Ticket type</th>
               <th>Title</th>
               <th>Status</th>
-              <th>Ticket ID</th>
+              <th>Ticket ID</th>     
               <th colSpan="2">Action</th>
             </tr>
           </thead>

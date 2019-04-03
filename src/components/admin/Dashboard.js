@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NavBar from './NavBar.js';
 
-export default class ClientDashboard extends Component {
+export default class AdminDashboard extends Component {
     constructor(props) {
         super(props)
     }
@@ -9,7 +9,7 @@ export default class ClientDashboard extends Component {
     render() {
         return(
             <div>
-            <NavBar props={this.props} />
+            <NavBar />
             </div>
         );
     } 

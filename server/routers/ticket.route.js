@@ -104,7 +104,9 @@ ticketRoutes.route('/update/:id').patch(async (req, res) => {
             return res.status(404).send()
         }
 
-        updates.forEach((update) => ticket[update] = req.body[update])
+        updates.forEach((update) => {
+            ticket[update] = req.body[update]
+        })
         await ticket.save()
         res.send(ticket)
     } catch (e) {
