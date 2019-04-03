@@ -45,6 +45,10 @@ export default class TicketList extends Component {
     this.setState({ ticket: this.state.ticket.filter((_, i) => i !== index) });
   }
 
+  textClusterRequest() {
+    console.log("text cluster request");
+  }
+
   render() {
     return (
       <div>
@@ -60,7 +64,12 @@ export default class TicketList extends Component {
               <th>Ticket ID</th>
               <th colSpan="2">Action</th>
               <th>
-                <button />
+                <button
+                  onClick={this.textClusterRequest()}
+                  className="btn btn-info"
+                >
+                  Text Clustering
+                </button>
               </th>
             </tr>
           </thead>
