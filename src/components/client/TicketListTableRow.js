@@ -12,7 +12,7 @@ class TableRow extends Component {
   }
   
   delete() {
-    axios.get('http://localhost:4000/ticket/delete/' + this.props.obj._id)
+    axios.delete('http://localhost:4000/ticket/delete/' + this.props.obj._id)
       .then(res => {
         console.log('deleted' + this.props.obj._id);
         this.props.delete(this.props.indice);

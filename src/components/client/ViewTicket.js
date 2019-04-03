@@ -35,25 +35,21 @@ export default class TicketList extends Component {
             });
     }
 
-    alert() {
+    alert = () => {
         if(window.confirm('Are you sure you want to delete this ticket?')) {
-            this.delete();
+            axios.delete('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
+          .then(res => {
+            console.log('deleted' + this.state.ticket._id);
+            this.routeChange();
+
+          })
+          .catch(err => console.log(err))
         }
     }
 
     routeChange() {
-        let path = `./restricted`;
+        let path = "/dashboard";
         this.props.history.push(path);
-      }
-
-    delete() {
-        axios.get('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
-          .then(res => {
-            console.log('deleted' + this.state.ticket._id);
-            // this.routeChange();
-
-          })
-          .catch(err => console.log(err))
       }
     
     renderTopics() {
