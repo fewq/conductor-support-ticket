@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { convertDateToString } from "./helper";
+import { convertDateToString } from "../helper";
 import { Link } from 'react-router-dom';
 import jwtDecode from "jwt-decode"; 
 
@@ -17,7 +17,6 @@ export default class TicketList extends Component {
             statusUpdates: [],
             attendedBy: email,
         };
-        this.routeChange = this.routeChange.bind(this);
     }
 
     componentWillMount() {
@@ -33,8 +32,9 @@ export default class TicketList extends Component {
                     console.log(this.state);
                 }
             })
-            .catch( (error , response) => {
-                console.log(error);
+            .catch( (error, res) => {
+                console.log("no status update history for this ticket.")
+                // console.log(error);
             });
     }
 
@@ -43,16 +43,18 @@ export default class TicketList extends Component {
     
     // form modal pop up to be implemented later for inputting comments.
     alert = () => {
+        let ticketId = this.state.ticket._id
         if(window.confirm('Are you sure you want to delete this ticket?')) {
-            axios.delete('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
+            axios.delete('http://localhost:4000/ticket/delete/' + ticketId)
                 .then(res => {
-                    console.log('deleted' + this.state.ticket._id);
+                    console.log('deleted' + ticketId);
 
                 });
-
+            
+            let status = "Closed";
             var update = {
-                statusToClient: "Closed",
-                statusToAdmin: "Closed",
+                statusToClient: status,
+                statusToAdmin: status,
                 ticketId: this.state.ticket._id,
                 attendedBy: this.state.attendedBy,
                 dateOfUpdate: new Date(),
@@ -64,26 +66,24 @@ export default class TicketList extends Component {
                     console.log(res);
                 })
                 .catch(err => console.log(err))
+            
+            // set email content
+            let sender = this.state.attendedBy;
+            let receiver = this.state.ticket.createdBy;
+            let title = "Close Ticket " + ticketId;
+            let message = "Closed by" + sender;
 
-            var message = {
-                title: "Close Ticket",
-                status: "Closed by " + this.state.attendedBy,
-                receiver: this.ticket.createdBy,
-            }
+            axios.post("/api/notify", {
+                title,
+                status,
+                receiver,
+                message
+              });
 
-            axios.post("/api/notify", message)
-                .then(res => {
-                    console.log('emailed');
-                })
-              .catch(err => console.log(err))
-
-            this.routeChange();
+            // change route
+            let path = "/dashboard";
+            this.props.history.push(path);
         }
-    }
-
-    routeChange() {
-        let path = "/dashboard";
-        this.props.history.push(path);
     }
 
     renderTopics() {
@@ -121,18 +121,20 @@ export default class TicketList extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>
-                                    {obj.dateOfUpdate}
-                                </td>
-                                <td>
-                                    {obj.attendedBy}
-                                </td>
-                                <td>
-                                    {obj.comments}
-                                </td>
-                                <td>
-                                    Some status field to be implemented later.
-                                </td>
+                                <tr>
+                                    <td>
+                                        {obj.dateOfUpdate}
+                                    </td>
+                                    <td>
+                                        {obj.attendedBy}
+                                    </td>
+                                    <td>
+                                        {obj.comments}
+                                    </td>
+                                    <td>
+                                        Some status field to be implemented later.
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

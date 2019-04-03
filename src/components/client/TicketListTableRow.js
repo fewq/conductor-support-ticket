@@ -1,23 +1,58 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { convertDateToString } from "./helper";
+import { convertDateToString } from "../helper";
 
 
 class TableRow extends Component {
   constructor(props) {
     super(props);
-    this.delete = this.delete.bind(this);
     this.state = {ticket: this.props.obj};
   }
   
-  delete() {
-    axios.delete('http://localhost:4000/ticket/delete/' + this.props.obj._id)
-      .then(res => {
-        console.log('deleted' + this.props.obj._id);
+  alert = () => {
+    let ticketId = this.state.ticket._id;
+    if(window.confirm('Are you sure you want to delete this ticket?')) {
+        axios.delete('http://localhost:4000/ticket/delete/' + ticketId)
+            .then(res => {
+                console.log('deleted' + ticketId);
+
+            });
+        
+        let status = "Closed";
+        let sender = this.state.ticket.createdBy;
+
+        var update = {
+            statusToClient: status,
+            statusToAdmin: status,
+            ticketId: ticketId,
+            attendedBy: sender,
+            dateOfUpdate: new Date(),
+        }
+        
+        axios.post('http://localhost:4000/status/add', update)
+            .then(res => {
+                console.log("posting status update")
+                console.log(res);
+            })
+            .catch(err => console.log(err))
+        
+        // set email content
+  
+        let receiver = "admin@conductor.com";
+        let title = "Close Ticket " + ticketId;
+        let message = "Closed by" + sender;
+
+        axios.post("/api/notify", {
+            title,
+            status,
+            receiver,
+            message
+          });
+        
+        // for refreshing the table
         this.props.delete(this.props.indice);
-      })
-      .catch(err => console.log(err))
+    }
   }
 
 
@@ -50,7 +85,7 @@ class TableRow extends Component {
               }} className="btn btn-primary">View</Link>
           </td>
           <td>
-            <button onClick={this.delete} className="btn btn-danger">Delete</button>
+            <button onClick={this.alert} className="btn btn-danger">Delete</button>
           </td>
         </tr>
     );

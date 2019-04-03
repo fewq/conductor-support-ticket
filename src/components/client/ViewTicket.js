@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-constructor */
 import React, { Component } from "react";
 import axios from "axios";
-import { convertDateToString } from "./helper";
+import { convertDateToString } from "../helper";
 import { Link } from 'react-router-dom';
 
 export default class TicketList extends Component {
@@ -14,8 +14,6 @@ export default class TicketList extends Component {
             displayDate: displayDate,
             statusUpdates: [],
         };
-        
-        this.routeChange = this.routeChange.bind(this);
     }
 
     componentWillMount() {
@@ -37,21 +35,50 @@ export default class TicketList extends Component {
     }
 
     alert = () => {
+        let ticketId = this.state.ticket._id;
         if(window.confirm('Are you sure you want to delete this ticket?')) {
-            axios.delete('http://localhost:4000/ticket/delete/' + this.state.ticket._id)
-          .then(res => {
-            console.log('deleted' + this.state.ticket._id);
-            this.routeChange();
+            axios.delete('http://localhost:4000/ticket/delete/' + ticketId)
+                .then(res => {
+                    console.log('deleted' + ticketId);
 
-          })
-          .catch(err => console.log(err))
+                });
+            
+            let status = "Closed";
+            let sender = this.state.ticket.createdBy;
+
+            var update = {
+                statusToClient: status,
+                statusToAdmin: status,
+                ticketId: ticketId,
+                attendedBy: sender,
+                dateOfUpdate: new Date(),
+            }
+            
+            axios.post('http://localhost:4000/status/add', update)
+                .then(res => {
+                    console.log("posting status update")
+                    console.log(res);
+                })
+                .catch(err => console.log(err))
+            
+            // set email content
+        
+            let receiver = "admin@conductor.com";
+            let title = "Close Ticket " + ticketId;
+            let message = "Closed by" + sender;
+
+            axios.post("/api/notify", {
+                title,
+                status,
+                receiver,
+                message
+                });
+                
+            // redirect to dashboard
+            let path = "/dashboard";
+            this.props.history.push(path);
         }
     }
-
-    routeChange() {
-        let path = "/dashboard";
-        this.props.history.push(path);
-      }
     
     renderTopics() {
         if (this.state.statusUpdates.length != 0) {
@@ -89,18 +116,20 @@ export default class TicketList extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                <td>
-                                    {obj.dateOfUpdate}
-                                </td>
-                                <td>
-                                    {obj.attendedBy}
-                                </td>
-                                <td>
-                                    {obj.comments}
-                                </td>
-                                <td>
-                                    Some status field to be implemented later.
-                                </td>
+                                <tr>
+                                    <td>
+                                        {obj.dateOfUpdate}
+                                    </td>
+                                    <td>
+                                        {obj.attendedBy}
+                                    </td>
+                                    <td>
+                                        {obj.comments}
+                                    </td>
+                                    <td>
+                                        Some status field to be implemented later.
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
