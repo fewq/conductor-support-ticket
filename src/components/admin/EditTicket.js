@@ -6,6 +6,7 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import jwtDecode from "jwt-decode";
 import { disableEnterButton } from "../helper";
+import "../../css/form.css";
 
 // Validation Scheme with Yup //
 const formikEnhancer = withFormik({
@@ -47,6 +48,8 @@ const formikEnhancer = withFormik({
       })
       .catch(res => console.log(res));
 
+    this.props.history.push('/dashboard');
+
     setTimeout(() => {
       setSubmitting(false);
     }, 1000);
@@ -76,22 +79,19 @@ const MyForm = props => {
       onKeyPress={disableEnterButton}
     >
       <h1 class="subtitle">Update Ticket</h1>
-
-      <div className="form-row">
+      <div className="radio-group">
         <label for="statusToClient">Status To Client</label>
-        <div className="form-group">
+        <div className="radio-container">
           {statusTypes.map(clientStatusOption => (
             <React.Fragment key={clientStatusOption}>
-              <div className="custom-control custom-radio custom-control-inline">
+              <div className="radio-item">
                 <label
-                  className="custom-control-label"
                   for={clientStatusOption}
                 >
                   {clientStatusOption}
                   <input
                     type="radio"
                     name="statusToClient"
-                    className="custom-control-input"
                     id={clientStatusOption}
                     value={clientStatusOption}
                     onChange={handleChange}
@@ -181,7 +181,7 @@ export default class Edit extends Component {
   render() {
     return <div>
       {this.state.canRender ? 
-      <UpdateTicketForm ticket={this.state} /> : null}
+        <UpdateTicketForm ticket={this.state} /> : null}
 
     </div>
     

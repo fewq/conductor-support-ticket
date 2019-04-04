@@ -18,7 +18,9 @@ const upload = multer({
 ticketRoutes.route('/add').post(upload.single('fileUpload'), async(req, res) => {
     
     let ticket = new Ticket(req.body);
-    ticket.fileUpload = req.file.buffer //we created a new fileUpload of type: buffer in Ticket model
+    if (req.file != null) {
+        ticket.fileUpload = req.file.buffer //we created a new fileUpload of type: buffer in Ticket model
+    }
     await ticket.save()
     res.send()
 }, (error, req, res ,next) =>{
