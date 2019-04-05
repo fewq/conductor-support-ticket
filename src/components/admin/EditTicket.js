@@ -6,6 +6,7 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import jwtDecode from "jwt-decode";
 import { disableEnterButton } from "../helper";
+import "../../css/form.css";
 
 // Validation Scheme with Yup //
 const formikEnhancer = withFormik({
@@ -17,11 +18,11 @@ const formikEnhancer = withFormik({
   mapPropsToValues: props => ({
     attendedBy: props.ticket.attendedBy,
     ticketId: props.ticket.ticketId,
-    prevStatusToClient: props.ticket.statusToClient,
+    prevStatusToClient: props.ticket.prevStatusToClient,
     statusToClient: "",
     // status to admin not implemented yet, as the appropriate types of status are not confirmed yet.
     statusToAdmin: props.ticket.statusToAdmin,
-    comments: ""
+    comments: "",
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log("Submitting edit ticket form on admin's side.");
@@ -31,12 +32,7 @@ const formikEnhancer = withFormik({
       ...values,
       dateOfUpdate: new Date()
     };
-
-    console.log(newTicketStatusToClient);
-    console.log(payload);
-
     var ticketId = values.ticketId;
-    
 
     axios.post("http://localhost:4000/status/add", payload)
       .then(res => {
@@ -51,6 +47,8 @@ const formikEnhancer = withFormik({
         console.log(res.data);
       })
       .catch(res => console.log(res));
+
+    this.props.history.push('/dashboard');
 
     setTimeout(() => {
       setSubmitting(false);
@@ -81,22 +79,19 @@ const MyForm = props => {
       onKeyPress={disableEnterButton}
     >
       <h1 class="subtitle">Update Ticket</h1>
-
-      <div className="form-row">
+      <div className="radio-group">
         <label for="statusToClient">Status To Client</label>
-        <div className="form-group">
+        <div className="radio-container">
           {statusTypes.map(clientStatusOption => (
             <React.Fragment key={clientStatusOption}>
-              <div className="custom-control custom-radio custom-control-inline">
+              <div className="radio-item">
                 <label
-                  className="custom-control-label"
                   for={clientStatusOption}
                 >
                   {clientStatusOption}
                   <input
                     type="radio"
                     name="statusToClient"
-                    className="custom-control-input"
                     id={clientStatusOption}
                     value={clientStatusOption}
                     onChange={handleChange}
@@ -139,7 +134,6 @@ const MyForm = props => {
         </button>
       </div>
 
-      {/* <PropState {...props} /> */}
     </form>
   );
 };
@@ -152,36 +146,44 @@ export default class Edit extends Component {
     let email = "";
     let idToken = jwtDecode(localStorage.getItem("id_token"));
     email = idToken.email;
+
     this.state = {
-      statusToClient: "",
-      updates: [],
+      prevStatusToClient: null,
       statusToAdmin: "",
       attendedBy: email,
-      ticketId: this.props.match.params.id
+      ticketId: this.props.match.params.id,
+      acknowledgedByClient: null,
+      canRender: null,
     };
   }
 
   componentDidMount() {
-    axios
-      .get("http://localhost:4000/ticket/view/" + this.props.match.params.id)
-      .then(response => {
-        console.log("retrieved json response for editing");
-        console.log(response);
-        this.setState({
-          statusToClient: response.data.statusToClient,
-          statusToAdmin: response.data.statusToAdmin,
-          updates: response.data.updates
-        });
-        console.log("retrieved state for editing");
-        console.log(this.state);
-      })
-      .catch(function(error) {
-        console.log(error);
+    axios.get("http://localhost:4000/ticket/view/" + this.props.match.params.id)
+    .then(response => {
+      console.log("retrieved json response for editing");
+      console.log(response);
+      this.setState({
+        prevStatusToClient: response.data.statusToClient,
+        statusToAdmin: response.data.statusToAdmin,
+        acknowledgedByClient: false,
+        canRender: true
       });
+
+      console.log("Updated state:")
+      console.log(this.state);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
 
   // pending discussion for what to be edited by the admin.
   render() {
-    return <UpdateTicketForm ticket={this.state} />;
+    return <div>
+      {this.state.canRender ? 
+        <UpdateTicketForm ticket={this.state} /> : null}
+
+    </div>
+    
   }
 }

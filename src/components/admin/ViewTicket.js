@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { convertDateToString } from "../helper";
+import { convertDateToString, renderStatus } from "../helper";
 import { Link } from 'react-router-dom';
 import jwtDecode from "jwt-decode"; 
 
@@ -108,22 +108,23 @@ export default class TicketList extends Component {
                     </div>
                 </div>
 
+                <h4>Update History</h4>
                 {this.state.statusUpdates.map((obj, i) => 
                     <div>
-                        <p>Update History</p>
+                        
                         <table className="table table-striped text-white">
                             <thead>
                                 <tr>
                                     <th>Date</th>
                                     <th>Attended By</th>
                                     <th>Comments</th>
-                                    <th>Status</th>
+                                    <th>Change in Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        {obj.dateOfUpdate}
+                                        {convertDateToString(obj.dateOfUpdate)}
                                     </td>
                                     <td>
                                         {obj.attendedBy}
@@ -132,7 +133,7 @@ export default class TicketList extends Component {
                                         {obj.comments}
                                     </td>
                                     <td>
-                                        Some status field to be implemented later.
+                                        <p>{renderStatus(obj.prevStatusToClient)} → {renderStatus(obj.statusToClient)}</p>                              
                                     </td>
                                 </tr>
                             </tbody>
