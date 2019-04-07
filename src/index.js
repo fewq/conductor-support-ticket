@@ -53,6 +53,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       id: String(i),
       title: object.title,
       description: object.description,
+      status: object.statusToClient,
       tasks: [String(i)]
     };
   });

@@ -19,7 +19,7 @@ app.post("/api/notify", (req, res) => {
   // for now response is empty
   const output = `
     <h3>Ticket Title: ${req.body.title}</h3>
-    <p>Your ticket status: ${req.body.status}</p>
+    <p>Your ticket status is now: ${req.body.status}</p>
     <p>Message: ${req.body.message}</p>
   `;
 
@@ -53,7 +53,7 @@ app.post("/api/notify", (req, res) => {
     }
     console.log("Message sent: %s", info.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    console.log(res);
+    //console.log(res);
   });
 });
 

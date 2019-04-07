@@ -10,6 +10,7 @@ import Editor from "./Editor";
 import Task from "./Task";
 import { DragSource, DropTarget } from "react-dnd";
 import Types from "./staticTypes";
+import axios from "axios";
 
 let initialState; // initialState before begin DnD
 
@@ -136,6 +137,20 @@ class Card extends Component {
       isItemToEdit = itemToEdit === card.id,
       onClickSave = value => {
         updateCard(attributeToEdit, value);
+      },
+      onClickSend = value => {
+        const title = card.title;
+        const status = card.status;
+        const message = value;
+        if (status != "Pending Admin") {
+          axios.post("/api/notify", {
+            title,
+            status,
+            message
+          });
+        } else {
+          console.log("Email not sent");
+        }
       };
 
     // const { dragItem} = this.props;
@@ -177,7 +192,7 @@ class Card extends Component {
                 e.stopPropagation();
               }}
               onClickNotify={() => {
-                this.props.onClickNotify(card.title);
+                this.props.onClickNotify();
               }}
             />
           )}
@@ -205,6 +220,15 @@ class Card extends Component {
               </div>
             )}
           </div>
+          {isItemToEdit && attributeToEdit === "message" && (
+            <Editor
+              textareaClass={"edit-checklist"}
+              placeholder="Add a message..."
+              initialValue={"Default message"}
+              buttonText={"msg"}
+              onClickSave={onClickSend}
+            />
+          )}
           {this.props.shouldShowDetails === true ? (
             <div className="card-details">
               <div className="description">
@@ -233,6 +257,7 @@ class Card extends Component {
                   </div>
                 )}
               </div>
+
               <TaskList>
                 {card.tasks.map((taskId, i) => (
                   <Task id={taskId} key={taskId} index={i} cardId={card.id} />
@@ -283,7 +308,8 @@ Card.propTypes = {
     tasks: PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     ).isRequired,
-    description: PropTypes.string.isRequired
+    description: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired
   }).isRequired,
   index: PropTypes.number.isRequired,
   parentListId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])

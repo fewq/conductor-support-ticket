@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Card from "../components/kanbanComponents/Card";
 import { connect } from "react-redux";
-import axios from "axios";
 import {
   deleteCard,
   showCardMenu,
@@ -40,31 +39,8 @@ const mapDispatchToProps = (dispatch, { id, index, parentListId }) => ({
     dispatch(deleteCard(id, index, parentListId));
     dispatch(closeCardMenu());
   },
-  onClickNotify: cardTitle => {
-    const title = cardTitle;
-    let status;
-    switch (parentListId) {
-      case "0":
-        status = "TODO";
-        break;
-      case "1":
-        status = "In Progress";
-        break;
-      case "2":
-        status = "Resolved";
-        break;
-      default:
-        status = "TODO";
-    }
-
-    if (status != "TODO") {
-      axios.post("/api/notify", {
-        title,
-        status
-      });
-    } else {
-      console.log("Email not sent");
-    }
+  onClickNotify: () => {
+    dispatch(showEditor(id, "message"));
     dispatch(closeCardMenu());
   },
   handleOnSortCard: (hoverID, hoverIndex, dragID, dragIndex) =>
