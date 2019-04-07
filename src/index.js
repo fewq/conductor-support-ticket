@@ -47,7 +47,7 @@ let appInitialState = {
 axios.get("http://localhost:4000/ticket/getall").then(response => {
   let numberOfTickets = response.data.length;
   let tickets = response.data;
-  console.log(tickets);
+
   let cardList = tickets.map((object, i) => {
     return {
       id: String(i),
@@ -62,12 +62,14 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
 
   // Update dynamically depending on status
   let listTODO = [];
-  let listInP = [];
+  let listBA = [];
+  let listDev = [];
+  let listClient = [];
   let listDone = [];
 
   let taskList = {};
   for (let i = 0; i < numberOfTickets; i++) {
-    taskList[String(i)] = {
+    taskList[i] = {
       id: String(i),
       name: "Click to edit or delete",
       done: false
@@ -75,13 +77,22 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
 
     switch (tickets[i].statusToClient) {
       case "Pending Admin":
-        listTODO[String(i)] = String(i);
+        listTODO.push(String(i));
+        break;
+      case "Pending BA":
+        listBA.push(String(i));
+        break;
+      case "Pending Developers":
+        listDev.push(String(i));
+        break;
+      case "Pending Client":
+        listClient.push(String(i));
         break;
       case "Resolved":
-        listDone[String(i)] = String(i);
+        listDone.push(String(i));
         break;
       default:
-        listInP[String(i)] = String(i);
+        break;
     }
   }
   //console.log("List ", listTODO);
@@ -95,15 +106,23 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
             name: "Todo"
           },
           "1": {
-            name: "In Progress",
-            id: "1"
+            id: "1",
+            name: "Pending BA"
           },
           "2": {
             id: "2",
+            name: "Pending Developers"
+          },
+          "3": {
+            id: "3",
+            name: "Pending Client"
+          },
+          "4": {
+            id: "4",
             name: "Done"
           }
         },
-        allLists: ["0", "1", "2"]
+        allLists: ["0", "1", "2", "3", "4"]
       },
       cards: {
         byId: cardList
@@ -113,7 +132,13 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       }
     },
     kanbanState: {
-      listCards: { "0": listTODO, "1": listInP, "2": listDone },
+      listCards: {
+        "0": listTODO,
+        "1": listBA,
+        "2": listDev,
+        "3": listClient,
+        "4": listDone
+      },
       selectedCard: "ID_OF_CARD_IN_FOCUS",
       itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
       attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"
@@ -123,6 +148,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       shouldShowCardMenu: false
     }
   };
+  console.log(initialState);
 
   let store = createStore(
     kanbanReducers,

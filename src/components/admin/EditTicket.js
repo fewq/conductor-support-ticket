@@ -23,38 +23,43 @@ const formikEnhancer = withFormik({
     // status to admin not implemented yet, as the appropriate types of status are not confirmed yet.
     statusToAdmin: props.ticket.statusToAdmin,
     comments: "",
-    history: props.history,
-
+    history: props.history
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log("Submitting edit ticket form on admin's side.");
-    var newTicketStatusToClient = {"statusToClient" : values.statusToClient}; 
+    var newTicketStatusToClient = { statusToClient: values.statusToClient };
+    console.log("values:", values);
     const history = values.history;
 
     var payload = {
       ...values,
       dateOfUpdate: new Date()
     };
-    
+
     delete payload.history;
     var ticketId = values.ticketId;
-
-    axios.post("http://localhost:4000/status/add", payload)
+    //console.log("payload:", payload);
+    axios
+      .post("http://localhost:4000/status/add", payload)
       .then(res => {
         console.log("Adding new ticket status update with the following info:");
         console.log(res.data);
       })
       .catch(res => console.log(res));
-      
-    axios.patch("http://localhost:4000/ticket/update/" + ticketId, newTicketStatusToClient)
+
+    axios
+      .patch(
+        "http://localhost:4000/ticket/update/" + ticketId,
+        newTicketStatusToClient
+      )
       .then(res => {
         console.log("Changed status of ticket to client");
         console.log(res.data);
       })
       .catch(res => console.log(res));
 
-    console.log("Redirecting back to dashboard.")
-    history.push('/dashboard');
+    console.log("Redirecting back to dashboard.");
+    history.push("/dashboard");
 
     setTimeout(() => {
       setSubmitting(false);
@@ -91,9 +96,7 @@ const MyForm = props => {
           {statusTypes.map(clientStatusOption => (
             <React.Fragment key={clientStatusOption}>
               <div className="radio-item">
-                <label
-                  for={clientStatusOption}
-                >
+                <label for={clientStatusOption}>
                   {clientStatusOption}
                   <input
                     type="radio"
@@ -139,7 +142,6 @@ const MyForm = props => {
           Submit
         </button>
       </div>
-
     </form>
   );
 };
@@ -159,37 +161,39 @@ export default class Edit extends Component {
       attendedBy: email,
       ticketId: this.props.match.params.id,
       acknowledgedByClient: null,
-      canRender: null,
+      canRender: null
     };
   }
 
   componentDidMount() {
-    axios.get("http://localhost:4000/ticket/view/" + this.props.match.params.id)
-    .then(response => {
-      console.log("retrieved json response for editing");
-      console.log(response);
-      this.setState({
-        prevStatusToClient: response.data.statusToClient,
-        statusToAdmin: response.data.statusToAdmin,
-        acknowledgedByClient: false,
-        canRender: true
-      });
+    axios
+      .get("http://localhost:4000/ticket/view/" + this.props.match.params.id)
+      .then(response => {
+        console.log("retrieved json response for editing");
+        console.log(response);
+        this.setState({
+          prevStatusToClient: response.data.statusToClient,
+          statusToAdmin: response.data.statusToAdmin,
+          acknowledgedByClient: false,
+          canRender: true
+        });
 
-      console.log("Updated state:")
-      console.log(this.state);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+        console.log("Updated state:");
+        console.log(this.state);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   // pending discussion for what to be edited by the admin.
   render() {
-    return <div>
-      {this.state.canRender ? 
-        <UpdateTicketForm ticket={this.state} history={this.props.history} /> : null}
-
-    </div>
-    
+    return (
+      <div>
+        {this.state.canRender ? (
+          <UpdateTicketForm ticket={this.state} history={this.props.history} />
+        ) : null}
+      </div>
+    );
   }
 }
