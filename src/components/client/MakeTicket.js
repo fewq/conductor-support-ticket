@@ -32,14 +32,17 @@ const formikEnhancer = withFormik({
     title: "",
     description: "",
     formType: "bug",
+    history: props.history,
   }),
   handleSubmit: (values, { setSubmitting }) => {
+    const history = values.history;
     const payload = {
       ...values,
       topics: values.topics.map(t => t.value),
       statusToClient: "Pending Admin",
       dateOfCreation: new Date()
     };
+    delete payload.history;
 
     axios.post("http://localhost:4000/ticket/add", payload).then(res => {
       console.log("form received the following payload:");
@@ -47,6 +50,8 @@ const formikEnhancer = withFormik({
       console.log(res.data);
       console.log(res.body);
     });
+
+    history.push('/dashboard');
 
     setTimeout(() => {
       setSubmitting(false);
@@ -208,7 +213,7 @@ export default class TicketForm extends Component {
   render() {
     return (
       <div>
-        <CreateTicketForm userEmail={this.state.userEmail} />
+        <CreateTicketForm userEmail={this.state.userEmail} history={this.props.history} />
       </div>
     );
   }
