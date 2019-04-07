@@ -21,6 +21,7 @@ app.post("/api/notify", (req, res) => {
     <h3>Ticket Title: ${req.body.title}</h3>
     <p>Your ticket status is now: ${req.body.status}</p>
     <p>Message: ${req.body.message}</p>
+    <p>View your ticket here: localhost:3000/view/${req.body.link}</p>
   `;
 
   // create reusable transporter object using the default SMTP transport

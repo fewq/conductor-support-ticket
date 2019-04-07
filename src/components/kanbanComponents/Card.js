@@ -142,11 +142,13 @@ class Card extends Component {
         const title = card.title;
         const status = card.status;
         const message = value;
+        const link = card.ID;
         if (status != "Pending Admin") {
           axios.post("/api/notify", {
             title,
             status,
-            message
+            message,
+            link
           });
         } else {
           console.log("Email not sent");
@@ -216,7 +218,9 @@ class Card extends Component {
                   }
                   aria-hidden="true"
                 />
-                <span className="title">{card.title}</span>
+                <span className="title">
+                  {card.title} ({card.status})
+                </span>
               </div>
             )}
           </div>
@@ -304,6 +308,7 @@ class Card extends Component {
 Card.propTypes = {
   card: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    ID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     title: PropTypes.string.isRequired,
     tasks: PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.string, PropTypes.number])

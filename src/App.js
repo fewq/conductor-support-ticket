@@ -34,8 +34,8 @@ class App extends Component {
         );
         break;
       default:
-        console.log("case default: loading <NotFound />");
-        mainComponent = <NotFound />;
+        console.log("case default: redirecting to login");
+        mainComponent = <Main {...this.props} />;
     }
 
     return (
