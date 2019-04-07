@@ -47,6 +47,7 @@ let appInitialState = {
 axios.get("http://localhost:4000/ticket/getall").then(response => {
   let numberOfTickets = response.data.length;
   let tickets = response.data;
+  console.log(tickets);
   let cardList = tickets.map((object, i) => {
     return {
       id: String(i),
@@ -56,8 +57,10 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
     };
   });
 
-  // TODO update dynamically (depending on status)
-  let listCard = [];
+  // Update dynamically depending on status
+  let listTODO = [];
+  let listInP = [];
+  let listDone = [];
 
   let taskList = {};
   for (let i = 0; i < numberOfTickets; i++) {
@@ -67,9 +70,18 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       done: false
     };
 
-    listCard[String(i)] = String(i);
+    switch (tickets[i].statusToClient) {
+      case "Pending Admin":
+        listTODO[String(i)] = String(i);
+        break;
+      case "Resolved":
+        listDone[String(i)] = String(i);
+        break;
+      default:
+        listInP[String(i)] = String(i);
+    }
   }
-  //console.log("List ", listCard);
+  //console.log("List ", listTODO);
 
   const initialState = {
     domainData: {
@@ -98,7 +110,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       }
     },
     kanbanState: {
-      listCards: { "0": listCard, "1": [], "2": [] },
+      listCards: { "0": listTODO, "1": listInP, "2": listDone },
       selectedCard: "ID_OF_CARD_IN_FOCUS",
       itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
       attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"

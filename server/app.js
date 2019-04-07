@@ -40,7 +40,7 @@ app.post("/api/notify", (req, res) => {
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"Admin Test" <rashad.green@ethereal.email>', // sender address
-    to:  req.body.receiver, // list of receivers
+    to: "client@conductor.com", // list of receivers
     subject: "Test Notification", // Subject line
     text: "Testing", // plain text body
     html: output // html body
@@ -53,6 +53,7 @@ app.post("/api/notify", (req, res) => {
     }
     console.log("Message sent: %s", info.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    console.log(res);
   });
 });
 
