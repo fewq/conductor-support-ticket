@@ -62,7 +62,7 @@ export default class TicketList extends Component {
     return (
       <div>
         <h3 align="center">Ticket List</h3>
-        <table className="table table-striped  text-white">
+        <table className="table table-striped text-white">
           <thead>
             <tr>
               <th>Date Submitted</th>
