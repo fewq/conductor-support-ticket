@@ -24,6 +24,7 @@ const formikEnhancer = withFormik({
     statusToAdmin: props.ticket.statusToAdmin,
     comments: "",
     history: props.history,
+
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log("Submitting edit ticket form on admin's side.");
@@ -34,7 +35,7 @@ const formikEnhancer = withFormik({
       ...values,
       dateOfUpdate: new Date()
     };
-
+    
     delete payload.history;
     var ticketId = values.ticketId;
 
