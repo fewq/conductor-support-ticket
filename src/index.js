@@ -47,7 +47,7 @@ let appInitialState = {
 axios.get("http://localhost:4000/ticket/getall").then(response => {
   let numberOfTickets = response.data.length;
   let tickets = response.data;
-  console.log(tickets);
+
   let cardList = tickets.map((object, i) => {
     return {
       id: String(i),
@@ -56,6 +56,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       title: object.title,
       description: object.description,
       status: object.statusToClient,
+      priority: object.priority,
       tasks: [String(i)]
     };
   });
