@@ -6,7 +6,7 @@ import logo from "../../img/acnapi.png";
 import TicketList from "./TicketList.js";
 import EditTicket from "./EditTicket.js";
 import ViewTicket from "./ViewTicket.js";
-import FormTypeSelection from "./FormTypeSelection.js";
+import TicketForm from "./MakeTicket.js";
 
 
 class NavBar extends Component {
@@ -44,7 +44,7 @@ class NavBar extends Component {
           <Route path="/dashboard" exact component={TicketList} />
           <Route path="/update/:id" component={EditTicket} />
           <Route path="/view/:id" component={ViewTicket} />
-          <Route path="/create" component={FormTypeSelection} />
+          <Route path="/create" component={TicketForm} />
         </div>
       </Router>
     );
