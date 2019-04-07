@@ -278,7 +278,9 @@ class Card extends Component {
                   }
                   aria-hidden="true"
                 />
-                <span className="title">{card.title}</span>
+                <span className="title">
+                  {card.title} ({card.status})
+                </span>
               </div>
             )}
           </div>
