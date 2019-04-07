@@ -23,15 +23,19 @@ const formikEnhancer = withFormik({
     // status to admin not implemented yet, as the appropriate types of status are not confirmed yet.
     statusToAdmin: props.ticket.statusToAdmin,
     comments: "",
+    history: props.history,
   }),
   handleSubmit: (values, { setSubmitting }) => {
     console.log("Submitting edit ticket form on admin's side.");
     var newTicketStatusToClient = {"statusToClient" : values.statusToClient}; 
-    
+    const history = values.history;
+
     var payload = {
       ...values,
       dateOfUpdate: new Date()
     };
+
+    delete payload.history;
     var ticketId = values.ticketId;
 
     axios.post("http://localhost:4000/status/add", payload)
@@ -48,7 +52,8 @@ const formikEnhancer = withFormik({
       })
       .catch(res => console.log(res));
 
-    this.props.history.push('/dashboard');
+    console.log("Redirecting back to dashboard.")
+    history.push('/dashboard');
 
     setTimeout(() => {
       setSubmitting(false);
@@ -181,7 +186,7 @@ export default class Edit extends Component {
   render() {
     return <div>
       {this.state.canRender ? 
-        <UpdateTicketForm ticket={this.state} /> : null}
+        <UpdateTicketForm ticket={this.state} history={this.props.history} /> : null}
 
     </div>
     
