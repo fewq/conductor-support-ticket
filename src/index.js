@@ -52,6 +52,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
     return {
       id: String(i),
       ID: object._id,
+      email: object.createdBy,
       title: object.title,
       description: object.description,
       status: object.statusToClient,

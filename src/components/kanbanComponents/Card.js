@@ -143,12 +143,16 @@ class Card extends Component {
         const status = card.status;
         const message = value;
         const link = card.ID;
+        const email = card.email;
+        const target = "client";
         if (status != "Pending Admin") {
           axios.post("/api/notify", {
+            email,
             title,
             status,
             message,
-            link
+            link,
+            target
           });
         } else {
           console.log("Email not sent");
