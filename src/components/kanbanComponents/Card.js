@@ -193,6 +193,27 @@ class Card extends Component {
       isItemToEdit = itemToEdit === card.id,
       onClickSave = value => {
         updateCard(attributeToEdit, value);
+        let newValues;
+        switch (attributeToEdit) {
+          case "title":
+            newValues = {
+              title: value
+            };
+            break;
+          case "description":
+            newValues = {
+              description: value
+            };
+            break;
+        }
+
+        axios
+          .patch("http://localhost:4000/ticket/update/" + card.ID, newValues)
+          .then(res => {
+            console.log("Changed status of ticket to client");
+            console.log(res.data);
+          })
+          .catch(res => console.log(res));
       },
       onClickSend = value => {
         const title = card.title;
@@ -278,9 +299,7 @@ class Card extends Component {
                   }
                   aria-hidden="true"
                 />
-                <span className="title">
-                  {card.title} ({card.status})
-                </span>
+                <span className="title">{card.title}</span>
               </div>
             )}
           </div>
