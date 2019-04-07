@@ -11,6 +11,7 @@ import Task from "./Task";
 import { DragSource, DropTarget } from "react-dnd";
 import Types from "./staticTypes";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 let initialState; // initialState before begin DnD
 
@@ -24,9 +25,64 @@ const dragSourceSpec = {
 
     isDragging: (props, monitor) => monitor.getItem().id === props.id,
 
-    endDrag(props) {
-      const ticketTitle = props.card.title;
-      let status; /*
+    endDrag(props, monitor) {
+      let newTicketStatusToClient;
+      const newParent = monitor.getItem().parentListId;
+      switch (newParent) {
+        case "0":
+          newTicketStatusToClient = "Pending Admin";
+          break;
+        case "1":
+          newTicketStatusToClient = "Pending BA";
+          break;
+        case "2":
+          newTicketStatusToClient = "Pending Developers";
+          break;
+        case "3":
+          newTicketStatusToClient = "Pending Client";
+          break;
+        case "4":
+          newTicketStatusToClient = "Resolved";
+          break;
+        default:
+          break;
+      }
+
+      const ticketID = props.card.ID;
+      let payload = {
+        attendedBy: jwtDecode(localStorage.getItem("id_token")).email,
+        ticketId: ticketID,
+        prevStatusToClient: props.card.status,
+        statusToClient: newTicketStatusToClient,
+        statusToAdmin: "",
+        dateOfUpdate: new Date(),
+        comments: ""
+      };
+
+      axios
+        .post("http://localhost:4000/status/add", payload)
+        .then(res => {
+          console.log(
+            "Adding new ticket status update with the following info:"
+          );
+          console.log(res.data);
+        })
+        .catch(res => console.log(res));
+
+      // local kanban change
+      props.updateCard("status", newTicketStatusToClient);
+
+      axios
+        .patch("http://localhost:4000/ticket/update/" + ticketID, {
+          statusToClient: newTicketStatusToClient
+        })
+        .then(res => {
+          console.log("Changed status of ticket to client");
+          console.log(res.data);
+        })
+        .catch(res => console.log(res));
+
+      /*
       switch (props.parentListId) {
         case "1":
           console.log("1");
@@ -143,12 +199,16 @@ class Card extends Component {
         const status = card.status;
         const message = value;
         const link = card.ID;
+        const email = card.email;
+        const target = "client";
         if (status != "Pending Admin") {
           axios.post("/api/notify", {
+            email,
             title,
             status,
             message,
-            link
+            link,
+            target
           });
         } else {
           console.log("Email not sent");

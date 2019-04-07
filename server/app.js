@@ -16,13 +16,21 @@ app.use(bodyParser.json());
 
 ///////////////////////////// EMAIL SENDER ///////////////////////////
 app.post("/api/notify", (req, res) => {
-  // for now response is empty
-  const output = `
+  let output;
+  if (req.body.target == "client") {
+    output = `
     <h3>Ticket Title: ${req.body.title}</h3>
     <p>Your ticket status is now: ${req.body.status}</p>
     <p>Message: ${req.body.message}</p>
     <p>View your ticket here: localhost:3000/view/${req.body.link}</p>
   `;
+  } else if (req.body.target == "admin") {
+    output = `
+    <h3>New Ticket: ${req.body.title}</h3>
+    <p>Client's email: ${req.body.client}</p>
+    <p>Description: ${req.body.description}</p>
+  `;
+  }
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
@@ -41,7 +49,7 @@ app.post("/api/notify", (req, res) => {
   // setup email data with unicode symbols
   let mailOptions = {
     from: '"Admin Test" <rashad.green@ethereal.email>', // sender address
-    to: "client@conductor.com", // list of receivers
+    to: req.body.email, // list of receivers
     subject: "Test Notification", // Subject line
     text: "Testing", // plain text body
     html: output // html body

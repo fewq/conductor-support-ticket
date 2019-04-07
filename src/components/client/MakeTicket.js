@@ -26,13 +26,13 @@ const formikEnhancer = withFormik({
     description: Yup.string().required("Description Required!"),
     formType: Yup.string().required("What is this feedback primarily for?")
   }),
-  mapPropsToValues: (props) => ({
+  mapPropsToValues: props => ({
     createdBy: props.userEmail,
     topics: [],
     title: "",
     description: "",
     formType: "bug",
-    history: props.history,
+    history: props.history
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const history = values.history;
@@ -40,7 +40,8 @@ const formikEnhancer = withFormik({
       ...values,
       topics: values.topics.map(t => t.value),
       statusToClient: "Pending Admin",
-      dateOfCreation: new Date()
+      dateOfCreation: new Date(),
+      priority: 1
     };
     delete payload.history;
 
@@ -51,7 +52,20 @@ const formikEnhancer = withFormik({
       console.log(res.body);
     });
 
-    history.push('/dashboard');
+    const title = values.title;
+    const description = values.description;
+    const client = values.createdBy;
+    const email = "admin@conductor.com";
+    const target = "admin";
+    axios.post("/api/notify", {
+      email,
+      title,
+      description,
+      client,
+      target
+    });
+
+    history.push("/dashboard");
 
     setTimeout(() => {
       setSubmitting(false);
@@ -61,7 +75,7 @@ const formikEnhancer = withFormik({
 });
 
 // Form //
-const MyForm = (props) => {
+const MyForm = props => {
   const {
     values,
     touched,
@@ -213,7 +227,10 @@ export default class TicketForm extends Component {
   render() {
     return (
       <div>
-        <CreateTicketForm userEmail={this.state.userEmail} history={this.props.history} />
+        <CreateTicketForm
+          userEmail={this.state.userEmail}
+          history={this.props.history}
+        />
       </div>
     );
   }
