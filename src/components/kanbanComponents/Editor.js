@@ -45,15 +45,27 @@ class Editor extends Component {
           </div>
           <div className="controls">
             <div className="cancel">Cancel</div>
-            <button
-              type=""
-              onClick={e => {
-                e.preventDefault();
-                this.props.onClickSave(this.state.value);
-              }}
-            >
-              Save
-            </button>
+            {this.props.buttonText == "msg" ? (
+              <button
+                type=""
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.onClickSave(this.state.value);
+                }}
+              >
+                Send
+              </button>
+            ) : (
+              <button
+                type=""
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.onClickSave(this.state.value);
+                }}
+              >
+                Save
+              </button>
+            )}
             {this.props.shouldShowDelete && (
               <div onClick={this.props.onClickDelete} className="delete">
                 Delete
@@ -73,6 +85,7 @@ Editor.propTypes = {
   shouldShowDelete: PropTypes.bool,
   onClickDelete: PropTypes.func,
   dispatch: PropTypes.func,
+  buttonText: PropTypes.string,
   onClickSave: PropTypes.func.isRequired
 };
 

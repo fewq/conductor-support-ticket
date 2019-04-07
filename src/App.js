@@ -34,12 +34,12 @@ class App extends Component {
         );
         break;
       default:
-        console.log("case default: loading <NotFound />");
-        mainComponent = <NotFound />;
+        console.log("case default: redirecting to login");
+        mainComponent = <Main {...this.props} />;
     }
 
     return (
-      <main className="App" >
+      <main className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <b>ACNAPI Ticket Support System</b>
