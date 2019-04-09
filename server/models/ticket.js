@@ -36,9 +36,10 @@ let Ticket = new Schema({
   formType: {
     type: String
   },
-  fileUpload: {
-    type:Buffer
-  }
+  numUploads:{
+    type: Number
+  },
+  fileUpload: [Buffer]
 });
 
 Ticket.methods.toJSON = function () {
