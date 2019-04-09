@@ -86,14 +86,17 @@ ticketRoutes.route('/view/:id').get(async (req, res) => {
 // GET: retrieve file Upload of ticket
 ticketRoutes.route('/view/:id/fileupload').get(async (req, res) => {
     try{
-        console.log("Hi im here!")
-        const ticket = await Ticket.findOne({_id: req.params.id});
         
+        const ticket = await Ticket.findOne({_id: req.params.id});
+        const data = new Array;
         if(!ticket || !ticket.fileUpload){
             throw new Error(); 
         }
+        for(i=0;i<ticket.numUploads;i++){
+           data[i] = ticket.fileUpload[i] 
+        }
         res.set('Content-Type', 'image/jpg') //default contatent type is JSON
-        res.send(ticket.fileUpload) //send back the image
+        res.send(data) //send back the image 
     }
     catch(e){
         res.status(404).send()
