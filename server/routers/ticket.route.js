@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const ticketRoutes = express.Router();
 let Ticket = require('../models/ticket');
@@ -20,7 +21,8 @@ ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) =>
     const data = new Array;
     // console.log(req.files.buffer)
     if (req.files != null) { 
-        ticket.numUploads = req.files.length
+        ticket.numUploads = req.files.length;
+        console.log(ticket.numUploads)
         for(i=0;i<req.files.length;i++){
             data[i] = req.files[i].buffer;
             // console.log(req.files[i].buffer);
@@ -88,7 +90,7 @@ ticketRoutes.route('/view/:id/fileupload').get(async (req, res) => {
     try{
         
         const ticket = await Ticket.findOne({_id: req.params.id});
-        const data = new Array;
+        const data = new Array();
         if(!ticket || !ticket.fileUpload){
             throw new Error(); 
         }

@@ -16,7 +16,6 @@ let Ticket = new Schema({
   },
   createdBy: {
     type: String, //email or usertitle
-    required:true
   },
   completedBy: {
     type: String, //name of employee

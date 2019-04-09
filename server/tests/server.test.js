@@ -26,9 +26,10 @@ const tickets = [{
       title: 'second test ticket',
       topics: [],
       formType: 'test2'
+
 }]
 //Database is reset to the default 2 tickets declared on top BEFORE EACH test.
-beforeEach((done) => {
+before((done) => {
    Ticket.deleteMany({}).then(() => {
       return Ticket.insertMany(tickets);
    }).then(() => {
@@ -37,9 +38,8 @@ beforeEach((done) => {
 });
 
 describe('POST /ticket', () => {
-   it('should create a new ticket', (done) => {
+   it('should create a new ticket without fileUpload', (done) => {
       var createdBy = 'testing 123';
-
       request(app)
          .post('/ticket/add')
          .send({createdBy})
@@ -60,13 +60,70 @@ describe('POST /ticket', () => {
    });
 });
 
+describe('POST /ticket', () => {
+   it('should create a new ticket with fileUpload', (done) => {
+      var createdBy = 'testing fileupload';
+
+      request(app)
+         .post('/ticket/add')
+         .field('Content-Type', 'multipart/form-data')
+         .field('createdBy', createdBy)
+         .attach('fileUpload', '/Users/seanlew/Desktop/conductor-support-ticket/server/images/philly.jpg')
+         .expect(200)
+         .expect((res) => {
+            expect(res.body.createdBy).toBe(createdBy);
+         })
+         .end((err, res) => {
+            if (err) {
+               return done(err);
+            }
+            Ticket.find({
+               createdBy
+            }).then((tickets) => {
+               expect(tickets[0].numUploads).toBe(1)
+               expect(tickets.length).toBe(1)
+               expect(tickets[0].createdBy).toBe(createdBy);
+               done();
+            }).catch((e) => done(e));
+         });
+   });
+
+   it('should return 400 with invalid file format', (done) => {
+      var createdBy = 'testing invalid fileupload';
+
+      request(app)
+         .post('/ticket/add')
+         .field('Content-Type', 'multipart/form-data')
+         .field('createdBy', createdBy)
+         .attach('fileUpload', '/Users/seanlew/Desktop/conductor-support-ticket/server/images/test.txt')
+         .expect(400)
+         .end(done)
+   })
+
+   it('should return 400 if file is too large', (done) => {
+      var createdBy = 'testing large fileupload';
+
+      request(app)
+         .post('/ticket/add')
+         .field('Content-Type', 'multipart/form-data')
+         .field('createdBy', createdBy)
+         .attach('fileUpload', '/Users/seanlew/Desktop/conductor-support-ticket/server/images/fall.jpg')
+         .expect(400)
+         .expect((res) => {
+            var error = JSON.parse(res.error.text)
+            expect(error.error).toBe("File too large")
+         })
+         .end(done)
+   })
+});
+
 describe('GET /ticket/getall', () => {
    it('should get all tickets', (done) => {
       request(app)
          .get('/ticket/getall')
          .expect(200)
          .expect((res) => {
-            expect(res.body.length).toBe(2);
+            expect(res.body.length).toBe(4);
          })
          .end(done);
    });
@@ -117,6 +174,22 @@ describe('GET /ticket/view/:id', () => {
       .expect(500)
       .end(done)
    });
+});
+
+describe('GET /ticket/view/:id/fileupload', (done) => {
+   var createdBy = 'testing fileupload';
+   var hexId     
+   it('should return 200 retrieve data for fileuploads', (done) => {
+      Ticket.find({createdBy}).then((tickets) => {
+         hexId = tickets[0]._id
+         request(app)
+            .get(`/ticket/view/${hexId}/fileupload`)
+            .expect(200)
+            .end(done);
+      }).catch((e) => done(e));
+      
+      
+   })
 });
 
 describe('DELETE /ticket/delete/:id', () => {
