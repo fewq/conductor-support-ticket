@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing 1`] = `
+<div
+  className="container-fluid"
+>
+  <div>
+    <h3>
+       
+       
+    </h3>
+    <p>
+       Submitted on: 
+      Invalid Date
+       
+      <span
+        class="badge badge-secondary mr-2"
+      >
+         
+         
+      </span>
+       
+    </p>
+    <div
+      className="d-flex justify-content-center my-2"
+    />
+    <div
+      className="my-5 mb-2"
+    >
+      <h4>
+         Description 
+      </h4>
+      <p>
+         
+         
+      </p>
+    </div>
+  </div>
+  <div
+    className="my-2"
+  >
+    <a
+      className="btn btn-light"
+      href="/update/undefined"
+      onClick={[Function]}
+    >
+      Edit Description
+    </a>
+    <button
+      className="btn btn-danger"
+      onClick={[Function]}
+    >
+      Delete Ticket
+    </button>
+  </div>
+</div>
+`;

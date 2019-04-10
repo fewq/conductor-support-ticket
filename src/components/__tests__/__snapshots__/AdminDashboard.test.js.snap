@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing 1`] = `
+<div>
+  <div
+    className="container-fluid"
+  >
+    <nav
+      className="navbar navbar-expand-lg navbar-dark bg-dark"
+    >
+      <a
+        className="navbar-brand"
+        href="https://beta.acnapi.io/#!/"
+        target="_blank"
+      >
+        <img
+          alt="ACNAPI"
+          height="30"
+          src="acnapi.png"
+          width="100"
+        />
+      </a>
+      <a
+        className="navbar-brand"
+        href="/dashboard"
+        onClick={[Function]}
+      >
+        Ticket Dashboard
+      </a>
+      <div
+        className="collpase navbar-collapse"
+      >
+        <ul
+          className="navbar-nav mr-auto"
+        >
+          <li
+            className="navbar-item"
+          >
+            <a
+              className="nav-link"
+              href="/dashboard"
+              onClick={[Function]}
+            >
+              Table View
+            </a>
+          </li>
+          <li
+            className="navbar-item"
+          >
+            <a
+              className="nav-link"
+              href="/kanban"
+              onClick={[Function]}
+            >
+              Kanban
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br />
+  </div>
+</div>
+`;
