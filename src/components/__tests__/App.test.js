@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from '../../App';
-import { render, fireEvent, cleanup, queryByTestId, getByDisplayValue, getByValue } from 'react-testing-library'
+import renderer from 'react-test-renderer';
+import { render, cleanup } from 'react-testing-library'
 import {toBeInTheDocument, toHaveClass} from 'jest-dom'
 expect.extend({toBeInTheDocument, toHaveClass})
 
@@ -80,4 +81,11 @@ describe("Rendering App's first page under different conditions", () => {
   })
 
 })
+
+test('snapshot testing', () => {
+  const tree = renderer
+    .create(<App auth={mockAuth} />)
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import Main from "../Main"
-import { render, fireEvent, cleanup } from 'react-testing-library'
+import { render, cleanup } from 'react-testing-library'
+import renderer from 'react-test-renderer';
 import {toBeInTheDocument, toHaveClass} from 'jest-dom'
 
 expect.extend({toBeInTheDocument, toHaveClass})
@@ -16,4 +17,11 @@ test('renders greeting text', () => {
     let greetingText = getByText(/Hey/);
     expect(greetingText).toBeInTheDocument();
   })
+
+  test('snapshot testing', () => {
+    const tree = renderer
+    .create(<Main auth={mockAuth} />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
   

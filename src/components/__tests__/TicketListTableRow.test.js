@@ -1,8 +1,9 @@
 import React from 'react'
+import TableRow from '../client/TicketListTableRow';
 import { BrowserRouter } from 'react-router-dom';
 import { render, fireEvent, cleanup, waitForElement } from 'react-testing-library'
-import TableRow from '../client/TicketListTableRow';
 import renderer from 'react-test-renderer';
+
 import {toBeInTheDocument, toHaveClass} from 'jest-dom'
 
 expect.extend({toBeInTheDocument, toHaveClass})
@@ -52,13 +53,24 @@ describe("retrieves and renders props correctly", () => {
     })
 })
 
-test("has button to delete the ticket", () => {
-    const { getByText } = render(<BrowserRouter>
-        <TableRow obj={obj} />
-        </BrowserRouter>)
-    const deleteButton = getByText(/delete/i);
-    expect(deleteButton).toBeDefined();
+describe("Rendering Action buttons", () => {
+    test("has button to delete the ticket", () => {
+        const { getByText } = render(<BrowserRouter>
+            <TableRow obj={obj} />
+            </BrowserRouter>)
+        const deleteButton = getByText(/delete/i);
+        expect(deleteButton).toBeDefined();
+    })
+    
+    test("has button to view the ticket", () => {
+        const { getByText } = render(<BrowserRouter>
+            <TableRow obj={obj} />
+            </BrowserRouter>)
+        const deleteButton = getByText(/view/i);
+        expect(deleteButton).toBeDefined();
+    })
 })
+
 
 test('snapshot testing', () => {
     const tree = renderer
