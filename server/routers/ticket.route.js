@@ -141,4 +141,21 @@ ticketRoutes.route('/delete/:id').delete( async (req, res) => {
     }
 })
 
+ticketRoutes.route('/deletetic/:id').patch(async (req, res) => {
+    try {
+        const ticket = await Ticket.findOne({
+            _id: req.params.id
+        })
+        if (!ticket) {
+            res.status(404).send()
+        }
+        ticket.statusToClient = "Deleted"
+        ticket.statusToAdmin = "Deleted"
+        await ticket.save()
+        res.send(ticket)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 module.exports = ticketRoutes;
