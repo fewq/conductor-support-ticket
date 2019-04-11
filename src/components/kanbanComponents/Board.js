@@ -7,7 +7,7 @@ const BoardPropTypes = {
   children: PropTypes.node.isRequired
 };
 
-class Board extends Component {
+export class Board extends Component {
   render() {
     return (
       <div className="kanban-board-container">
