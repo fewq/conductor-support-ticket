@@ -58,15 +58,17 @@ const dragSourceSpec = {
         props.updateCard("notified", false);
 
         // backend change
-
         axios
           .patch("http://localhost:4000/ticket/update/" + ticketID, {
             statusToAdmin: newStatusToAdmin,
             notified: false
           })
           .then(res => {
-            console.log("Changed status of ticket to client");
-            console.log(res.data);
+            console.log(
+              "Changed status of ticket to admin, and notified status"
+            );
+            console.log(res.data.statusToAdmin);
+            console.log("Notified: " + res.data.notified);
           })
           .catch(res => console.log(res));
       }
