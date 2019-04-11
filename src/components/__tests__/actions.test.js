@@ -187,7 +187,7 @@ describe("Action: sortCard", () => {
 });
 
 describe("Action: moveCard", () => {
-  it("should sort cards", () => {
+  it("should move card", () => {
     const parentListId = "0";
     const cardIndex = 1;
     const newParentListId = "2";
