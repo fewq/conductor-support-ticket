@@ -4,9 +4,24 @@ import CardContainer from "../../containers/CardContainer";
 import Editor from "./Editor";
 import { DropTarget } from "react-dnd";
 import Types from "./staticTypes";
+import axios from "axios";
 
 const DropTargetSpec = {
-  drop() {},
+  drop(props, monitor) {
+    const tickets = props.cardsByIds;
+    const listId = monitor.getItem().parentListId;
+    const ticketIds = props.listCards[listId];
+    // update priorities of current list
+    for (let i = 0; i < ticketIds.length; i++) {
+      const ticket = tickets[ticketIds[i]];
+      axios
+        .patch("http://localhost:4000/ticket/update/" + ticket.ID, {
+          priority: i
+        })
+        .catch(res => console.log(res));
+    }
+    console.log("Priorities updated");
+  },
 
   hover(props, monitor, component) {
     const item = monitor.getItem(),

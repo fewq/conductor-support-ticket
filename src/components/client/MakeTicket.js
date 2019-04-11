@@ -42,7 +42,7 @@ const formikEnhancer = withFormik({
       statusToClient: "Pending Admin",
       statusToAdmin: "Pending Admin",
       dateOfCreation: new Date(),
-      priority: 1,
+      priority: Number.MAX_SAFE_INTEGER,
       notified: false,
       tasks: []
     };

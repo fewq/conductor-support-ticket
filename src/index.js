@@ -47,7 +47,7 @@ let appInitialState = {
 axios.get("http://localhost:4000/ticket/getall").then(response => {
   let numberOfTickets = response.data.length;
   let tickets = response.data;
-  console.log(tickets[0]);
+
   let cardList = tickets.map((object, i) => {
     return {
       id: String(i),
@@ -63,6 +63,8 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       ticket: object
     };
   });
+  // sort by priority
+  cardList.sort((a, b) => a.priority - b.priority);
 
   // Update dynamically depending on status
   let listTODO = [];
@@ -70,6 +72,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
   let listDev = [];
   let listClient = [];
   let listDone = [];
+  //let lists = [listTODO, listBA, listDev, listClient, listDone];
 
   let taskList = {};
   for (let i = 0; i < numberOfTickets; i++) {
@@ -79,7 +82,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       done: false
     };
 
-    switch (tickets[i].statusToAdmin) {
+    switch (cardList[i].statusToAdmin) {
       case "Pending Admin":
         listTODO.push(String(i));
         break;
@@ -99,7 +102,6 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
         break;
     }
   }
-  //console.log("List ", listTODO);
 
   const initialState = {
     domainData: {

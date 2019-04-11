@@ -16,6 +16,7 @@ const mapStateToProps = (
   cards: kanbanState.listCards[id],
   listByIds: domainData.lists.byId,
   listCards: kanbanState.listCards,
+  cardsByIds: domainData.cards.byId,
   itemToEdit: kanbanState.itemToEdit,
   attributeToEdit: kanbanState.attributeToEdit,
   numOfCards: kanbanState.listCards[id].length
