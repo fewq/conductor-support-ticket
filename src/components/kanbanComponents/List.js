@@ -91,7 +91,7 @@ class List extends Component {
               />
             )}
           </div>
-          {!showEditor && (
+          {/*!showEditor && (
             <a
               href="#"
               onClick={e => {
@@ -103,7 +103,7 @@ class List extends Component {
             >
               Add a card...
             </a>
-          )}
+            )*/}
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Card from "../components/kanbanComponents/Card";
 import { connect } from "react-redux";
+import axios from "axios";
 import {
   deleteCard,
   showCardMenu,
@@ -42,6 +43,15 @@ const mapDispatchToProps = (dispatch, { id, index, parentListId }) => ({
   onClickNotify: () => {
     dispatch(showEditor(id, "message"));
     dispatch(closeCardMenu());
+  },
+  onClickToggleNotify: (notified, ticketID) => {
+    dispatch(updateCard(id, "notified", !notified));
+    dispatch(closeCardMenu());
+    axios
+      .patch("http://localhost:4000/ticket/update/" + ticketID, {
+        notified: !notified
+      })
+      .catch(res => console.log(res));
   },
   handleOnSortCard: (hoverID, hoverIndex, dragID, dragIndex) =>
     dispatch(sortCard(parentListId, hoverID, hoverIndex, dragID, dragIndex))

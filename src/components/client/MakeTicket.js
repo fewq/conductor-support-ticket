@@ -40,8 +40,10 @@ const formikEnhancer = withFormik({
       ...values,
       topics: values.topics.map(t => t.value),
       statusToClient: "Pending Admin",
+      statusToAdmin: "Pending Admin",
       dateOfCreation: new Date(),
       priority: 1,
+      notified: false,
       tasks: []
     };
     delete payload.history;

@@ -47,7 +47,7 @@ let appInitialState = {
 axios.get("http://localhost:4000/ticket/getall").then(response => {
   let numberOfTickets = response.data.length;
   let tickets = response.data;
-
+  console.log(tickets[0]);
   let cardList = tickets.map((object, i) => {
     return {
       id: String(i),
@@ -56,8 +56,11 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       title: object.title,
       description: object.description,
       status: object.statusToClient,
+      statusToAdmin: object.statusToAdmin,
       priority: object.priority,
-      tasks: [String(i)]
+      notified: object.notified,
+      tasks: [String(i)],
+      ticket: object
     };
   });
 
@@ -76,7 +79,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       done: false
     };
 
-    switch (tickets[i].statusToClient) {
+    switch (tickets[i].statusToAdmin) {
       case "Pending Admin":
         listTODO.push(String(i));
         break;
