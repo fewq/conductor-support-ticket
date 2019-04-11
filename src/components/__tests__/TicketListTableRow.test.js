@@ -86,13 +86,13 @@ describe("Rendering Action buttons", () => {
   });
 });
 
-/*
-test('snapshot testing', () => {
-    const tree = renderer
-      .create(<BrowserRouter>
+test("snapshot testing", () => {
+  const tree = renderer
+    .create(
+      <BrowserRouter>
         <TableRow obj={obj} />
-        </BrowserRouter>)
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-  */
+      </BrowserRouter>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
