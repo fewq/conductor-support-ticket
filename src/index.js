@@ -72,7 +72,14 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
   let listDev = [];
   let listClient = [];
   let listDone = [];
-  //let lists = [listTODO, listBA, listDev, listClient, listDone];
+
+  let issues = [0, 0, 0, 0];
+  let issuesList = [
+    "API DevOps",
+    "Chart as a Service",
+    "Text Sentiment Analysis",
+    "Others"
+  ];
 
   let taskList = {};
   for (let i = 0; i < numberOfTickets; i++) {
@@ -101,7 +108,15 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       default:
         break;
     }
+
+    //////////////////////////
+    let topics = tickets[i].topics;
+    for (let j = 0; j < topics.length; j++) {
+      issues[issuesList.indexOf(topics[j])]++;
+    }
   }
+
+  const mostCommonIssue = issuesList[issues.indexOf(Math.max(...issues))];
 
   const initialState = {
     domainData: {
@@ -147,14 +162,15 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       },
       selectedCard: "ID_OF_CARD_IN_FOCUS",
       itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
-      attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"
+      attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST",
+      mostCommon: mostCommonIssue
     },
     uiState: {
       cardMenuPosition: {},
       shouldShowCardMenu: false
     }
   };
-  console.log(initialState);
+  //console.log(initialState);
 
   let store = createStore(
     kanbanReducers,
