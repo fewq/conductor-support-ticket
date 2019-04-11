@@ -258,6 +258,7 @@ class Card extends Component {
               aria-hidden="true"
               onClick={e => {
                 this.props.onClickMenu(e.target);
+                console.log(e.target);
                 e.stopPropagation();
               }}
             />
