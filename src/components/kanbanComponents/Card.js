@@ -45,6 +45,9 @@ const dragSourceSpec = {
         case "4":
           newStatusToAdmin = "Resolved";
           break;
+        case "5":
+          newStatusToAdmin = "Deleted";
+          break;
         default:
           break;
       }
@@ -277,7 +280,10 @@ class Card extends Component {
                 e.stopPropagation();
               }}
               menuPosition={this.props.menuPosition}
-              onClickDeleteCard={onClickDeleteCard}
+              onClickDeleteCard={e => {
+                e.stopPropagation();
+                onClickDeleteCard(card.ID);
+              }}
               onClickEditDescription={e => {
                 onShowDetails();
                 showEditor("description");
@@ -289,6 +295,7 @@ class Card extends Component {
               onClickToggleNotify={() => {
                 this.props.onClickToggleNotify(card.notified, card.ID);
               }}
+              status={card.statusToAdmin}
             />
           )}
           <div className="card-title-container">

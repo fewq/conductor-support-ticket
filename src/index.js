@@ -72,6 +72,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
   let listDev = [];
   let listClient = [];
   let listDone = [];
+  let listDeleted = [];
 
   let issues = [0, 0, 0, 0];
   let issuesList = [
@@ -83,27 +84,54 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
 
   let taskList = {};
   for (let i = 0; i < numberOfTickets; i++) {
-    taskList[i] = {
-      id: String(i),
-      name: "Click to edit or delete",
-      done: false
-    };
-
     switch (cardList[i].statusToAdmin) {
       case "Pending Admin":
         listTODO.push(String(i));
+        taskList[i] = {
+          id: String(i),
+          name: "Assign to department",
+          done: false
+        };
         break;
       case "Pending BA":
         listBA.push(String(i));
+        taskList[i] = {
+          id: String(i),
+          name: "Assign to department",
+          done: true
+        };
         break;
       case "Pending Developers":
         listDev.push(String(i));
+        taskList[i] = {
+          id: String(i),
+          name: "Assign to department",
+          done: true
+        };
         break;
       case "Pending Client":
         listClient.push(String(i));
+        taskList[i] = {
+          id: String(i),
+          name: "Assign to department",
+          done: true
+        };
         break;
       case "Resolved":
         listDone.push(String(i));
+        taskList[i] = {
+          id: String(i),
+          name: "Assign to department",
+          done: true
+        };
+        break;
+      case "Deleted":
+        listDeleted.push(String(i));
+        taskList[i] = {
+          id: String(i),
+          name: "Assign to department",
+          done: true
+        };
         break;
       default:
         break;
@@ -141,8 +169,13 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
           "4": {
             id: "4",
             name: "Done"
+          },
+          "5": {
+            id: "5",
+            name: "Deleted"
           }
         },
+        // To add deleted list, add "5" at the end
         allLists: ["0", "1", "2", "3", "4"]
       },
       cards: {
@@ -158,7 +191,8 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
         "1": listBA,
         "2": listDev,
         "3": listClient,
-        "4": listDone
+        "4": listDone,
+        "5": listDeleted
       },
       selectedCard: "ID_OF_CARD_IN_FOCUS",
       itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
