@@ -83,7 +83,7 @@ export default class TicketList extends Component {
     renderTopics() {
         if (this.state.statusUpdates.length != 0) {
             return this.state.ticket.topics.map((obj, i) => {
-                return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>
+                return <span className="badge badge-pill badge-warning mr-2"> {obj} </span>
             });
         }
     }
@@ -93,7 +93,7 @@ export default class TicketList extends Component {
             <div className="container-fluid" >
                 <div>
                     <h3> {this.state.ticket.title} </h3>
-                    <p> Submitted on: {this.state.displayDate} <span class="badge badge-secondary mr-2"> {this.state.ticket.statusToClient} </span> </p>
+                    <p> Submitted on: {this.state.displayDate} <span className="badge badge-secondary mr-2"> {this.state.ticket.statusToClient} </span> </p>
                     <div className="d-flex justify-content-center my-2">
                         { this.renderTopics() }          
                     </div>

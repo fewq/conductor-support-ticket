@@ -74,7 +74,7 @@ class TableRow extends Component {
             {this.props.obj.statusToClient}
           </td>
           <td>
-            <span class="badge badge-secondary">{this.props.obj._id}</span>
+            <span className="badge badge-secondary">{this.props.obj._id}</span>
           </td>
           <td>
             <Link to={{ 
