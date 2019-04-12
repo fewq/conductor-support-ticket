@@ -48,30 +48,31 @@ const formikEnhancer = withFormik({
     };
     delete payload.history;
 
-    axios.post("http://localhost:4000/ticket/add", payload).then(res => {
-      console.log("form received the following payload:");
-      console.log(payload);
-      console.log(res.data);
-      console.log(res.body);
-    });
-
+    // email content
     const title = values.title;
     const description = values.description;
     const client = values.createdBy;
     const email = "admin@conductor.com";
     const target = "admin";
+
+    axios.post("http://localhost:4000/ticket/add", payload)
+      .then(res => {
+        console.log("Adding new ticket");
+        console.log(res.data);
+      })
+      .catch(res => console.log(res));
+    
     axios.post("/api/notify", {
       email,
       title,
       description,
       client,
       target
-    });
-
-    history.push("/dashboard");
+      });
 
     setTimeout(() => {
       setSubmitting(false);
+      history.push("/dashboard");
     }, 1000);
   },
   displayName: "Ticket Form"
@@ -98,13 +99,13 @@ const MyForm = props => {
       onSubmit={handleSubmit}
       onKeyPress={disableEnterButton}
     >
-      <h1 class="subtitle">Ticket Form</h1>
-      <div class="radio-group">
+      <h1 className="subtitle">Ticket Form</h1>
+      <div className="radio-group">
         <label>Ticket Type</label>
-        <div class="radio-container">
+        <div className="radio-container">
           {formType.map(option => (
             <React.Fragment key={option}>
-              <div class="radio-item">
+              <div className="radio-item">
                 <label htmlFor={option}>
                   {option}
                   <input
