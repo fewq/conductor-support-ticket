@@ -193,7 +193,8 @@ class Card extends Component {
       },
       onClickSend = value => {
         const title = card.title;
-        const status = card.status;
+        const prevStatus = card.status;
+        const status = card.statusToAdmin;
         const message = value;
         const link = card.ID;
         const email = card.email;
@@ -207,30 +208,38 @@ class Card extends Component {
             link,
             target
           });
+          this.props.updateCard("notified", true);
+          this.props.updateCard("status", status);
+          let payload = {
+            attendedBy: jwtDecode(localStorage.getItem("id_token")).email,
+            ticketId: link,
+            prevStatusToClient: prevStatus,
+            statusToClient: status,
+            statusToAdmin: status,
+            dateOfUpdate: new Date(),
+            comments: message
+          };
+
+          axios
+            .post("http://localhost:4000/status/add", payload)
+            .then(res => {
+              console.log(
+                "Adding new ticket status update with the following info:"
+              );
+              console.log(res.data);
+            })
+            .catch(res => console.log(res));
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + link, {
+              statusToAdmin: status,
+              statusToClient: status,
+              notified: true
+            })
+            .catch(res => console.log(res));
         } else {
           console.log("Email not sent");
         }
-        this.props.updateCard("notified", true);
-
-        let payload = {
-          attendedBy: jwtDecode(localStorage.getItem("id_token")).email,
-          ticketId: link,
-          prevStatusToClient: status, // CHANGE
-          statusToClient: card.statusToAdmin,
-          statusToAdmin: card.statusToAdmin,
-          dateOfUpdate: new Date(),
-          comments: message
-        };
-
-        axios
-          .post("http://localhost:4000/status/add", payload)
-          .then(res => {
-            console.log(
-              "Adding new ticket status update with the following info:"
-            );
-            console.log(res.data);
-          })
-          .catch(res => console.log(res));
 
         /*
         const updatedDescription =
@@ -242,11 +251,6 @@ class Card extends Component {
         console.log(updatedDescription);
         this.props.updateCard("description", updatedDescription);
 */
-        axios
-          .patch("http://localhost:4000/ticket/update/" + link, {
-            notified: true
-          })
-          .catch(res => console.log(res));
       };
 
     // const { dragItem} = this.props;
