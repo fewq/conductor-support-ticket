@@ -62,7 +62,7 @@ export default class TicketList extends Component {
               <th />
             </tr>
           </thead>
-          <tbody>{this.tabRow()}</tbody>
+          <tbody>{this.tabRow(this.state.ticket, this.state.ticket._id)}</tbody>
         </table>
       </div>
     );

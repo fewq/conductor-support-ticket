@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Board from "./kanbanComponents/Board";
-import AddList from "./kanbanComponents/AddList";
+//import AddList from "./kanbanComponents/AddList";
 import ListContainer from "../containers/ListContainer";
 import { closeAllPopups, showEditor, createList } from "../actions/kanban";
 import "../css/kanban.scss";

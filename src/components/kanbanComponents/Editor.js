@@ -45,7 +45,7 @@ class Editor extends Component {
           </div>
           <div className="controls">
             <div className="cancel">Cancel</div>
-            {this.props.buttonText == "msg" ? (
+            {this.props.buttonText === "msg" ? (
               <button
                 type=""
                 onClick={e => {

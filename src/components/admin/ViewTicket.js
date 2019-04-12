@@ -90,7 +90,9 @@ export default class TicketList extends Component {
 
   renderTopics() {
     return this.state.ticket.topics.map((obj, i) => {
-      return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>;
+      return (
+        <span className="badge badge-pill badge-warning mr-2"> {obj} </span>
+      );
     });
   }
 
@@ -102,7 +104,7 @@ export default class TicketList extends Component {
           <p>
             {" "}
             Submitted on: {this.state.displayDate}{" "}
-            <span class="badge badge-secondary mr-2">
+            <span className="badge badge-secondary mr-2">
               {" "}
               {this.state.ticket.statusToClient}{" "}
             </span>{" "}

@@ -55,7 +55,7 @@ const dragSourceSpec = {
       const ticketID = props.card.ID;
 
       // update status if status changed
-      if (props.card.statusToAdmin != newStatusToAdmin) {
+      if (props.card.statusToAdmin !== newStatusToAdmin) {
         // local change
         props.updateCard("statusToAdmin", newStatusToAdmin);
         props.updateCard("notified", false);
@@ -179,6 +179,8 @@ class Card extends Component {
               description: value
             };
             break;
+          default:
+            break;
         }
 
         axios
@@ -196,7 +198,7 @@ class Card extends Component {
         const link = card.ID;
         const email = card.email;
         const target = "client";
-        if (status != "Pending Admin") {
+        if (status !== "Pending Admin") {
           axios.post("/api/notify", {
             email,
             title,
@@ -410,7 +412,7 @@ class Card extends Component {
             undefined
           )}
           <div className={isDragging ? "placeholder" : ""} />
-          {card.statusToAdmin != "Pending Admin" &&
+          {card.statusToAdmin !== "Pending Admin" &&
             (card.notified ? (
               <div className="card-notified"> Client Notified </div>
             ) : (
