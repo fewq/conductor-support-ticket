@@ -3,7 +3,7 @@ import Card from "../components/kanbanComponents/Card";
 import { connect } from "react-redux";
 import axios from "axios";
 import {
-  deleteCard,
+  //deleteCard,
   showCardMenu,
   closeCardMenu,
   sortCard,

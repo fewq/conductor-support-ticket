@@ -66,15 +66,15 @@ const formikEnhancer = withFormik({
 const MyForm = props => {
   const {
     values,
-    touched,
+    //touched,
     dirty,
-    errors,
+    //errors,
     handleChange,
     handleBlur,
     handleSubmit,
     handleReset,
-    setFieldValue,
-    setFieldTouched,
+    //setFieldValue,
+    //setFieldTouched,
     isSubmitting
   } = props;
   return (

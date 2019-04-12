@@ -3,7 +3,8 @@ const statusTypes = [
   "Pending BA",
   "Pending Developers",
   "Pending Client",
-  "Resolved"
+  "Resolved",
+  "Deleted"
 ];
 
 export default statusTypes;

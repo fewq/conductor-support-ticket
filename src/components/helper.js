@@ -33,26 +33,26 @@ export const renderTopics = topics => {
 };
 
 export const renderStatus = status => {
-  switch(status){
+  switch (status) {
     case "Pending Admin":
       return <span class="badge badge-secondary mr-2"> {status} </span>;
-    
-    case "Pending BA": 
+
+    case "Pending BA":
       return <span class="badge badge-light mr-2"> {status} </span>;
-    
+
     case "Pending Developers":
       return <span class="badge badge-light mr-2"> {status} </span>;
-    
+
     case "Pending Client":
       return <span class="badge badge-warning mr-2"> {status} </span>;
 
-    case "Cancelled":
-      return <span class="badge badge-danger mr-2"> {status} </span>;
-    
     case "Resolved":
-    return <span class="badge badge-success mr-2"> {status} </span>;
+      return <span class="badge badge-success mr-2"> {status} </span>;
+
+    case "Deleted":
+      return <span class="badge badge-danger mr-2"> {status} </span>;
 
     default:
       return null;
   }
-}
+};
