@@ -33,7 +33,7 @@ const tickets = [{
 
 
 
-describe('POST /ticket', () => {
+describe('POST /ticket/add', () => {
    //Database is reset to the default 2 tickets declared on top BEFORE first POST test.
    before((done) => {
       Ticket.deleteMany({}).then(() => {
@@ -66,9 +66,8 @@ describe('POST /ticket', () => {
             }).catch((e) => done(e));
          });
    });
-   it('should create a new ticket with fileUpload', (done) => {
+   it('should create a new ticket with single fileUpload', (done) => {
       var createdBy = 'testing fileupload';
-
       request(app)
          .post('/ticket/add')
          .field('Content-Type', 'multipart/form-data')
@@ -86,6 +85,32 @@ describe('POST /ticket', () => {
                createdBy
             }).then((tickets) => {
                expect(tickets[0].numUploads).toBe(1)
+               expect(tickets.length).toBe(1)
+               expect(tickets[0].createdBy).toBe(createdBy);
+               done();
+            }).catch((e) => done(e));
+         });
+   });
+   it('should create a new ticket with multiple fileUploads', (done) => {
+      var createdBy = 'testing multiple fileupload';
+      request(app)
+         .post('/ticket/add')
+         .field('Content-Type', 'multipart/form-data')
+         .field('createdBy', createdBy)
+         .attach('fileUpload', '/Users/seanlew/Desktop/conductor-support-ticket/server/images/profile-pic.jpg')
+         .attach('fileUpload', '/Users/seanlew/Desktop/conductor-support-ticket/server/images/philly.jpg')
+         .expect(200)
+         .expect((res) => {
+            expect(res.body.createdBy).toBe(createdBy);
+         })
+         .end((err, res) => {
+            if (err) {
+               return done(err);
+            }
+            Ticket.find({
+               createdBy
+            }).then((tickets) => {
+               expect(tickets[0].numUploads).toBe(2)
                expect(tickets.length).toBe(1)
                expect(tickets[0].createdBy).toBe(createdBy);
                done();
@@ -128,7 +153,7 @@ describe('GET /ticket/getall', () => {
          .get('/ticket/getall')
          .expect(200)
          .expect((res) => {
-            expect(res.body.length).toBe(4);
+            expect(res.body.length).toBe(5);
          })
          .end(done);
    });
@@ -151,7 +176,6 @@ describe('GET /ticket/email/:email', () => {
          .expect(404)
          .end(done);
    });
-
 });
 
 describe('GET /ticket/view/:id', () => {
@@ -183,19 +207,25 @@ describe('GET /ticket/view/:id', () => {
 
 describe('GET /ticket/view/:id/fileupload', (done) => {
    var createdBy = 'testing fileupload';
-   var hexId
+   var hexId;
+   // var binaryImage;
+   // var fs =require("fs")
+   // fs.readFile('/Users/seanlew/Desktop/conductor-support-ticket/server/images/philly.jpg',function(err,data) {
+   //    if(err) throw err;
+   //    binaryImage = new Buffer(data,'binary').toString('base64');
+   //    console.log(binaryImage)
+   // });
+
    it('should return 200 retrieve data for fileuploads', (done) => {
       Ticket.find({
          createdBy
       }).then((tickets) => {
-         hexId = tickets[0]._id
+         hexId = tickets[0]._id;
          request(app)
             .get(`/ticket/view/${hexId}/fileupload`)
             .expect(200)
             .end(done);
       }).catch((e) => done(e));
-
-
    })
 });
 
@@ -260,4 +290,38 @@ describe('PATCH /ticket/update/:id', () => {
          .expect(404)
          .end(done)
    })
+   it('should return 500 for non-object ids', (done) => {
+      request(app)
+         .patch('/ticket/update/123abc')
+         .expect(500)
+         .end(done)
+   });
+});
+
+describe('PATCH /ticket/deletetic/:id', () => {
+   it('should update ticket doc to deleted', (done) => {
+      request(app)
+         .patch(`/ticket/deletetic/${tickets[0]._id.toHexString()}`)
+         .expect(200)
+         .expect((res) => {
+            expect(res.body.title).toBe(tickets[0].title);
+            expect(res.body.statusToAdmin).toBe("Deleted")
+         })
+         .end(done);
+   });
+
+   it('should return 404 if ticket not found', (done) => {
+      var hexId = new ObjectID().toHexString();
+      request(app)
+         .patch(`/ticket/deletetic/${hexId}`)
+         .expect(404)
+         .end(done);
+   });
+
+   it('should return 500 for non-object ids', (done) => {
+      request(app)
+         .patch('/ticket/deletetic/123abc')
+         .expect(500)
+         .end(done)
+   });
 });

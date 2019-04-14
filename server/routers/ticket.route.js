@@ -122,7 +122,7 @@ ticketRoutes.route('/update/:id').patch(async (req, res) => {
         await ticket.save()
         res.send(ticket)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(500).send()
     }
 })
 
