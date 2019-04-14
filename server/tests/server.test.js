@@ -30,10 +30,11 @@ const tickets = [{
    formType: 'test2'
 
 }]
-//Database is reset to the default 2 tickets declared on top BEFORE EACH test.
+
 
 
 describe('POST /ticket', () => {
+   //Database is reset to the default 2 tickets declared on top BEFORE first POST test.
    before((done) => {
       Ticket.deleteMany({}).then(() => {
          return Ticket.insertMany(tickets);
@@ -65,9 +66,6 @@ describe('POST /ticket', () => {
             }).catch((e) => done(e));
          });
    });
-});
-
-describe('POST /ticket', () => {
    it('should create a new ticket with fileUpload', (done) => {
       var createdBy = 'testing fileupload';
 

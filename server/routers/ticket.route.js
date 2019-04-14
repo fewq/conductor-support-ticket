@@ -19,13 +19,11 @@ const upload = multer({
 ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) => {
     let ticket = new Ticket(req.body);
     const data = new Array;
-    // console.log(req.files.buffer)
     if (req.files != null) { 
         ticket.numUploads = req.files.length;
         for(i=0;i<req.files.length;i++){
-            data[i] = req.files[i].buffer;
-            // console.log(req.files[i].buffer);
-        }
+            data[i] = req.files[i].buffer;    
+            }
         ticket.fileUpload = data //we created a new fileUpload of type: buffer in Ticket model
     }
     await ticket.save()
@@ -47,7 +45,9 @@ ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) =>
 // GET: Retrieve all tickets
 ticketRoutes.route('/getall').get(async (req, res) => {
     try {
-        const tickets = await Ticket.find()
+        const tickets = await Ticket.find({
+            statusToClient:{$nin: "Deleted"}
+        })
         res.status(200).send(tickets)
     } catch (e) {
         res.status(500).send()
