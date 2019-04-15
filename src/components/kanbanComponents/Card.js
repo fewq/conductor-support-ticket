@@ -251,6 +251,30 @@ class Card extends Component {
         console.log(updatedDescription);
         this.props.updateCard("description", updatedDescription);
 */
+        axios
+          .patch("http://localhost:4000/ticket/update/" + link, {
+            notified: true
+          })
+          .catch(res => console.log(res));
+      },
+      onClickNewTask = taskName => {
+        this.props.onAddATask(card.id, taskName);
+        let newList = card.taskList;
+        const index = newList.length;
+        for (let i = 0; i < index; i++) {
+          newList[i].ticket = {};
+        }
+        newList[index] = {
+          id: String(index),
+          ticket: {},
+          name: taskName,
+          done: false
+        };
+        axios
+          .patch("http://localhost:4000/ticket/update/" + card.ID, {
+            tasks: newList
+          })
+          .catch(res => console.log(res));
       };
 
     // const { dragItem} = this.props;
@@ -384,9 +408,7 @@ class Card extends Component {
                   <Editor
                     textareaClass={"edit-checklist"}
                     placeholder="Add a task..."
-                    onClickSave={taskName => {
-                      this.props.onAddATask(card.id, taskName);
-                    }}
+                    onClickSave={onClickNewTask}
                   />
                 ) : (
                   <div
