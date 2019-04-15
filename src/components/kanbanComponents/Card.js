@@ -260,13 +260,11 @@ class Card extends Component {
       onClickNewTask = taskName => {
         this.props.onAddATask(card.id, taskName);
         let newList = card.taskList;
-        const index = newList.length;
-        for (let i = 0; i < index; i++) {
-          newList[i].ticket = {};
-        }
-        newList[index] = {
-          id: String(index),
-          ticket: {},
+        const ind = newList.length;
+        newList[ind] = {
+          id: String(ind),
+          index: ind,
+          ticketID: card.id,
           name: taskName,
           done: false
         };

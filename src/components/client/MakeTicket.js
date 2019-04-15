@@ -47,7 +47,8 @@ const formikEnhancer = withFormik({
       tasks: [
         {
           id: "0",
-          ticket: {},
+          index: 0,
+          ticketID: "0",
           name: "Assign to department",
           done: false
         }
@@ -62,20 +63,21 @@ const formikEnhancer = withFormik({
     const email = "admin@conductor.com";
     const target = "admin";
 
-    axios.post("http://localhost:4000/ticket/add", payload)
+    axios
+      .post("http://localhost:4000/ticket/add", payload)
       .then(res => {
         console.log("Adding new ticket");
         console.log(res.data);
       })
       .catch(res => console.log(res));
-    
+
     axios.post("/api/notify", {
       email,
       title,
       description,
       client,
       target
-      });
+    });
 
     setTimeout(() => {
       setSubmitting(false);

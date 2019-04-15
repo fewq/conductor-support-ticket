@@ -52,41 +52,67 @@ const TaskProptypes = {
 const Task = props => {
   const { task, itemToEdit, attributeToEdit } = props,
     onClickSa = newVal => {
-      let newList = task.ticket.taskList;
-      let index = task.id;
-      const ID = task.ticket.ID;
-      for (let i = 0; i < newList.length; i++) {
-        newList[i].ticket = {};
-        if (newList[i].id == index) {
-          newList[i].name = newVal;
-        }
-      }
+      const ID = task.ticketID;
       axios
-        .patch("http://localhost:4000/ticket/update/" + ID, {
-          tasks: newList
+        .get("http://localhost:4000/ticket/view/" + ID)
+        .then(response => {
+          const ticket = response.data;
+          const newList = ticket.tasks;
+          newList[task.index].name = newVal;
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + ID, {
+              tasks: newList
+            })
+            .catch(res => console.log(res));
         })
-        .catch(res => console.log(res));
+        .catch(function(error) {
+          console.log(error);
+        });
+
       props.onClickSave(newVal);
     },
     onClickTo = () => {
       props.onToggleTaskDone(task.id);
-      let newList = Object.assign([], task.ticket.taskList);
-      let index = task.id;
-      const ID = task.ticket.ID;
-      let cur = task.done;
-
-      for (let i = 0; i < newList.length; i++) {
-        newList[i].ticket = {};
-        if (newList[i].id == index) {
-          newList[i].done = !cur;
-        }
-      }
-      console.log(newList);
+      const ID = task.ticketID;
       axios
-        .patch("http://localhost:4000/ticket/update/" + ID, {
-          tasks: newList
+        .get("http://localhost:4000/ticket/view/" + ID)
+        .then(response => {
+          const ticket = response.data;
+          const newList = ticket.tasks;
+          const cur = task.done;
+          newList[task.index].done = !cur;
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + ID, {
+              tasks: newList
+            })
+            .catch(res => console.log(res));
         })
-        .catch(res => console.log(res));
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    onClickDe = () => {
+      props.onClickDeleteTask(task.id, props.index, props.cardId);
+      const ID = task.ticketID;
+      axios
+        .get("http://localhost:4000/ticket/view/" + ID)
+        .then(response => {
+          const ticket = response.data;
+          const newList = ticket.tasks;
+          const ind = task.index;
+          newList.splice(ind);
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + ID, {
+              tasks: newList
+            })
+            .catch(res => console.log(res));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     };
   const shouldShowEditor = itemToEdit === task.id && attributeToEdit === "task";
 
@@ -105,9 +131,7 @@ const Task = props => {
             shouldShowDelete={true}
             initialValue={task.name}
             onClickSave={onClickSa}
-            onClickDelete={() => {
-              props.onClickDeleteTask(task.id, props.index, props.cardId);
-            }}
+            onClickDelete={onClickDe}
           />
         </div>
       ) : (

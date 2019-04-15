@@ -91,9 +91,10 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       taskList[count].id = String(count);
       cardList[i].tasks[j] = String(count);
       cardList[i].taskList[j].id = String(count);
-      taskList[count].ticket = cardList[i];
+      taskList[count].ticketID = cardList[i].ID;
       count++;
     }
+    cardList[i].id = String(i);
 
     switch (cardList[i].statusToAdmin) {
       case "Pending Admin":

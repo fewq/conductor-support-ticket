@@ -82,11 +82,11 @@ class List extends Component {
       >
         <div className="list">
           <div className="action delete-list-icon">
-            <i
+            {/*<i
               className="fa fa-trash"
               aria-hidden="true"
               onClick={this.props.onClickDeleteList}
-            />
+            />*/}
           </div>
           <h2 className="list-title">{list.name}</h2>
           <div className="cards-container">

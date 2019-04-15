@@ -34,11 +34,11 @@ const CardMenu = props => (
         ? "Edit description..."
         : "Add description..."}
     </div>
-    {props.status !== "Deleted" && (
+    {/*props.status !== "Deleted" && (
       <div className="action" onClick={props.onClickDeleteCard}>
         Delete ticket...
       </div>
-    )}
+    )*/}
 
     <div className="action" onClick={props.onClickNotify}>
       Notify client...
