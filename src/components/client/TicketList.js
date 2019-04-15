@@ -7,12 +7,29 @@ import TableRow from './TicketListTableRow';
 export default class TicketList extends Component {
   constructor(props) {
     super(props);
+    var _isMounted = false;
     let idToken = jwtDecode(localStorage.getItem("id_token"));
     var email = idToken.email;
-    this.state = {ticket: [], email: email};
+    this.state = {ticket: [], email: email, routerKey: this.props.location.key};
   }
   componentDidMount(){
-    this.refresh();
+    this._isMounted = true;
+    console.log("new router location key assigned")
+    console.log(this.props.location.key);
+
+    if (this._isMounted) {
+      this.refresh();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.state.routerKey != this.props.location.key) {
+      this.setState({routerKey: this.props.location.key})
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   refresh = () => {

@@ -8,7 +8,6 @@ import EditTicket from "./EditTicket.js";
 import ViewTicket from "./ViewTicket.js";
 import { kanban } from "../helper";
 
-
 class NavBar extends Component {
   render() {
     return (
@@ -19,6 +18,7 @@ class NavBar extends Component {
               className="navbar-brand"
               href="https://beta.acnapi.io/#!/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <img src={logo} width="100" height="30" alt="ACNAPI" />
             </a>

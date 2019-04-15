@@ -38,31 +38,25 @@ const formikEnhancer = withFormik({
 
     delete payload.history;
     var ticketId = values.ticketId;
-    //console.log("payload:", payload);
-    axios
-      .post("http://localhost:4000/status/add", payload)
+
+    axios.post("http://localhost:4000/status/add", payload)
       .then(res => {
         console.log("Adding new ticket status update with the following info:");
         console.log(res.data);
       })
       .catch(res => console.log(res));
 
-    axios
-      .patch(
-        "http://localhost:4000/ticket/update/" + ticketId,
-        newTicketStatusToClient
-      )
+    axios.patch("http://localhost:4000/ticket/update/" + ticketId,
+        newTicketStatusToClient)
       .then(res => {
         console.log("Changed status of ticket to client");
         console.log(res.data);
       })
       .catch(res => console.log(res));
 
-    console.log("Redirecting back to dashboard.");
-    history.push("/dashboard");
-
     setTimeout(() => {
       setSubmitting(false);
+      history.push("/dashboard");
     }, 1000);
   },
   displayName: "Update Ticket By Admin"
@@ -72,15 +66,15 @@ const formikEnhancer = withFormik({
 const MyForm = props => {
   const {
     values,
-    touched,
+    //touched,
     dirty,
-    errors,
+    //errors,
     handleChange,
     handleBlur,
     handleSubmit,
     handleReset,
-    setFieldValue,
-    setFieldTouched,
+    //setFieldValue,
+    //setFieldTouched,
     isSubmitting
   } = props;
   return (

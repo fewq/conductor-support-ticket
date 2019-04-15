@@ -68,7 +68,7 @@ class List extends Component {
         list,
         connectDropTarget,
         onClickSave,
-        onClickAddACard,
+        //onClickAddACard,
         attributeToEdit,
         itemToEdit
       } = this.props,
