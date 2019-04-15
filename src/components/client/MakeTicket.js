@@ -44,7 +44,13 @@ const formikEnhancer = withFormik({
       dateOfCreation: new Date(),
       priority: Number.MAX_SAFE_INTEGER,
       notified: false,
-      tasks: []
+      tasks: [
+        {
+          id: "0",
+          name: "Assign to department",
+          done: false
+        }
+      ]
     };
     delete payload.history;
 

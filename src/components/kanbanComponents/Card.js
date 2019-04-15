@@ -191,7 +191,7 @@ class Card extends Component {
       },
       onClickSend = value => {
         const title = card.title;
-        const status = card.status;
+        const status = card.statusToAdmin;
         const message = value;
         const link = card.ID;
         const email = card.email;

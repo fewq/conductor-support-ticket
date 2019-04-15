@@ -60,6 +60,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       priority: object.priority,
       notified: object.notified,
       tasks: [String(i)],
+      taskList: object.tasks,
       ticket: object
     };
   });
@@ -83,55 +84,32 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
   ];
 
   let taskList = {};
+  let count = 0;
   for (let i = 0; i < numberOfTickets; i++) {
+    for (let j = 0; j < cardList[i].taskList.length; j++) {
+      taskList[count] = cardList[i].taskList[j];
+      cardList[i].tasks[j] = String(count);
+      count++;
+    }
+
     switch (cardList[i].statusToAdmin) {
       case "Pending Admin":
         listTODO.push(String(i));
-        taskList[i] = {
-          id: String(i),
-          name: "Assign to department",
-          done: false
-        };
         break;
       case "Pending BA":
         listBA.push(String(i));
-        taskList[i] = {
-          id: String(i),
-          name: "Assign to department",
-          done: true
-        };
         break;
       case "Pending Developers":
         listDev.push(String(i));
-        taskList[i] = {
-          id: String(i),
-          name: "Assign to department",
-          done: true
-        };
         break;
       case "Pending Client":
         listClient.push(String(i));
-        taskList[i] = {
-          id: String(i),
-          name: "Assign to department",
-          done: true
-        };
         break;
       case "Resolved":
         listDone.push(String(i));
-        taskList[i] = {
-          id: String(i),
-          name: "Assign to department",
-          done: true
-        };
         break;
       case "Deleted":
         listDeleted.push(String(i));
-        taskList[i] = {
-          id: String(i),
-          name: "Assign to department",
-          done: true
-        };
         break;
       default:
         break;
