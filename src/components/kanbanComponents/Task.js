@@ -9,6 +9,7 @@ import {
   toggleTaskDone,
   deleteTask
 } from "../../actions/kanban";
+import axios from "axios";
 
 const mapStateToProps = ({ domainData, kanbanState }, { id }) => ({
   task: domainData.tasks.byId[id],
@@ -22,7 +23,9 @@ const mapDispatchToProps = (dispatch, { id }) => ({
     dispatch(showEditor(id, "task"));
     dispatch(closeCardMenu());
   },
-  onClickSave: newVal => dispatch(updateTask(id, newVal)),
+  onClickSave: newVal => {
+    dispatch(updateTask(id, newVal));
+  },
   onToggleTaskDone: taskId => dispatch(toggleTaskDone(taskId)),
   onClickDeleteTask: (taskId, index, cardId) =>
     dispatch(deleteTask(taskId, index, cardId))
@@ -47,7 +50,42 @@ const TaskProptypes = {
 };
 
 const Task = props => {
-  const { task, itemToEdit, attributeToEdit } = props;
+  const { task, itemToEdit, attributeToEdit } = props,
+    onClickSa = newVal => {
+      let newList = task.ticket.taskList;
+      let index = task.id;
+      const ID = task.ticket.ID;
+      for (let i = 0; i < newList.length; i++) {
+        if (newList[i].id == index) {
+          newList[i].name = newVal;
+          newList[i].ticket = {};
+        }
+      }
+      axios
+        .patch("http://localhost:4000/ticket/update/" + ID, {
+          tasks: newList
+        })
+        .catch(res => console.log(res));
+      props.onClickSave(newVal);
+    },
+    onClickTa = e => {
+      let newList = task.ticket.taskList;
+      let index = task.id;
+      const ID = task.ticket.ID;
+      const cur = task.ticket.done;
+      for (let i = 0; i < newList.length; i++) {
+        if (newList[i].id == index) {
+          newList[i].done = !cur;
+          newList[i].ticket = {};
+        }
+      }
+      axios
+        .patch("http://localhost:4000/ticket/update/" + ID, {
+          tasks: newList
+        })
+        .catch(res => console.log(res));
+      props.onClickTask(e);
+    };
   const shouldShowEditor = itemToEdit === task.id && attributeToEdit === "task";
 
   return (
@@ -66,7 +104,7 @@ const Task = props => {
             textareaClass={"edit-checklist"}
             shouldShowDelete={true}
             initialValue={task.name}
-            onClickSave={props.onClickSave}
+            onClickSave={onClickSa}
             onClickDelete={() => {
               props.onClickDeleteTask(task.id, props.index, props.cardId);
             }}
@@ -74,7 +112,7 @@ const Task = props => {
         </div>
       ) : (
         <span
-          onClick={props.onClickTask}
+          onClick={onClickTa}
           className={`${task.done && "done"} task-name`}
         >
           {task.name}

@@ -88,7 +88,10 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
   for (let i = 0; i < numberOfTickets; i++) {
     for (let j = 0; j < cardList[i].taskList.length; j++) {
       taskList[count] = cardList[i].taskList[j];
+      taskList[count].id = String(count);
+      taskList[count].ticket = cardList[i];
       cardList[i].tasks[j] = String(count);
+      cardList[i].taskList[j].id = String(count);
       count++;
     }
 

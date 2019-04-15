@@ -47,6 +47,7 @@ const formikEnhancer = withFormik({
       tasks: [
         {
           id: "0",
+          ticket: {},
           name: "Assign to department",
           done: false
         }
