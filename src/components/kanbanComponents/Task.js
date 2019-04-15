@@ -56,9 +56,9 @@ const Task = props => {
       let index = task.id;
       const ID = task.ticket.ID;
       for (let i = 0; i < newList.length; i++) {
+        newList[i].ticket = {};
         if (newList[i].id == index) {
           newList[i].name = newVal;
-          newList[i].ticket = {};
         }
       }
       axios
@@ -68,23 +68,25 @@ const Task = props => {
         .catch(res => console.log(res));
       props.onClickSave(newVal);
     },
-    onClickTa = e => {
-      let newList = task.ticket.taskList;
+    onClickTo = () => {
+      props.onToggleTaskDone(task.id);
+      let newList = Object.assign([], task.ticket.taskList);
       let index = task.id;
       const ID = task.ticket.ID;
-      const cur = task.ticket.done;
+      let cur = task.done;
+
       for (let i = 0; i < newList.length; i++) {
+        newList[i].ticket = {};
         if (newList[i].id == index) {
           newList[i].done = !cur;
-          newList[i].ticket = {};
         }
       }
+      console.log(newList);
       axios
         .patch("http://localhost:4000/ticket/update/" + ID, {
           tasks: newList
         })
         .catch(res => console.log(res));
-      props.onClickTask(e);
     };
   const shouldShowEditor = itemToEdit === task.id && attributeToEdit === "task";
 
@@ -94,9 +96,7 @@ const Task = props => {
         className={`fa  fa-${
           task.done ? "check-" : ""
         }square-o aria-hidden="true"`}
-        onClick={() => {
-          props.onToggleTaskDone(task.id);
-        }}
+        onClick={onClickTo}
       />
       {shouldShowEditor ? (
         <div className="editor-wrapper">
@@ -112,7 +112,7 @@ const Task = props => {
         </div>
       ) : (
         <span
-          onClick={onClickTa}
+          onClick={props.onClickTask}
           className={`${task.done && "done"} task-name`}
         >
           {task.name}
