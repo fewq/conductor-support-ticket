@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 
 import { disableEnterButton } from "../helper";
 import makeAnimated from "react-select/lib/animated";
+import FileUpload from "./FileUpload";
 import "../../css/form.css";
 
 // Validation Scheme with Yup //
@@ -24,7 +25,8 @@ const formikEnhancer = withFormik({
       ),
     title: Yup.string().required("Title Required!"),
     description: Yup.string().required("Description Required!"),
-    formType: Yup.string().required("What is this feedback primarily for?")
+    formType: Yup.string().required("What is this feedback primarily for?"),
+    attachments: Yup.array()
   }),
   mapPropsToValues: props => ({
     createdBy: props.userEmail,
@@ -32,13 +34,15 @@ const formikEnhancer = withFormik({
     title: "",
     description: "",
     formType: "bug",
-    history: props.history
+    history: props.history,
+    attachments: []
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const history = values.history;
     const payload = {
       ...values,
       topics: values.topics.map(t => t.value),
+      attachments: values.attachments.map(a => a.value),
       statusToClient: "Pending Admin",
       statusToAdmin: "Pending Admin",
       dateOfCreation: new Date(),
@@ -150,6 +154,15 @@ const MyForm = props => {
         onChange={handleChange}
         onBlur={handleBlur}
       />
+
+      <div>
+        <label>File Upload</label>
+        <FileUpload 
+        setFieldValue={setFieldValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
+         />
+      </div>
 
       <label htmlFor="description" style={{ display: "block" }}>
         Your Message
