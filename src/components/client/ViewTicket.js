@@ -36,13 +36,16 @@ export default class TicketList extends Component {
       });
 
     if (this.state.ticket.fileUpload.length != 0) {
-      var imgSources;
       axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
       // console.log(imgSources);
         .then(res => {
           console.log(res);
           this.setState({imgSources: res.data})
         })
+        .catch((error, res) => {
+          console.log("no status update history for this ticket.");
+          // console.log(error);
+        });
     }
   }
 
@@ -106,7 +109,7 @@ export default class TicketList extends Component {
       return this.state.imgSources.map((obj, i) => {
         var imgURL = new Buffer(obj, 'base64').toString('binary');
         console.log(imgURL)
-        return <img className="img-thumbnail" src={imgURL} alt={i}></img>
+        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i}></img>
       })
     }
   }
@@ -131,7 +134,8 @@ export default class TicketList extends Component {
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
-          <div className="d-flex justify-content-center my-2">
+          <div className="">
+          <h4> Screenshots </h4>
             {this.renderScreenshots()}
           </div>
         </div>
