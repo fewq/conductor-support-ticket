@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing 1`] = `
+<main
+  className="App"
+>
+  <header
+    className="App-header"
+  >
+    <img
+      alt="logo"
+      className="App-logo"
+      src="logo.svg"
+    />
+    <b>
+      ACNAPI Ticket Support System
+    </b>
+    <p
+      className="subtitle"
+    >
+      Powered by the Conductor project
+    </p>
+  </header>
+  <div
+    className="App-body"
+  >
+    <div>
+      <div>
+        <p>
+          Hey, 
+          , how can we assist you today?
+        </p>
+        <p>
+          Click 
+          <a
+            href="/restricted"
+          >
+             here
+          </a>
+           to access restricted area
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+`;

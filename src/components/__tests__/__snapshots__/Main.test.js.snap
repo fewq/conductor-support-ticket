@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing 1`] = `
+<div>
+  <div>
+    <p>
+      Hey, 
+      , how can we assist you today?
+    </p>
+    <p>
+      Click 
+      <a
+        href="/restricted"
+      >
+         here
+      </a>
+       to access restricted area
+    </p>
+  </div>
+</div>
+`;

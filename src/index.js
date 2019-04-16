@@ -56,10 +56,16 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       title: object.title,
       description: object.description,
       status: object.statusToClient,
+      statusToAdmin: object.statusToAdmin,
       priority: object.priority,
-      tasks: [String(i)]
+      notified: object.notified,
+      tasks: [String(i)],
+      taskList: object.tasks,
+      ticket: object
     };
   });
+  // sort by priority
+  cardList.sort((a, b) => a.priority - b.priority);
 
   // Update dynamically depending on status
   let listTODO = [];
@@ -67,16 +73,30 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
   let listDev = [];
   let listClient = [];
   let listDone = [];
+  let listDeleted = [];
+
+  let issues = [0, 0, 0, 0];
+  let issuesList = [
+    "API DevOps",
+    "Chart as a Service",
+    "Text Sentiment Analysis",
+    "Others"
+  ];
 
   let taskList = {};
+  let count = 0;
   for (let i = 0; i < numberOfTickets; i++) {
-    taskList[i] = {
-      id: String(i),
-      name: "Click to edit or delete",
-      done: false
-    };
+    for (let j = 0; j < cardList[i].taskList.length; j++) {
+      taskList[count] = cardList[i].taskList[j];
+      taskList[count].id = String(count);
+      cardList[i].tasks[j] = String(count);
+      cardList[i].taskList[j].id = String(count);
+      taskList[count].ticketID = cardList[i].ID;
+      count++;
+    }
+    cardList[i].id = String(i);
 
-    switch (tickets[i].statusToClient) {
+    switch (cardList[i].statusToAdmin) {
       case "Pending Admin":
         listTODO.push(String(i));
         break;
@@ -92,11 +112,21 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       case "Resolved":
         listDone.push(String(i));
         break;
+      case "Deleted":
+        listDeleted.push(String(i));
+        break;
       default:
         break;
     }
+
+    //////////////////////////
+    let topics = tickets[i].topics;
+    for (let j = 0; j < topics.length; j++) {
+      issues[issuesList.indexOf(topics[j])]++;
+    }
   }
-  //console.log("List ", listTODO);
+
+  const mostCommonIssue = issuesList[issues.indexOf(Math.max(...issues))];
 
   const initialState = {
     domainData: {
@@ -121,8 +151,13 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
           "4": {
             id: "4",
             name: "Done"
+          },
+          "5": {
+            id: "5",
+            name: "Deleted"
           }
         },
+        // To add deleted list, add "5" at the end
         allLists: ["0", "1", "2", "3", "4"]
       },
       cards: {
@@ -138,18 +173,20 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
         "1": listBA,
         "2": listDev,
         "3": listClient,
-        "4": listDone
+        "4": listDone,
+        "5": listDeleted
       },
       selectedCard: "ID_OF_CARD_IN_FOCUS",
       itemToEdit: "ID_OF_LIST_CARD_TASK_TO_EDIT",
-      attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST"
+      attributeToEdit: "EXAMPLE:_TITLE_DESCRIPTION_NEWLIST",
+      mostCommon: mostCommonIssue
     },
     uiState: {
       cardMenuPosition: {},
       shouldShowCardMenu: false
     }
   };
-  console.log(initialState);
+  //console.log(initialState);
 
   let store = createStore(
     kanbanReducers,

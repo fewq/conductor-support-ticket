@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing 1`] = `
+<tr>
+  <td>
+    Friday, April 12, 2019
+  </td>
+  <td>
+    bug
+  </td>
+  <td>
+    some title
+  </td>
+  <td>
+    Pending Admin
+  </td>
+  <td>
+    <span
+      class="badge badge-secondary"
+    />
+  </td>
+  <td>
+    <a
+      className="btn btn-primary"
+      href="/view/undefined"
+      onClick={[Function]}
+    >
+      View
+    </a>
+  </td>
+  <td>
+    <button
+      className="btn btn-danger"
+      onClick={[Function]}
+    >
+      Delete
+    </button>
+  </td>
+</tr>
+`;

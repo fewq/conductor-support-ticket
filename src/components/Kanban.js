@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Board from "./kanbanComponents/Board";
-import AddList from "./kanbanComponents/AddList";
+//import AddList from "./kanbanComponents/AddList";
 import ListContainer from "../containers/ListContainer";
 import { closeAllPopups, showEditor, createList } from "../actions/kanban";
 import "../css/kanban.scss";
@@ -10,7 +10,8 @@ import "../css/kanban.scss";
 const mapStateToProps = ({ domainData, kanbanState }) => ({
   allLists: domainData.lists.allLists,
   itemToEdit: kanbanState.itemToEdit,
-  attributeToEdit: kanbanState.attributeToEdit
+  attributeToEdit: kanbanState.attributeToEdit,
+  mostCommon: kanbanState.mostCommon
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,7 +35,7 @@ const KanbanPropTypes = {
 
 const Kanban = props => (
   <div className="kanban" onClick={props.onBodyClick}>
-    {/* <h1>Kanban here</h1> */}
+    <p className="subtitle">Most common issue category: {props.mostCommon}</p>
     <Board>
       {props.allLists.map((id, i) => (
         <ListContainer id={id} key={id} index={i} />

@@ -9,6 +9,7 @@ import jwtDecode from "jwt-decode";
 
 import { disableEnterButton } from "../helper";
 import makeAnimated from "react-select/lib/animated";
+import FileUpload from "./FileUpload";
 import "../../css/form.css";
 
 // Validation Scheme with Yup //
@@ -24,7 +25,8 @@ const formikEnhancer = withFormik({
       ),
     title: Yup.string().required("Title Required!"),
     description: Yup.string().required("Description Required!"),
-    formType: Yup.string().required("What is this feedback primarily for?")
+    formType: Yup.string().required("What is this feedback primarily for?"),
+    files: Yup.array()
   }),
   mapPropsToValues: props => ({
     createdBy: props.userEmail,
@@ -32,32 +34,50 @@ const formikEnhancer = withFormik({
     title: "",
     description: "",
     formType: "bug",
-    history: props.history
+    history: props.history,
+    files: []
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const history = values.history;
     const payload = {
       ...values,
       topics: values.topics.map(t => t.value),
+      files: values.files.map(f => { 
+        return {buffer: f.buffer}}),
       statusToClient: "Pending Admin",
+      statusToAdmin: "Pending Admin",
       dateOfCreation: new Date(),
-      priority: 1,
-      tasks: []
+      priority: Number.MAX_SAFE_INTEGER,
+      notified: false,
+      tasks: [
+        {
+          id: "0",
+          index: 0,
+          ticketID: "0",
+          name: "Assign to department",
+          done: false
+        }
+      ]
     };
     delete payload.history;
+    console.log("payload ")
+    console.log(payload);
 
-    axios.post("http://localhost:4000/ticket/add", payload).then(res => {
-      console.log("form received the following payload:");
-      console.log(payload);
-      console.log(res.data);
-      console.log(res.body);
-    });
-
+    // email content
     const title = values.title;
     const description = values.description;
     const client = values.createdBy;
     const email = "admin@conductor.com";
     const target = "admin";
+
+    axios
+      .post("http://localhost:4000/ticket/add", payload)
+      .then(res => {
+        console.log("Adding new ticket");
+        console.log(res.data);
+      })
+      .catch(res => console.log(res));
+
     axios.post("/api/notify", {
       email,
       title,
@@ -66,10 +86,9 @@ const formikEnhancer = withFormik({
       target
     });
 
-    history.push("/dashboard");
-
     setTimeout(() => {
       setSubmitting(false);
+      history.push("/dashboard");
     }, 1000);
   },
   displayName: "Ticket Form"
@@ -96,13 +115,13 @@ const MyForm = props => {
       onSubmit={handleSubmit}
       onKeyPress={disableEnterButton}
     >
-      <h1 class="subtitle">Ticket Form</h1>
-      <div class="radio-group">
+      <h1 className="subtitle">Ticket Form</h1>
+      <div className="radio-group">
         <label>Ticket Type</label>
-        <div class="radio-container">
+        <div className="radio-container">
           {formType.map(option => (
             <React.Fragment key={option}>
-              <div class="radio-item">
+              <div className="radio-item">
                 <label htmlFor={option}>
                   {option}
                   <input
@@ -138,6 +157,16 @@ const MyForm = props => {
         onChange={handleChange}
         onBlur={handleBlur}
       />
+
+      <div>
+        <label>File Upload</label>
+        <FileUpload 
+        setFieldValue={setFieldValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values.files}
+         />
+      </div>
 
       <label htmlFor="description" style={{ display: "block" }}>
         Your Message
@@ -176,7 +205,7 @@ const MyForm = props => {
 // React-select component modified to fit Formik
 export class MySelect extends React.Component {
   handleChange = value => {
-    // this is going to call setFieldValue and manually update values.topcis
+    // this is going to call setFieldValue and manually update values.topics
     this.props.onChange("topics", value);
   };
 

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot testing 1`] = `
+<div
+  className="kanban-board-container"
+>
+  <div
+    className="kanban-board"
+  />
+</div>
+`;

@@ -2,6 +2,7 @@
 /* eslint "react/no-find-dom-node": 0 */
 
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { findDOMNode } from "react-dom";
 import PropTypes from "prop-types";
 import TaskList from "./TaskList";
@@ -26,82 +27,55 @@ const dragSourceSpec = {
     isDragging: (props, monitor) => monitor.getItem().id === props.id,
 
     endDrag(props, monitor) {
-      let newTicketStatusToClient;
+      let newStatusToAdmin;
       const newParent = monitor.getItem().parentListId;
       switch (newParent) {
         case "0":
-          newTicketStatusToClient = "Pending Admin";
+          newStatusToAdmin = "Pending Admin";
           break;
         case "1":
-          newTicketStatusToClient = "Pending BA";
+          newStatusToAdmin = "Pending BA";
           break;
         case "2":
-          newTicketStatusToClient = "Pending Developers";
+          newStatusToAdmin = "Pending Developers";
           break;
         case "3":
-          newTicketStatusToClient = "Pending Client";
+          newStatusToAdmin = "Pending Client";
           break;
         case "4":
-          newTicketStatusToClient = "Resolved";
+          newStatusToAdmin = "Resolved";
+          break;
+        case "5":
+          newStatusToAdmin = "Deleted";
           break;
         default:
           break;
       }
 
       const ticketID = props.card.ID;
-      let payload = {
-        attendedBy: jwtDecode(localStorage.getItem("id_token")).email,
-        ticketId: ticketID,
-        prevStatusToClient: props.card.status,
-        statusToClient: newTicketStatusToClient,
-        statusToAdmin: "",
-        dateOfUpdate: new Date(),
-        comments: ""
-      };
 
-      axios
-        .post("http://localhost:4000/status/add", payload)
-        .then(res => {
-          console.log(
-            "Adding new ticket status update with the following info:"
-          );
-          console.log(res.data);
-        })
-        .catch(res => console.log(res));
+      // update status if status changed
+      if (props.card.statusToAdmin !== newStatusToAdmin) {
+        // local change
+        props.updateCard("statusToAdmin", newStatusToAdmin);
+        props.updateCard("notified", false);
 
-      // local kanban change
-      props.updateCard("status", newTicketStatusToClient);
-
-      axios
-        .patch("http://localhost:4000/ticket/update/" + ticketID, {
-          statusToClient: newTicketStatusToClient
-        })
-        .then(res => {
-          console.log("Changed status of ticket to client");
-          console.log(res.data);
-        })
-        .catch(res => console.log(res));
-
-      /*
-      switch (props.parentListId) {
-        case "1":
-          console.log("1");
-          break;
-        case "2":
-          console.log("2");
-          break;
-        default:
-          console.log("0");
-      }*/
-      //axios.post("/api/notify", {
-      //ticketTitle
-      //});
-      //console.log(props);
+        // backend change
+        axios
+          .patch("http://localhost:4000/ticket/update/" + ticketID, {
+            statusToAdmin: newStatusToAdmin,
+            notified: false
+          })
+          .then(res => {
+            console.log(
+              "Changed status of ticket to admin, and notified status"
+            );
+            console.log(res.data.statusToAdmin);
+            console.log("Notified: " + res.data.notified);
+          })
+          .catch(res => console.log(res));
+      }
     }
-    // endDrag (props) {
-    // 	// if (!monitor.didDrop()) {props.replacePlaceholderWithCurDraggingCard(props.curState); return;}
-    // 	// props.replacePlaceholderWithCurDraggingCard(props.curState);
-    // }
   },
   dragSourceCollect = function dragSourceCollect(connect, monitor) {
     return {
@@ -205,6 +179,8 @@ class Card extends Component {
               description: value
             };
             break;
+          default:
+            break;
         }
 
         axios
@@ -217,12 +193,13 @@ class Card extends Component {
       },
       onClickSend = value => {
         const title = card.title;
-        const status = card.status;
+        const prevStatus = card.status;
+        const status = card.statusToAdmin;
         const message = value;
         const link = card.ID;
         const email = card.email;
         const target = "client";
-        if (status != "Pending Admin") {
+        if (status !== "Pending Admin") {
           axios.post("/api/notify", {
             email,
             title,
@@ -231,9 +208,71 @@ class Card extends Component {
             link,
             target
           });
+          this.props.updateCard("notified", true);
+          this.props.updateCard("status", status);
+          let payload = {
+            attendedBy: jwtDecode(localStorage.getItem("id_token")).email,
+            ticketId: link,
+            prevStatusToClient: prevStatus,
+            statusToClient: status,
+            statusToAdmin: status,
+            dateOfUpdate: new Date(),
+            comments: message
+          };
+
+          axios
+            .post("http://localhost:4000/status/add", payload)
+            .then(res => {
+              console.log(
+                "Adding new ticket status update with the following info:"
+              );
+              console.log(res.data);
+            })
+            .catch(res => console.log(res));
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + link, {
+              statusToAdmin: status,
+              statusToClient: status,
+              notified: true
+            })
+            .catch(res => console.log(res));
         } else {
           console.log("Email not sent");
         }
+
+        /*
+        const updatedDescription =
+          card.description +
+          "\n\nAdmin's message: (" +
+          new Date().toString() +
+          ")\n" +
+          message;
+        console.log(updatedDescription);
+        this.props.updateCard("description", updatedDescription);
+*/
+        axios
+          .patch("http://localhost:4000/ticket/update/" + link, {
+            notified: true
+          })
+          .catch(res => console.log(res));
+      },
+      onClickNewTask = taskName => {
+        this.props.onAddATask(card.id, taskName);
+        let newList = card.taskList;
+        const ind = newList.length;
+        newList[ind] = {
+          id: String(ind),
+          index: ind,
+          ticketID: card.id,
+          name: taskName,
+          done: false
+        };
+        axios
+          .patch("http://localhost:4000/ticket/update/" + card.ID, {
+            tasks: newList
+          })
+          .catch(res => console.log(res));
       };
 
     // const { dragItem} = this.props;
@@ -250,6 +289,7 @@ class Card extends Component {
               aria-hidden="true"
               onClick={e => {
                 this.props.onClickMenu(e.target);
+                console.log(e.target);
                 e.stopPropagation();
               }}
             />
@@ -268,7 +308,10 @@ class Card extends Component {
                 e.stopPropagation();
               }}
               menuPosition={this.props.menuPosition}
-              onClickDeleteCard={onClickDeleteCard}
+              onClickDeleteCard={e => {
+                e.stopPropagation();
+                onClickDeleteCard(card.ID);
+              }}
               onClickEditDescription={e => {
                 onShowDetails();
                 showEditor("description");
@@ -277,6 +320,10 @@ class Card extends Component {
               onClickNotify={() => {
                 this.props.onClickNotify();
               }}
+              onClickToggleNotify={() => {
+                this.props.onClickToggleNotify(card.notified, card.ID);
+              }}
+              status={card.statusToAdmin}
             />
           )}
           <div className="card-title-container">
@@ -312,6 +359,7 @@ class Card extends Component {
               onClickSave={onClickSend}
             />
           )}
+
           {this.props.shouldShowDetails === true ? (
             <div className="card-details">
               <div className="description">
@@ -358,9 +406,7 @@ class Card extends Component {
                   <Editor
                     textareaClass={"edit-checklist"}
                     placeholder="Add a task..."
-                    onClickSave={taskName => {
-                      this.props.onAddATask(card.id, taskName);
-                    }}
+                    onClickSave={onClickNewTask}
                   />
                 ) : (
                   <div
@@ -373,11 +419,29 @@ class Card extends Component {
                   </div>
                 )}
               </div>
+              <Link
+                to={{
+                  pathname: `/view/${card.ID}`,
+                  state: {
+                    ticket: card.ticket
+                  }
+                }}
+                className="card-view"
+                id="card-view-details"
+              >
+                View details
+              </Link>
             </div>
           ) : (
             undefined
           )}
           <div className={isDragging ? "placeholder" : ""} />
+          {card.statusToAdmin !== "Pending Admin" &&
+            (card.notified ? (
+              <div className="card-notified"> Client Notified </div>
+            ) : (
+              <div className="card-not-notified"> Client Not Notified </div>
+            ))}
         </div>
       )
     );
@@ -417,6 +481,7 @@ Card.propTypes = {
   onAddATask: PropTypes.func.isRequired,
   onToggleShowDetails: PropTypes.func.isRequired,
   onClickNotify: PropTypes.func.isRequired,
+  onClickToggleNotify: PropTypes.func.isRequired,
   onClickDeleteCard: PropTypes.func.isRequired,
   curState: PropTypes.object.isRequired, // we want to preserve card state while/after Dn*/,
   isDragging: PropTypes.bool,

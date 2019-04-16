@@ -10,7 +10,9 @@ const cardMenuPropTypes = {
   onClickEditDescription: PropTypes.func,
   onClickDeleteCard: PropTypes.func /*.isRequired*/,
   onClickNotify: PropTypes.func /*.isRequired*/,
-  menuPosition: PropTypes.object /*.isRequired*/
+  onClickToggleNotify: PropTypes.func /*.isRequired*/,
+  menuPosition: PropTypes.object /*.isRequired*/,
+  status: PropTypes.string
 };
 
 const CardMenu = props => (
@@ -19,7 +21,7 @@ const CardMenu = props => (
     style={props.menuPosition}
     onClick={e => e.stopPropagation()}
   >
-    <div className="header">Card Actions</div>
+    <div className="header">Ticket Actions</div>
     <hr />
     <div className="action" onClick={props.onClickAddATask}>
       Add a task...
@@ -32,11 +34,17 @@ const CardMenu = props => (
         ? "Edit description..."
         : "Add description..."}
     </div>
-    <div className="action" onClick={props.onClickDeleteCard}>
-      Delete card...
-    </div>
+    {/*props.status !== "Deleted" && (
+      <div className="action" onClick={props.onClickDeleteCard}>
+        Delete ticket...
+      </div>
+    )*/}
+
     <div className="action" onClick={props.onClickNotify}>
-      Notify user...
+      Notify client...
+    </div>
+    <div className="action" onClick={props.onClickToggleNotify}>
+      Toggle notify...
     </div>
   </div>
 );

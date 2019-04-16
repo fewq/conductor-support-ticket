@@ -45,19 +45,6 @@ export default class TicketList extends Component {
     this.setState({ ticket: this.state.ticket.filter((_, i) => i !== index) });
   }
 
-  textClusterRequest = () => {
-    axios
-      .get("http://localhost:4000/ticket/getall")
-      .then(response => {
-        console.log("text cluster request");
-        console.log(response);
-        this.setState({ ticket: response.data });
-      })
-      .catch((error, response) => {
-        console.log(error);
-      });
-  };
-
   render() {
     return (
       <div>
@@ -72,17 +59,10 @@ export default class TicketList extends Component {
               <th>Status</th>
               <th>Ticket ID</th>
               <th colSpan="2">Action</th>
-              <th>
-                <button
-                  onClick={() => this.textClusterRequest()}
-                  className="btn btn-info"
-                >
-                  Text Clustering
-                </button>
-              </th>
+              <th />
             </tr>
           </thead>
-          <tbody>{this.tabRow()}</tbody>
+          <tbody>{this.tabRow(this.state.ticket, this.state.ticket._id)}</tbody>
         </table>
       </div>
     );

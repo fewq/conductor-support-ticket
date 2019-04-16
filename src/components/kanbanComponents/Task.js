@@ -9,6 +9,7 @@ import {
   toggleTaskDone,
   deleteTask
 } from "../../actions/kanban";
+import axios from "axios";
 
 const mapStateToProps = ({ domainData, kanbanState }, { id }) => ({
   task: domainData.tasks.byId[id],
@@ -22,7 +23,9 @@ const mapDispatchToProps = (dispatch, { id }) => ({
     dispatch(showEditor(id, "task"));
     dispatch(closeCardMenu());
   },
-  onClickSave: newVal => dispatch(updateTask(id, newVal)),
+  onClickSave: newVal => {
+    dispatch(updateTask(id, newVal));
+  },
   onToggleTaskDone: taskId => dispatch(toggleTaskDone(taskId)),
   onClickDeleteTask: (taskId, index, cardId) =>
     dispatch(deleteTask(taskId, index, cardId))
@@ -47,7 +50,70 @@ const TaskProptypes = {
 };
 
 const Task = props => {
-  const { task, itemToEdit, attributeToEdit } = props;
+  const { task, itemToEdit, attributeToEdit } = props,
+    onClickSa = newVal => {
+      const ID = task.ticketID;
+      axios
+        .get("http://localhost:4000/ticket/view/" + ID)
+        .then(response => {
+          const ticket = response.data;
+          const newList = ticket.tasks;
+          newList[task.index].name = newVal;
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + ID, {
+              tasks: newList
+            })
+            .catch(res => console.log(res));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+      props.onClickSave(newVal);
+    },
+    onClickTo = () => {
+      props.onToggleTaskDone(task.id);
+      const ID = task.ticketID;
+      axios
+        .get("http://localhost:4000/ticket/view/" + ID)
+        .then(response => {
+          const ticket = response.data;
+          const newList = ticket.tasks;
+          const cur = task.done;
+          newList[task.index].done = !cur;
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + ID, {
+              tasks: newList
+            })
+            .catch(res => console.log(res));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    onClickDe = () => {
+      props.onClickDeleteTask(task.id, props.index, props.cardId);
+      const ID = task.ticketID;
+      axios
+        .get("http://localhost:4000/ticket/view/" + ID)
+        .then(response => {
+          const ticket = response.data;
+          const newList = ticket.tasks;
+          const ind = task.index;
+          newList.splice(ind);
+
+          axios
+            .patch("http://localhost:4000/ticket/update/" + ID, {
+              tasks: newList
+            })
+            .catch(res => console.log(res));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    };
   const shouldShowEditor = itemToEdit === task.id && attributeToEdit === "task";
 
   return (
@@ -56,9 +122,7 @@ const Task = props => {
         className={`fa  fa-${
           task.done ? "check-" : ""
         }square-o aria-hidden="true"`}
-        onClick={() => {
-          props.onToggleTaskDone(task.id);
-        }}
+        onClick={onClickTo}
       />
       {shouldShowEditor ? (
         <div className="editor-wrapper">
@@ -66,10 +130,8 @@ const Task = props => {
             textareaClass={"edit-checklist"}
             shouldShowDelete={true}
             initialValue={task.name}
-            onClickSave={props.onClickSave}
-            onClickDelete={() => {
-              props.onClickDeleteTask(task.id, props.index, props.cardId);
-            }}
+            onClickSave={onClickSa}
+            onClickDelete={onClickDe}
           />
         </div>
       ) : (

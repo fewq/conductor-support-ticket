@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import Card from "../components/kanbanComponents/Card";
 import { connect } from "react-redux";
+import axios from "axios";
 import {
-  deleteCard,
+  //deleteCard,
   showCardMenu,
   closeCardMenu,
   sortCard,
   createTask,
   showEditor,
   closeEditor,
-  updateCard
+  updateCard,
+  moveCard
 } from "../actions/kanban";
 
 const mapStateToProps = ({ domainData, kanbanState, uiState }, { id }) => ({
@@ -34,14 +36,29 @@ const mapDispatchToProps = (dispatch, { id, index, parentListId }) => ({
   },
   updateCard: (field, newVal) => dispatch(updateCard(id, field, newVal)),
   onAddATask: (cardId, taskName) => dispatch(createTask(cardId, taskName)),
-  onClickDeleteCard: e => {
-    e.stopPropagation();
-    dispatch(deleteCard(id, index, parentListId));
+  onClickDeleteCard: ticketID => {
+    //dispatch(deleteCard(id, index, parentListId));
+    dispatch(moveCard(parentListId, index, "5", "0"));
+    console.log(id);
     dispatch(closeCardMenu());
+    axios
+      .patch("http://localhost:4000/ticket/update/" + ticketID, {
+        statusToAdmin: "Deleted"
+      })
+      .catch(res => console.log(res));
   },
   onClickNotify: () => {
     dispatch(showEditor(id, "message"));
     dispatch(closeCardMenu());
+  },
+  onClickToggleNotify: (notified, ticketID) => {
+    dispatch(updateCard(id, "notified", !notified));
+    dispatch(closeCardMenu());
+    axios
+      .patch("http://localhost:4000/ticket/update/" + ticketID, {
+        notified: !notified
+      })
+      .catch(res => console.log(res));
   },
   handleOnSortCard: (hoverID, hoverIndex, dragID, dragIndex) =>
     dispatch(sortCard(parentListId, hoverID, hoverIndex, dragID, dragIndex))

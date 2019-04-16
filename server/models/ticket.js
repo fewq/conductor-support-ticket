@@ -1,50 +1,60 @@
 // Mongoose allows us to also create a schema for the Ticket. But for now we don't really exactly need this because the frontend form will always determine the json object that is being uploaded
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const StatusUpdate = require('./statusUpdate.js');
+const StatusUpdate = require("./statusUpdate.js");
 
 let Ticket = new Schema({
   dateOfCreation: {
-    type: Date,
+    type: Date
   },
   statusToClient: {
-    type: String,
+    type: String
   },
   statusToAdmin: {
-    type: String,
+    type: String
   },
   createdBy: {
     type: String, //email or usertitle
+    required: true
   },
   completedBy: {
-    type: String, //name of employee
+    type: String //name of employee
   },
   dateOfCompletion: {
-    type: Date,
+    type: Date
   },
   description: {
-    type: String, 
+    type: String
   },
   title: {
-    type: String,
+    type: String
   },
   topics: {
-    type: Array,
+    type: Array
   },
   formType: {
     type: String
   },
-  numUploads:{
+  priority: {
+    type: Number
+  },
+  notified: {
+    type: Boolean
+  },
+  tasks: {
+    type: Array
+  },
+  numUploads: {
     type: Number
   },
   fileUpload: [Buffer]
 });
 
-Ticket.methods.toJSON = function () {
-  const ticket = this
-  const ticketObject = ticket.toObject()
-  return ticketObject
-}
+Ticket.methods.toJSON = function() {
+  const ticket = this;
+  const ticketObject = ticket.toObject();
+  return ticketObject;
+};
 
-module.exports = mongoose.model('Ticket', Ticket);
+module.exports = mongoose.model("Ticket", Ticket);
