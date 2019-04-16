@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const ticketRoutes = express.Router();
 let Ticket = require('../models/ticket');
@@ -46,7 +47,9 @@ ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) =>
 // GET: Retrieve all tickets
 ticketRoutes.route('/getall').get(async (req, res) => {
     try {
-        const tickets = await Ticket.find()
+        const tickets = await Ticket.find({
+            statusToClient:{$nin: "Deleted"}
+        })
         res.status(200).send(tickets)
     } catch (e) {
         res.status(500).send()
@@ -121,7 +124,7 @@ ticketRoutes.route('/update/:id').patch(async (req, res) => {
         await ticket.save()
         res.send(ticket)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(500).send()
     }
 })
 
@@ -134,6 +137,23 @@ ticketRoutes.route('/delete/:id').delete( async (req, res) => {
         if (!ticket) {
             res.status(404).send()
         }
+        res.send(ticket)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+ticketRoutes.route('/deletetic/:id').patch(async (req, res) => {
+    try {
+        const ticket = await Ticket.findOne({
+            _id: req.params.id
+        })
+        if (!ticket) {
+            res.status(404).send()
+        }
+        ticket.statusToClient = "Deleted"
+        ticket.statusToAdmin = "Deleted"
+        await ticket.save()
         res.send(ticket)
     } catch (e) {
         res.status(500).send()
