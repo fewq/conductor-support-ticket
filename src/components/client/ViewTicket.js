@@ -12,7 +12,8 @@ export default class TicketList extends Component {
     this.state = {
       ticket: ticket,
       displayDate: displayDate,
-      statusUpdates: []
+      statusUpdates: [],
+      imgSources: [],
     };
   }
 
@@ -33,6 +34,19 @@ export default class TicketList extends Component {
       .catch((error, response) => {
         console.log(error);
       });
+
+    if (this.state.ticket.fileUpload.length != 0) {
+      axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
+      // console.log(imgSources);
+        .then(res => {
+          console.log(res);
+          this.setState({imgSources: res.data})
+        })
+        .catch((error, res) => {
+          console.log("no status update history for this ticket.");
+          // console.log(error);
+        });
+    }
   }
 
   alert = () => {
@@ -90,6 +104,16 @@ export default class TicketList extends Component {
     }
   }
 
+  renderScreenshots() {
+    if (this.state.imgSources.length != 0) {
+      return this.state.imgSources.map((obj, i) => {
+        var imgURL = new Buffer(obj, 'base64').toString('binary');
+        console.log(imgURL)
+        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i}></img>
+      })
+    }
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -109,6 +133,10 @@ export default class TicketList extends Component {
           <div className="my-5 mb-2">
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
+          </div>
+          <div className="">
+          <h4> Screenshots </h4>
+            {this.renderScreenshots()}
           </div>
         </div>
         {this.state.statusUpdates.map((obj, i) => (
