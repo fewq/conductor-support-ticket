@@ -13,7 +13,7 @@ export default class TicketList extends Component {
       ticket: ticket,
       displayDate: displayDate,
       statusUpdates: [],
-      screenshots: [],
+      imgSources: [],
     };
   }
 
@@ -34,6 +34,16 @@ export default class TicketList extends Component {
       .catch((error, response) => {
         console.log(error);
       });
+
+    if (this.state.ticket.fileUpload.length != 0) {
+      var imgSources;
+      axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
+      // console.log(imgSources);
+        .then(res => {
+          console.log(res);
+          this.setState({imgSources: res.data})
+        })
+    }
   }
 
   alert = () => {
@@ -92,10 +102,12 @@ export default class TicketList extends Component {
   }
 
   renderScreenshots() {
-    if (this.state.ticket.fileUpload.length != 0) {
-      return this.state.ticket.files.map((obj, i) => {
-          return <img src={obj} alt={obj.name}></img>
-      } )
+    if (this.state.imgSources.length != 0) {
+      return this.state.imgSources.map((obj, i) => {
+        var imgURL = new Buffer(obj, 'base64').toString('binary');
+        console.log(imgURL)
+        return <img className="img-thumbnail" src={imgURL} alt={i}></img>
+      })
     }
   }
 
@@ -119,7 +131,7 @@ export default class TicketList extends Component {
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
-          <div className="my-5 mb-2">
+          <div className="d-flex justify-content-center my-2">
             {this.renderScreenshots()}
           </div>
         </div>

@@ -87,7 +87,8 @@ const FileUpload = props => {
       onDrop: acceptedFiles => {
         acceptedFiles.map(async file => {
             let reader = await getBase64(file);
-            let bufferValue = reader.result.replace("data:image/png;base64,", "");
+            let bufferValue = reader.result;
+            // let bufferValue = reader.result.replace("data:image/png;base64,", "");
             setFieldValue("files", value.concat(
               Object.assign(file, {preview: URL.createObjectURL(file)}, {buffer: bufferValue})
             ))

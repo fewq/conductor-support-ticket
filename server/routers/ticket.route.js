@@ -88,7 +88,7 @@ ticketRoutes.route('/view/:id/fileupload').get(async (req, res) => {
     try{
         
         const ticket = await Ticket.findOne({_id: req.params.id});
-        const data = new Array;
+        const data = [];
         if(!ticket || !ticket.fileUpload){
             throw new Error(); 
         }
