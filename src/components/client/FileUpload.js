@@ -60,6 +60,17 @@ const img = {
   height: '100%'
 };
 
+const getBase64 = file => {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onloadend = (event) => {
+      console.log(event.target.result);
+      resolve(reader);
+    }
+    reader.readAsDataURL(file);
+  })
+}
+
 const FileUpload = props => {
 	const {setFieldValue, onChange, onBlur, value} = props;
   const {
@@ -74,12 +85,23 @@ const FileUpload = props => {
       noKeyboard: true,
       noClick: true,
       onDrop: acceptedFiles => {
-        setFieldValue("attachments",value.concat(acceptedFiles.map(file => 
-          Object.assign(file, {preview: URL.createObjectURL(file)})
-        )));
-        // setFieldValue("attachments", files);
-        onChange("attachments", value);
-        onBlur("attachments", true);
+        acceptedFiles.map(async file => {
+            let reader = await getBase64(file);
+            let bufferValue = reader.result.replace("data:image/png;base64,", "");
+            setFieldValue("files", value.concat(
+              Object.assign(file, {preview: URL.createObjectURL(file)}, {buffer: bufferValue})
+            ))
+            console.log(value);
+      });
+        // setFieldValue("files",value.concat(acceptedFiles.map(file => 
+        //   Object.assign(file, 
+        //     {preview: URL.createObjectURL(file)}, 
+        //     {buffer: new FileReader().readAsDataURL(file)}
+        //   )
+        // )));
+        // console.log(value);
+        // onChange("files", value);
+        // onBlur("files", true);
 	  	}
 	  });
 

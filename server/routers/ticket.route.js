@@ -18,12 +18,12 @@ const upload = multer({
 ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) => {
     let ticket = new Ticket(req.body);
     const data = [];
-    console.log(req.files.buffer)
-    if (req.files != null) { 
-        ticket.numUploads = req.files.length
-        for(let i = 0; i<req.files.length; i++){
-            data[i] = req.files[i].buffer;
-            console.log(req.files[i].buffer);
+    if (req.body.files != null) {
+        console.log("there are files attached.")
+        ticket.numUploads = req.body.files.length
+        for(let i = 0; i<req.body.files.length; i++){
+            data[i] = req.body.files[i].buffer;
+            console.log(req.body.files[i].buffer);
         }
         ticket.fileUpload = data //we created a new fileUpload of type: buffer in Ticket model
     }
@@ -92,7 +92,7 @@ ticketRoutes.route('/view/:id/fileupload').get(async (req, res) => {
         if(!ticket || !ticket.fileUpload){
             throw new Error(); 
         }
-        for(i=0;i<ticket.numUploads;i++){
+        for(let i=0; i<ticket.numUploads; i++){
            data[i] = ticket.fileUpload[i] 
         }
         res.set('Content-Type', 'image/jpg') //default contatent type is JSON

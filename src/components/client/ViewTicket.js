@@ -12,7 +12,8 @@ export default class TicketList extends Component {
     this.state = {
       ticket: ticket,
       displayDate: displayDate,
-      statusUpdates: []
+      statusUpdates: [],
+      screenshots: [],
     };
   }
 
@@ -90,6 +91,14 @@ export default class TicketList extends Component {
     }
   }
 
+  renderScreenshots() {
+    if (this.state.ticket.fileUpload.length != 0) {
+      return this.state.ticket.files.map((obj, i) => {
+          return <img src={obj} alt={obj.name}></img>
+      } )
+    }
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -109,6 +118,9 @@ export default class TicketList extends Component {
           <div className="my-5 mb-2">
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
+          </div>
+          <div className="my-5 mb-2">
+            {this.renderScreenshots()}
           </div>
         </div>
         {this.state.statusUpdates.map((obj, i) => (

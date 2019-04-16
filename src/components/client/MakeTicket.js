@@ -26,7 +26,7 @@ const formikEnhancer = withFormik({
     title: Yup.string().required("Title Required!"),
     description: Yup.string().required("Description Required!"),
     formType: Yup.string().required("What is this feedback primarily for?"),
-    attachments: Yup.array()
+    files: Yup.array()
   }),
   mapPropsToValues: props => ({
     createdBy: props.userEmail,
@@ -35,14 +35,15 @@ const formikEnhancer = withFormik({
     description: "",
     formType: "bug",
     history: props.history,
-    attachments: []
+    files: []
   }),
   handleSubmit: (values, { setSubmitting }) => {
     const history = values.history;
     const payload = {
       ...values,
       topics: values.topics.map(t => t.value),
-      attachments: values.attachments.map(a => a.value),
+      files: values.files.map(f => { 
+        return {buffer: f.buffer}}),
       statusToClient: "Pending Admin",
       statusToAdmin: "Pending Admin",
       dateOfCreation: new Date(),
@@ -59,6 +60,8 @@ const formikEnhancer = withFormik({
       ]
     };
     delete payload.history;
+    console.log("payload ")
+    console.log(payload);
 
     // email content
     const title = values.title;
@@ -161,7 +164,7 @@ const MyForm = props => {
         setFieldValue={setFieldValue}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.attachments}
+        value={values.files}
          />
       </div>
 
