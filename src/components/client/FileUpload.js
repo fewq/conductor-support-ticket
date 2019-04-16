@@ -61,8 +61,7 @@ const img = {
 };
 
 const FileUpload = props => {
-	const {setFieldValue} = props;
-  const [files, setFiles] = useState([]);
+	const {setFieldValue, onChange, onBlur, value} = props;
   const {
     getRootProps, 
     getInputProps, 
@@ -75,21 +74,24 @@ const FileUpload = props => {
       noKeyboard: true,
       noClick: true,
       onDrop: acceptedFiles => {
-        setFiles(files.concat(acceptedFiles.map(file => 
+        setFieldValue("attachments",value.concat(acceptedFiles.map(file => 
           Object.assign(file, {preview: URL.createObjectURL(file)})
         )));
-        setFieldValue("attachments", files);
+        // setFieldValue("attachments", files);
+        onChange("attachments", value);
+        onBlur("attachments", true);
 	  	}
 	  });
 
-	const thumbs = files.map(file => (
+	const thumbs = value.map(file => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
         <img
           src={file.preview}
           style={img}
-          alt={"thumbnail of your screenshot"}
+          alt={file.name}
         />
+        <p>{file.name}</p>
       </div>
     </div>
   ));
@@ -97,8 +99,8 @@ const FileUpload = props => {
   
   useEffect(() => () => {
     // Revoke the data uris to avoid memory leaks
-    files.forEach(file => URL.revokeObjectURL(file.preview));
-  }, [files]);
+    value.forEach(file => URL.revokeObjectURL(file.preview));
+  }, [value]);
   
   const style = useMemo(() => ({
     ...baseStyle,

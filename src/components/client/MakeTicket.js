@@ -161,6 +161,7 @@ const MyForm = props => {
         setFieldValue={setFieldValue}
         onChange={handleChange}
         onBlur={handleBlur}
+        value={values.attachments}
          />
       </div>
 
@@ -201,7 +202,7 @@ const MyForm = props => {
 // React-select component modified to fit Formik
 export class MySelect extends React.Component {
   handleChange = value => {
-    // this is going to call setFieldValue and manually update values.topcis
+    // this is going to call setFieldValue and manually update values.topics
     this.props.onChange("topics", value);
   };
 

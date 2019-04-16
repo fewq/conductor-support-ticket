@@ -17,13 +17,13 @@ const upload = multer({
 // POST: Add a ticket
 ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) => {
     let ticket = new Ticket(req.body);
-    const data = new Array;
-    // console.log(req.files.buffer)
+    const data = [];
+    console.log(req.files.buffer)
     if (req.files != null) { 
         ticket.numUploads = req.files.length
-        for(i=0;i<req.files.length;i++){
+        for(let i = 0; i<req.files.length; i++){
             data[i] = req.files[i].buffer;
-            // console.log(req.files[i].buffer);
+            console.log(req.files[i].buffer);
         }
         ticket.fileUpload = data //we created a new fileUpload of type: buffer in Ticket model
     }
