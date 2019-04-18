@@ -24,7 +24,14 @@ ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) =>
         ticket.numUploads = req.body.files.length
         for(let i = 0; i<req.body.files.length; i++){
             data[i] = req.body.files[i].buffer;
-            console.log(req.body.files[i].buffer);
+        }
+        ticket.fileUpload = data //we created a new fileUpload of type: buffer in Ticket model
+    }
+    if (req.files != null) {
+        console.log("there are files attached.")
+        ticket.numUploads = req.files.length
+        for (let i = 0; i < req.files.length; i++) {
+            data[i] = req.files[i].buffer;
         }
         ticket.fileUpload = data //we created a new fileUpload of type: buffer in Ticket model
     }
