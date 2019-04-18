@@ -29,11 +29,14 @@ ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) =>
     }
     if (req.files != null) {
         console.log("there are files attached.")
+        //console.log(req.files)
         ticket.numUploads = req.files.length
         for (let i = 0; i < req.files.length; i++) {
             data[i] = req.files[i].buffer;
+        //    console.log(data[i])
         }
         ticket.fileUpload = data //we created a new fileUpload of type: buffer in Ticket model
+        // console.log(ticket.fileUpload[0].length)
     }
     await ticket.save()
     res.send(ticket)
@@ -105,6 +108,7 @@ ticketRoutes.route('/view/:id/fileupload').get(async (req, res) => {
         for(let i=0; i<ticket.numUploads; i++){
            data[i] = ticket.fileUpload[i] 
         }
+    
         res.set('Content-Type', 'image/jpg') //default contatent type is JSON
         res.send(data) //send back the image 
     }

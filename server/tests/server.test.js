@@ -208,12 +208,12 @@ describe('GET /ticket/view/:id', () => {
 describe('GET /ticket/view/:id/fileupload', (done) => {
    var createdBy = 'testing fileupload';
    var hexId;
-   // var binaryImage;
+   var binaryImage;
    // var fs =require("fs")
    // fs.readFile('/Users/seanlew/Desktop/conductor-support-ticket/server/images/philly.jpg',function(err,data) {
    //    if(err) throw err;
    //    binaryImage = new Buffer(data,'binary').toString('base64');
-   //    console.log(binaryImage)
+   //    //console.log(binaryImage)
    // });
 
    it('should return 200 retrieve data for fileuploads', (done) => {
@@ -224,6 +224,8 @@ describe('GET /ticket/view/:id/fileupload', (done) => {
          request(app)
             .get(`/ticket/view/${hexId}/fileupload`)
             .expect(200)
+            .expect((res) =>{
+            })
             .end(done);
       }).catch((e) => done(e));
    })
