@@ -31,7 +31,7 @@ export default class ImagePreview extends Component {
     }
 
     changeToPrevImage() {
-      let newIndex = (this.state.modalIndex - 1)%(this.state.numberOfImages);
+      let newIndex = (Math.abs(this.state.modalIndex - 1))%(this.state.numberOfImages);
       this.setState({modalIndex: newIndex});
       this.setState({modalSrc: this.state.imgSources[newIndex]});
     }
