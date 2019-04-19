@@ -33,7 +33,8 @@ const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
-  marginTop: 16
+  marginTop: 16,
+  width: 500,
 };
 
 const thumb = {
@@ -64,7 +65,6 @@ const getBase64 = file => {
   return new Promise(function(resolve) {
     var reader = new FileReader();
     reader.onloadend = (event) => {
-      console.log(event.target.result);
       resolve(reader);
     }
     reader.readAsDataURL(file);
@@ -79,30 +79,23 @@ const FileUpload = props => {
     open,
     isDragActive,
     isDragAccept,
-    isDragReject, 
+    isDragReject,
+    rejectedFiles, 
     acceptedFiles} = useDropzone({
       accept: "image/*",
       noKeyboard: true,
       noClick: true,
       onDrop: acceptedFiles => {
         acceptedFiles.map(async file => {
+          if (file.size < maxSize) {
             let reader = await getBase64(file);
             let bufferValue = reader.result;
-            // let bufferValue = reader.result.replace("data:image/png;base64,", "");
             setFieldValue("files", value.concat(
               Object.assign(file, {preview: URL.createObjectURL(file)}, {buffer: bufferValue})
             ))
             console.log(value);
-      });
-        // setFieldValue("files",value.concat(acceptedFiles.map(file => 
-        //   Object.assign(file, 
-        //     {preview: URL.createObjectURL(file)}, 
-        //     {buffer: new FileReader().readAsDataURL(file)}
-        //   )
-        // )));
-        // console.log(value);
-        // onChange("files", value);
-        // onBlur("files", true);
+          }
+        });
 	  	}
 	  });
 
@@ -134,6 +127,9 @@ const FileUpload = props => {
     isDragActive,
     isDragReject
   ]);
+
+  const maxSize = 5242880
+  const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
 	
   return (
     <section className="container">
@@ -143,7 +139,18 @@ const FileUpload = props => {
         <div style={thumbsContainer}>
           {thumbs}
         </div>
-        <p>Drag 'n' drop some files here, or click to select files. </p>
+        <p>
+          {!isDragActive && 'Click the button below or drop a file to upload!'}
+          {isDragActive && !isDragReject && "This file is ok! :) "}
+          {isDragReject && "File type not accepted, sorry! :("}
+          {rejectedFiles => 
+            isFileTooLarge && (
+                <div className="text-danger mt-2">
+                  File is too large.
+                </div>
+              )
+          }
+        </p>
         <button type="button" className="btn btn-outline-primary" onClick={open}>
           Open File Dialog
         </button>

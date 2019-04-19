@@ -7,13 +7,15 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 // Body Parser Middleware
+
+app.use(bodyParser.json({limit:'10mb'}));
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
+    limit:'10mb',
+    parameterLimit:50000
   })
 );
-app.use(bodyParser.json());
-
 ///////////////////////////// EMAIL SENDER ///////////////////////////
 app.post("/api/notify", (req, res) => {
   let output;
