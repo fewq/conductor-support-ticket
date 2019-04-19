@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import axios from "axios";
 import { convertDateToString } from "../helper";
 import { Link } from "react-router-dom";
+import ImagePreview from "./ImagePreview.js"
+import { Button, ProgressBar } from "react-bootstrap";
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 
 export default class TicketList extends Component {
   constructor(props) {
@@ -14,6 +18,8 @@ export default class TicketList extends Component {
       displayDate: displayDate,
       statusUpdates: [],
       imgSources: [],
+      screenshotsLoaded: false,
+      screenshotsLoading: true,
     };
   }
 
@@ -21,30 +27,27 @@ export default class TicketList extends Component {
     axios
       .get("http://localhost:4000/status/ticketid/" + this.state.ticket._id)
       .then(response => {
-        console.log("querying for relevant updates");
-        console.log(response);
         if (response.data != null) {
           this.setState({
             statusUpdates: response.data
           });
-          console.log("updated state");
-          console.log(this.state);
         }
       })
       .catch((error, response) => {
-        console.log(error);
+        console.log("No status updates retrieved.")
       });
 
-    if (this.state.ticket.fileUpload.length != 0) {
+    if (this.state.ticket.fileUpload.length !== 0) {
+      console.log("retrieving file attachments.")
       axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
-      // console.log(imgSources);
         .then(res => {
-          console.log(res);
-          this.setState({imgSources: res.data})
+          this.setState({
+            imgSources: res.data.map((obj, i) => new Buffer(obj, 'base64').toString('binary')),
+            screenshotsLoaded: true,
+            screenshotsLoading: false})
         })
         .catch((error, res) => {
-          console.log("no status update history for this ticket.");
-          // console.log(error);
+          console.log(error)
         });
     }
   }
@@ -73,7 +76,6 @@ export default class TicketList extends Component {
         .post("http://localhost:4000/status/add", update)
         .then(res => {
           console.log("posting status update");
-          console.log(res);
         })
         .catch(err => console.log(err));
 
@@ -99,19 +101,38 @@ export default class TicketList extends Component {
   renderTopics() {
     if (this.state.statusUpdates.length !== 0) {
       return this.state.ticket.topics.map((obj, i) => {
-        return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>;
+        return <span className="badge badge-pill badge-warning mr-2"> {obj} </span>;
       });
     }
   }
 
   renderScreenshots() {
-    if (this.state.imgSources.length != 0) {
+    if (this.state.imgSources.length !== 0) {
       return this.state.imgSources.map((obj, i) => {
-        var imgURL = new Buffer(obj, 'base64').toString('binary');
-        console.log(imgURL)
-        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i}></img>
+        return (
+        <div key={i} className="col-md-4">
+          <div className="thumbnail mb-2">
+            <ImagePreview index={i} imgSources={this.state.imgSources} />
+          </div>
+        </div>
+      )
       })
     }
+  }
+
+  handleDownload() {
+    var zip = new JSZip();
+    var img = zip.folder("images");
+    console.log("handling download")
+    this.state.imgSources.map((obj, i) => {
+      let filename = "screenshot" + i;
+      let imgData = obj.replace(/^data:image\/\w+;base64,/, '');
+      img.file(filename, imgData, {base64: true});
+    })    
+    zip.generateAsync({type:"blob"})
+      .then((content) => {
+          saveAs(content, "example.zip");
+      });
   }
 
   render() {
@@ -120,12 +141,10 @@ export default class TicketList extends Component {
         <div>
           <h3> {this.state.ticket.title} </h3>
           <p>
-            {" "}
-            Submitted on: {this.state.displayDate}{" "}
+            Submitted on: {this.state.displayDate}
             <span className="badge badge-secondary mr-2">
-              {" "}
-              {this.state.ticket.statusToClient}{" "}
-            </span>{" "}
+              {this.state.ticket.statusToClient}
+            </span>
           </p>
           <div className="d-flex justify-content-center my-2">
             {this.renderTopics()}
@@ -134,10 +153,22 @@ export default class TicketList extends Component {
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
-          <div className="">
-          <h4> Screenshots </h4>
-            {this.renderScreenshots()}
-          </div>
+
+          {!this.state.screenshotsLoaded && (
+            <div>
+             <ProgressBar animated now={45} />
+            </div>
+          )}
+
+          {this.state.screenshotsLoaded && (
+            <div>
+              <h4> Screenshots <Button variant="outline-warning" onClick={() => {this.handleDownload()}}> Download all </Button> </h4>
+              <div className="row">
+                {this.renderScreenshots()}
+              </div>
+            </div>
+          )}
+          
         </div>
         {this.state.statusUpdates.map((obj, i) => (
           <div>
@@ -163,7 +194,7 @@ export default class TicketList extends Component {
           </div>
         ))}
 
-        <div className="my-2">
+        <div className="my-4">
           <Link
             to={"/update/" + this.state.ticket._id}
             className="btn btn-light"

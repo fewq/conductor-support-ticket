@@ -6,7 +6,8 @@ const  multer = require('multer')
 
 const upload = multer({
     limits: {
-        fileSize: 1000000
+        fileSize: 1000000,
+        files: 4,
     },
     fileFilter(req, file, cb) {
         if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
@@ -20,7 +21,7 @@ ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) =>
     let ticket = new Ticket(req.body);
     const data = [];
     if (req.body.files != null) {
-        console.log("there are files attached.")
+        console.log("there are files attached to the ticket.")
         ticket.numUploads = req.body.files.length
         for(let i = 0; i<req.body.files.length; i++){
             data[i] = req.body.files[i].buffer;
