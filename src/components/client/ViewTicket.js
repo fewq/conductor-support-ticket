@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { convertDateToString } from "../helper";
 import { Link } from "react-router-dom";
+import ImagePreview from "./ImagePreview.js"
 
 export default class TicketList extends Component {
   constructor(props) {
@@ -104,9 +105,7 @@ export default class TicketList extends Component {
         return (
         <div key={i} className="col-md-4">
           <div className="thumbnail">
-            <a href={imgURL}>
-              <img className="img-thumbnail rounded" src={imgURL} alt={i} />
-            </a>
+            <ImagePreview src={imgURL} alt={i} />
           </div>
         </div>
       )
