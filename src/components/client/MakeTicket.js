@@ -60,8 +60,6 @@ const formikEnhancer = withFormik({
       ]
     };
     delete payload.history;
-    console.log("payload ")
-    console.log(payload);
 
     // email content
     const title = values.title;

@@ -1,5 +1,6 @@
 import React, {useState, useMemo, useEffect} from 'react';
 import {useDropzone} from 'react-dropzone';
+import { applyMiddleware } from '../../../../../../AppData/Local/Microsoft/TypeScript/3.4.3/node_modules/redux';
 
 const baseStyle = {
   flex: 1,
@@ -34,7 +35,7 @@ const thumbsContainer = {
   flexDirection: 'row',
   flexWrap: 'wrap',
   marginTop: 16,
-  width: 500,
+  width: 450,
 };
 
 const thumb = {
@@ -52,13 +53,14 @@ const thumb = {
 const thumbInner = {
   display: 'flex',
   minWidth: 0,
-  overflow: 'hidden'
+  overflow: 'hidden',
 };
 
 const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
+  display: 'table-cell',
+  height: 'auto',
+  width: '100%',
+  verticalAlign: 'middle',
 };
 
 const getBase64 = file => {
@@ -72,7 +74,9 @@ const getBase64 = file => {
 }
 
 const FileUpload = props => {
-	const {setFieldValue, onChange, onBlur, value} = props;
+  const {setFieldValue, onChange, onBlur, value} = props;
+  const maxSize = 500000 // limit to 0.5MB per file
+
   const {
     getRootProps, 
     getInputProps, 
@@ -85,6 +89,8 @@ const FileUpload = props => {
       accept: "image/*",
       noKeyboard: true,
       noClick: true,
+      minSize: 0,
+      maxSize: maxSize,
       onDrop: acceptedFiles => {
         acceptedFiles.map(async file => {
           if (file.size < maxSize) {
@@ -93,7 +99,6 @@ const FileUpload = props => {
             setFieldValue("files", value.concat(
               Object.assign(file, {preview: URL.createObjectURL(file)}, {buffer: bufferValue})
             ))
-            console.log(value);
           }
         });
 	  	}
@@ -128,7 +133,6 @@ const FileUpload = props => {
     isDragReject
   ]);
 
-  const maxSize = 5242880
   const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
 	
   return (
@@ -139,20 +143,18 @@ const FileUpload = props => {
         <div style={thumbsContainer}>
           {thumbs}
         </div>
-        <p>
-          {!isDragActive && 'Click the button below or drop a file to upload!'}
-          {isDragActive && !isDragReject && "This file is ok! :) "}
-          {isDragReject && "File type not accepted, sorry! :("}
-          {rejectedFiles => 
-            isFileTooLarge && (
-                <div className="text-danger mt-2">
-                  File is too large.
-                </div>
-              )
-          }
-        </p>
+        {!isDragActive && 'Click the button below or drop a file to upload. File Size Limit: 1mb.'}
+        {isDragActive && !isDragReject && "File Type Ok."}
+        {isDragReject && "File type not accepted, sorry!"}
+        {isFileTooLarge && (
+              <div className="text-danger mt-2">
+                File is too large.
+              </div>
+            )
+        }
+        <br></br>
         <button type="button" className="btn btn-outline-primary" onClick={open}>
-          Open File Dialog
+          Upload
         </button>
       </div>
       

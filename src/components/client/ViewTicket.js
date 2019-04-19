@@ -21,30 +21,24 @@ export default class TicketList extends Component {
     axios
       .get("http://localhost:4000/status/ticketid/" + this.state.ticket._id)
       .then(response => {
-        console.log("querying for relevant updates");
-        console.log(response);
         if (response.data != null) {
           this.setState({
             statusUpdates: response.data
           });
-          console.log("updated state");
-          console.log(this.state);
         }
       })
       .catch((error, response) => {
-        console.log(error);
+        console.log("No status updates retrieved.")
       });
 
     if (this.state.ticket.fileUpload.length != 0) {
+      console.log("retrieving file attachments.")
       axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
-      // console.log(imgSources);
         .then(res => {
-          console.log(res);
           this.setState({imgSources: res.data})
         })
         .catch((error, res) => {
-          console.log("no status update history for this ticket.");
-          // console.log(error);
+          console.log(error)
         });
     }
   }
@@ -73,7 +67,6 @@ export default class TicketList extends Component {
         .post("http://localhost:4000/status/add", update)
         .then(res => {
           console.log("posting status update");
-          console.log(res);
         })
         .catch(err => console.log(err));
 
@@ -99,7 +92,7 @@ export default class TicketList extends Component {
   renderTopics() {
     if (this.state.statusUpdates.length !== 0) {
       return this.state.ticket.topics.map((obj, i) => {
-        return <span class="badge badge-pill badge-warning mr-2"> {obj} </span>;
+        return <span className="badge badge-pill badge-warning mr-2"> {obj} </span>;
       });
     }
   }
@@ -108,8 +101,15 @@ export default class TicketList extends Component {
     if (this.state.imgSources.length != 0) {
       return this.state.imgSources.map((obj, i) => {
         var imgURL = new Buffer(obj, 'base64').toString('binary');
-        console.log(imgURL)
-        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i}></img>
+        return (
+        <div key={i} className="col-md-4">
+          <div className="thumbnail">
+            <a href={imgURL}>
+              <img className="img-thumbnail rounded" src={imgURL} alt={i} />
+            </a>
+          </div>
+        </div>
+      )
       })
     }
   }
@@ -134,8 +134,9 @@ export default class TicketList extends Component {
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
-          <div className="">
+
           <h4> Screenshots </h4>
+          <div className="row">        
             {this.renderScreenshots()}
           </div>
         </div>
