@@ -7,12 +7,19 @@ export default class ImagePreview extends Component {
   
       this.handleShow = this.handleShow.bind(this);
       this.handleClose = this.handleClose.bind(this);
-      this.handleDownload = this.handleDownload.bind(this);
+      this.changeToNextImage = this.changeToNextImage.bind(this);
+      this.changeToPrevImage = this.changeToPrevImage.bind(this);
   
       this.state = {
         show: false,
-        imgSource: props.src,
+        imgSources: props.imgSources,
+        numberOfImages: props.imgSources.length,
+        index: props.index,
+        modalIndex: props.index,
+        src: props.imgSources[props.index],
+        modalSrc: props.imgSources[props.index]
       };
+
     }
   
     handleClose() {
@@ -23,16 +30,22 @@ export default class ImagePreview extends Component {
       this.setState({ show: true });
     }
 
-    handleDownload() {
-      console.log("attempting download.");
-      this.handleClose();
+    changeToPrevImage() {
+      let newIndex = (this.state.modalIndex - 1)%(this.state.numberOfImages);
+      this.setState({modalIndex: newIndex});
+      this.setState({modalSrc: this.state.imgSources[newIndex]});
+    }
+
+    changeToNextImage() {
+      let newIndex = (this.state.modalIndex + 1)%(this.state.numberOfImages);
+      this.setState({modalIndex: newIndex});
+      this.setState({modalSrc: this.state.imgSources[newIndex]});
     }
   
     render() {
       return (
         <div>
-          <Image thumbnail src={this.state.imgSource} onClick={this.handleShow} />
-  
+          <Image thumbnail src={this.state.src} href="" onClick={this.handleShow} />
           <Modal show={this.state.show} onHide={this.handleClose}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
@@ -41,14 +54,17 @@ export default class ImagePreview extends Component {
               <Modal.Title>Preview</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Image fluid src={this.state.imgSource} />
+              <a href={this.state.modalSrc} download="screenshot.png">
+                <Image fluid src={this.state.modalSrc} />
+              </a>
             </Modal.Body>
             <Modal.Footer>
-              <a href={this.state.imgSource} download="screenshot.png">
-                <Button variant="primary" onClick={this.handleDownload}>
-                  Download
-                </Button>
-              </a>
+              <Button variant="secondary" onClick={this.changeToPrevImage}>
+                ←
+              </Button>
+              <Button variant="secondary" onClick={this.changeToNextImage}>
+                →
+              </Button>
             </Modal.Footer>
           </Modal>
           </div>
