@@ -4,7 +4,9 @@ import axios from "axios";
 import { convertDateToString } from "../helper";
 import { Link } from "react-router-dom";
 import ImagePreview from "./ImagePreview.js"
-import { ProgressBar } from "react-bootstrap";
+import { Button, ProgressBar } from "react-bootstrap";
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 
 export default class TicketList extends Component {
   constructor(props) {
@@ -118,6 +120,21 @@ export default class TicketList extends Component {
     }
   }
 
+  handleDownload() {
+    var zip = new JSZip();
+    var img = zip.folder("images");
+    console.log("handling download")
+    this.state.imgSources.map((obj, i) => {
+      let filename = "screenshot" + i;
+      let imgData = obj.replace(/^data:image\/\w+;base64,/, '');
+      img.file(filename, imgData, {base64: true});
+    })    
+    zip.generateAsync({type:"blob"})
+      .then((content) => {
+          saveAs(content, "example.zip");
+      });
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -145,7 +162,7 @@ export default class TicketList extends Component {
 
           {this.state.screenshotsLoaded && (
             <div>
-              <h4> Screenshots </h4>     
+              <h4> Screenshots <Button variant="outline-warning" onClick={() => {this.handleDownload()}}> Download all </Button> </h4>
               <div className="row">
                 {this.renderScreenshots()}
               </div>
