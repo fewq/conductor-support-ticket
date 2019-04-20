@@ -41,9 +41,9 @@ class Restricted extends Component {
     return (
       <div className="container">
         {restrictedComponent}
-        <p className="mt-5">
-          Click <a href="/"> here</a> to go back home
-        </p>
+        <a href="/" class="btn btn-primary">
+          Go to homepage
+        </a>
         <button className="btn btn-secondary" onClick={this.props.auth.logout}>
           Logout
         </button>

@@ -126,7 +126,12 @@ export default class TicketList extends Component {
       return this.state.imgSources.map((obj, i) => {
         var imgURL = new Buffer(obj, "base64").toString("binary");
         console.log(imgURL);
-        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i} />;
+        return (
+          <div className="thumbnails justify-content-center">
+            <h4> Screenshots </h4>
+            <img className="img-thumbnail img-fluid" src={imgURL} alt={i} />
+          </div>
+        );
       });
     }
   }
@@ -153,10 +158,7 @@ export default class TicketList extends Component {
           </div>
         </div>
 
-        <div className="thumbnails justify-content-center">
-          <h4> Screenshots </h4>
-          {this.renderScreenshots()}
-        </div>
+        {this.renderScreenshots()}
 
         <h4>Update History</h4>
         {this.state.statusUpdates.map((obj, i) => (

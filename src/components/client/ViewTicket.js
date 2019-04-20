@@ -18,8 +18,7 @@ export default class TicketList extends Component {
       displayDate: displayDate,
       statusUpdates: [],
       imgSources: [],
-      screenshotsLoaded: false,
-      screenshotsLoading: true
+      screenshotsLoaded: false
     };
   }
 
@@ -50,13 +49,16 @@ export default class TicketList extends Component {
             imgSources: res.data.map((obj, i) =>
               new Buffer(obj, "base64").toString("binary")
             ),
-            screenshotsLoaded: true,
-            screenshotsLoading: false
+            screenshotsLoaded: true
           });
         })
         .catch((error, res) => {
           console.log(error);
         });
+    } else {
+      this.setState({
+        screenshotsLoaded: true
+      });
     }
   }
 
@@ -124,9 +126,26 @@ export default class TicketList extends Component {
     if (this.state.imgSources.length !== 0) {
       return this.state.imgSources.map((obj, i) => {
         return (
-          <div key={i} className="col-md-4">
-            <div className="thumbnail mb-2">
-              <ImagePreview index={i} imgSources={this.state.imgSources} />
+          <div>
+            <h4>
+              {" "}
+              Screenshots{" "}
+              <Button
+                variant="outline-warning"
+                onClick={() => {
+                  this.handleDownload();
+                }}
+              >
+                {" "}
+                Download all{" "}
+              </Button>{" "}
+            </h4>
+            <div className="row">
+              <div key={i} className="col-md-4">
+                <div className="thumbnail mb-2">
+                  <ImagePreview index={i} imgSources={this.state.imgSources} />
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -167,28 +186,11 @@ export default class TicketList extends Component {
             <p> {this.state.ticket.description} </p>
           </div>
 
-          {!this.state.screenshotsLoaded && (
+          {this.state.screenshotsLoaded ? (
+            this.renderScreenshots()
+          ) : (
             <div>
               <ProgressBar animated now={45} />
-            </div>
-          )}
-
-          {this.state.screenshotsLoaded && (
-            <div>
-              <h4>
-                {" "}
-                Screenshots{" "}
-                <Button
-                  variant="outline-warning"
-                  onClick={() => {
-                    this.handleDownload();
-                  }}
-                >
-                  {" "}
-                  Download all{" "}
-                </Button>{" "}
-              </h4>
-              <div className="row">{this.renderScreenshots()}</div>
             </div>
           )}
         </div>
