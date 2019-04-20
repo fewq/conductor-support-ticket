@@ -50,6 +50,7 @@ const formikEnhancer = withFormik({
       dateOfCreation: new Date(),
       priority: new Date().getTime(),
       notified: false,
+      read: false,
       tasks: [
         {
           id: "0",
@@ -63,11 +64,12 @@ const formikEnhancer = withFormik({
     delete payload.history;
 
     // email content
-    const title = values.title;
+    const title = "New Ticket: " + values.title;
     const description = values.description;
     const client = values.createdBy;
     const email = "admin@conductor.com";
     const target = "admin";
+    const subject = "New Ticket";
 
     axios
       .post("http://localhost:4000/ticket/add", payload)
@@ -79,6 +81,7 @@ const formikEnhancer = withFormik({
 
     axios.post("/api/notify", {
       email,
+      subject,
       title,
       description,
       client,

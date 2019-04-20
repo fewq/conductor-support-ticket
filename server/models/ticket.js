@@ -42,6 +42,9 @@ let Ticket = new Schema({
   notified: {
     type: Boolean
   },
+  read: {
+    type: Boolean
+  },
   tasks: {
     type: Array
   },
