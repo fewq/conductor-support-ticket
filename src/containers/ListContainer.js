@@ -4,7 +4,8 @@ import {
   showEditor,
   createCard,
   deleteList,
-  moveCard
+  moveCard,
+  updateCard
 } from "../actions/kanban";
 
 const mapStateToProps = (
@@ -28,7 +29,8 @@ const mapDispatchToProps = (dispatch, { id }) => ({
   onClickDeleteList: () => dispatch(deleteList(id)),
   handleOnMoveCard: (parentListId, cardIndex, newCardIndex) => {
     dispatch(moveCard(parentListId, cardIndex, id, newCardIndex));
-  }
+  },
+  updateCard: (id, field, newVal) => dispatch(updateCard(id, field, newVal))
 });
 
 export default connect(

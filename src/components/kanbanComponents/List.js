@@ -8,15 +8,31 @@ import axios from "axios";
 
 const DropTargetSpec = {
   drop(props, monitor) {
-    const tickets = props.cardsByIds;
-    const listId = monitor.getItem().parentListId;
-    const ticketIds = props.listCards[listId];
-    // update priorities of current list
-    for (let i = 0; i < ticketIds.length; i++) {
-      const ticket = tickets[ticketIds[i]];
+    let tickets = props.cardsByIds;
+    let listId = monitor.getItem().parentListId;
+    let newIndex = monitor.getItem().index;
+    let ticketIds = props.listCards[listId];
+    let curTicket = tickets[ticketIds[newIndex]];
+
+    // update priority if list has other tickets
+    if (ticketIds.length !== 1) {
+      let upper, lower, newP;
+      if (newIndex === 0) {
+        lower = tickets[ticketIds[newIndex + 1]];
+        newP = lower.priority - Math.abs(curTicket.priority - lower.priority);
+      } else if (newIndex === ticketIds.length - 1) {
+        upper = tickets[ticketIds[newIndex - 1]];
+        newP = upper.priority + Math.abs(curTicket.priority - upper.priority);
+      } else {
+        upper = tickets[ticketIds[newIndex - 1]];
+        lower = tickets[ticketIds[newIndex + 1]];
+        newP = (upper.priority + lower.priority) / 2;
+      }
+
+      props.updateCard(curTicket.id, "priority", newP);
       axios
-        .patch("http://localhost:4000/ticket/update/" + ticket.ID, {
-          priority: i
+        .patch("http://localhost:4000/ticket/update/" + curTicket.ID, {
+          priority: newP
         })
         .catch(res => console.log(res));
     }
@@ -59,7 +75,8 @@ const ListPropTypes = {
   onClickDeleteList: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   numOfCards: PropTypes.number.isRequired,
-  handleOnMoveCard: PropTypes.func.isRequired
+  handleOnMoveCard: PropTypes.func.isRequired,
+  updateCard: PropTypes.func.isRequired
 };
 
 class List extends Component {
