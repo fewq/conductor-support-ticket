@@ -192,7 +192,7 @@ class Card extends Component {
           .catch(res => console.log(res));
       },
       onClickSend = value => {
-        const title = card.title;
+        const title = "Ticket Title: " + card.title;
         const prevStatus = card.status;
         const status = card.statusToAdmin;
         const message = value;

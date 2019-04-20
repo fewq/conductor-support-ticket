@@ -25,13 +25,13 @@ class TableRow extends Component {
           console.log("deleted" + ticketId);
         });
 
-      let status = "Closed";
-      let sender = this.state.attendedBy;
+      const status = "Closed";
+      const admin = this.state.attendedBy;
       var update = {
         statusToClient: status,
         statusToAdmin: status,
         ticketId: ticketId,
-        attendedBy: sender,
+        attendedBy: admin,
         dateOfUpdate: new Date()
       };
 
@@ -44,15 +44,22 @@ class TableRow extends Component {
         .catch(err => console.log(err));
 
       // set email content
-      let receiver = this.state.ticket.createdBy;
-      let title = "Close Ticket " + ticketId;
-      let message = "Closed by" + sender;
+      const title =
+        "Closed Ticket: " + this.state.ticket.title + " (" + ticketId + ")";
+      const message = "closed by " + admin;
+      const email = this.state.ticket.createdBy;
+      const target = "client";
+      const subject = "Your ticket has been closed";
+      const link = ticketId;
 
       axios.post("/api/notify", {
+        email,
+        subject,
         title,
         status,
-        receiver,
-        message
+        message,
+        target,
+        link
       });
 
       // for refreshing the table

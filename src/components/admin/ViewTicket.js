@@ -71,7 +71,7 @@ export default class TicketList extends Component {
           console.log("deleted" + ticketId);
         });
 
-      let status = "Closed";
+      const status = "Closed";
       var update = {
         statusToClient: status,
         statusToAdmin: status,
@@ -89,16 +89,22 @@ export default class TicketList extends Component {
         .catch(err => console.log(err));
 
       // set email content
-      let sender = this.state.attendedBy;
-      let receiver = this.state.ticket.createdBy;
-      let title = "Close Ticket " + ticketId;
-      let message = "Closed by" + sender;
+      const title =
+        "Closed Ticket: " + this.state.ticket.title + " (" + ticketId + ")";
+      const message = "closed by " + this.state.attendedBy;
+      const email = this.state.ticket.createdBy;
+      const target = "client";
+      const subject = "Your ticket has been closed";
+      const link = ticketId;
 
       axios.post("/api/notify", {
+        email,
+        subject,
         title,
         status,
-        receiver,
-        message
+        message,
+        target,
+        link
       });
 
       // change route

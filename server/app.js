@@ -22,7 +22,7 @@ app.post("/api/notify", (req, res) => {
   let output;
   if (req.body.target == "client") {
     output = `
-    <h3>Ticket Title: ${req.body.title}</h3>
+    <h3>${req.body.title}</h3>
     <p>Your ticket status is now: ${req.body.status}</p>
     <p>Message: ${req.body.message}</p>
     <p>View your ticket here: localhost:3000/view/${req.body.link}</p>
@@ -51,7 +51,7 @@ app.post("/api/notify", (req, res) => {
 
   // setup email data with unicode symbols
   let mailOptions = {
-    from: '"Admin Test" <rashad.green@ethereal.email>', // sender address
+    from: '"no-reply" <rashad.green@ethereal.email>', // sender address
     to: req.body.email, // list of receivers
     subject: req.body.subject, // Subject line
     text: "", // plain text body
