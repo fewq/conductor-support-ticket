@@ -15,9 +15,9 @@ export default class Main extends Component {
         {this.props.auth.isAuthenticated() && (
           <div>
             <p>Hey, {this.props.name}, how can we assist you today?</p>
-            <p>
-              Click <a href="/restricted"> here</a> to access restricted area
-            </p>
+            <a href="/restricted" class="btn btn-primary">
+              Go to Tickets
+            </a>
           </div>
         )}
 

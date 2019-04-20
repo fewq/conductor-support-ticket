@@ -59,6 +59,7 @@ axios.get("http://localhost:4000/ticket/getall").then(response => {
       statusToAdmin: object.statusToAdmin,
       priority: object.priority,
       notified: object.notified,
+      read: object.read,
       tasks: [String(i)],
       taskList: object.tasks,
       ticket: object

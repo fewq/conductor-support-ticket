@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { ProgressBar } from "react-bootstrap";
 
 import TableRow from "./TicketListTableRow";
 
@@ -9,7 +10,7 @@ export default class TicketList extends Component {
     super(props);
     let idToken = jwtDecode(localStorage.getItem("id_token"));
     var email = idToken.email;
-    this.state = { ticket: [], email: email };
+    this.state = { ticket: [], email: email, loaded: false };
   }
   componentDidMount() {
     this.refresh();
@@ -21,7 +22,7 @@ export default class TicketList extends Component {
       .then(response => {
         console.log("refreshing");
         console.log(response);
-        this.setState({ ticket: response.data });
+        this.setState({ ticket: response.data, loaded: true });
       })
       .catch((error, response) => {
         console.log(error);
@@ -47,8 +48,8 @@ export default class TicketList extends Component {
 
   render() {
     return (
-      <div>
-        <h3 align="center">Ticket List</h3>
+      <div align="center">
+        <h3>Ticket List</h3>
         <table className="table table-striped text-white">
           <thead>
             <tr>
@@ -62,8 +63,19 @@ export default class TicketList extends Component {
               <th />
             </tr>
           </thead>
-          <tbody>{this.tabRow(this.state.ticket, this.state.ticket._id)}</tbody>
+
+          {this.state.loaded && (
+            <tbody>
+              {this.tabRow(this.state.ticket, this.state.ticket._id)}
+            </tbody>
+          )}
         </table>
+
+        {!this.state.loaded && (
+          <div className="loading">
+            <ProgressBar animated now={45} />
+          </div>
+        )}
       </div>
     );
   }

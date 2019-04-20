@@ -192,17 +192,19 @@ class Card extends Component {
           .catch(res => console.log(res));
       },
       onClickSend = value => {
-        const title = card.title;
+        const title = "Ticket Title: " + card.title;
         const prevStatus = card.status;
         const status = card.statusToAdmin;
         const message = value;
         const link = card.ID;
         const email = card.email;
         const target = "client";
+        const subject = "Your ticket has been updated";
         if (status !== "Pending Admin") {
           axios.post("/api/notify", {
             email,
             title,
+            subject,
             status,
             message,
             link,
@@ -273,6 +275,13 @@ class Card extends Component {
             tasks: newList
           })
           .catch(res => console.log(res));
+      },
+      onClickRead = () => {
+        axios
+          .patch("http://localhost:4000/ticket/update/" + card.ID, {
+            read: true
+          })
+          .catch(res => console.log(res));
       };
 
     // const { dragItem} = this.props;
@@ -323,6 +332,9 @@ class Card extends Component {
               onClickToggleNotify={() => {
                 this.props.onClickToggleNotify(card.notified, card.ID);
               }}
+              onClickToggleRead={() => {
+                this.props.onClickToggleRead(card.read, card.ID);
+              }}
               status={card.statusToAdmin}
             />
           )}
@@ -336,7 +348,10 @@ class Card extends Component {
             ) : (
               <div
                 className="card-title action"
-                onClick={this.props.onToggleShowDetails}
+                onClick={() => {
+                  this.props.onToggleShowDetails();
+                  onClickRead();
+                }}
               >
                 <i
                   className={
@@ -346,7 +361,11 @@ class Card extends Component {
                   }
                   aria-hidden="true"
                 />
-                <span className="title">{card.title}</span>
+                {card.read ? (
+                  <span className="title-read">{card.title}</span>
+                ) : (
+                  <span className="title-unread">{card.title}</span>
+                )}
               </div>
             )}
           </div>
@@ -482,6 +501,7 @@ Card.propTypes = {
   onToggleShowDetails: PropTypes.func.isRequired,
   onClickNotify: PropTypes.func.isRequired,
   onClickToggleNotify: PropTypes.func.isRequired,
+  onClickToggleRead: PropTypes.func.isRequired,
   onClickDeleteCard: PropTypes.func.isRequired,
   curState: PropTypes.object.isRequired, // we want to preserve card state while/after Dn*/,
   isDragging: PropTypes.bool,

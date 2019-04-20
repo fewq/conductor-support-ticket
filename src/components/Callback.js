@@ -12,7 +12,6 @@ class Callback extends Component {
   render() {
     return (
       <div>
-        <h1>Callback component</h1>
         <h1>Loading...</h1>
       </div>
     );

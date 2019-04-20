@@ -32,14 +32,15 @@ label {
   color: black;
 }
 
-.make-ticket-form, .update-ticket-form > input, 
+.make-ticket-form,
+.update-ticket-form > input,
 textarea#description {
   padding: 12px;
   margin-bottom: 1rem;
   font-size: 16px;
   max-width: 100%;
   width: 500px;
-  display: block;
+  display: inline-block;
   border-radius: 4px;
   background-color: white;
   font-weight: 400;
@@ -47,7 +48,8 @@ textarea#description {
   box-sizing: border-box; /* Make sure that padding and width stays in place */
 }
 
-#category-select, input[type="text"] {
+#category-select,
+input[type="text"] {
   width: 500px;
   max-width: 100%;
 }
@@ -60,10 +62,15 @@ input[type="text"] {
 
 .radio-group {
   display: flex;
-  display: block;
+  display: inline-block;
   border-radius: 4px;
   max-width: 100%;
   width: 500px;
+}
+
+.radio-group#admin-radio {
+  display: inline-block;
+  width: 900px;
 }
 
 .radio-container {
@@ -83,7 +90,8 @@ input[type="radio"] {
   margin: 0.6rem;
 }
 
-textarea#description, textarea#comments {
+textarea#description,
+textarea#comments {
   height: 4em;
   transition: all 0.5s ease;
   text-align: left;
@@ -144,4 +152,8 @@ button#outline {
   background-color: #eee;
   border: 1px solid #aaa;
   color: #555;
+}
+
+.thumbnails {
+  text-align: center;
 }

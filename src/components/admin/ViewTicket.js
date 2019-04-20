@@ -16,7 +16,7 @@ export default class TicketList extends Component {
       displayDate: displayDate,
       statusUpdates: [],
       attendedBy: email,
-      imgSources: [],
+      imgSources: []
     };
   }
 
@@ -39,18 +39,23 @@ export default class TicketList extends Component {
         // console.log(error);
       });
 
-      if (this.state.ticket.fileUpload.length != 0) {
-        axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
+    if (this.state.ticket.fileUpload.length != 0) {
+      axios
+        .get(
+          "http://localhost:4000/ticket/view/" +
+            this.state.ticket._id +
+            "/fileupload"
+        )
         // console.log(imgSources);
-          .then(res => {
-            console.log(res);
-            this.setState({imgSources: res.data})
-          })
-          .catch((error, res) => {
-            console.log("no status update history for this ticket.");
-            // console.log(error);
-          });
-      }
+        .then(res => {
+          console.log(res);
+          this.setState({ imgSources: res.data });
+        })
+        .catch((error, res) => {
+          console.log("no status update history for this ticket.");
+          // console.log(error);
+        });
+    }
   }
 
   // Upon confirmation to delete, the ticket will be deleted,
@@ -66,7 +71,7 @@ export default class TicketList extends Component {
           console.log("deleted" + ticketId);
         });
 
-      let status = "Closed";
+      const status = "Closed";
       var update = {
         statusToClient: status,
         statusToAdmin: status,
@@ -84,16 +89,22 @@ export default class TicketList extends Component {
         .catch(err => console.log(err));
 
       // set email content
-      let sender = this.state.attendedBy;
-      let receiver = this.state.ticket.createdBy;
-      let title = "Close Ticket " + ticketId;
-      let message = "Closed by" + sender;
+      const title =
+        "Closed Ticket: " + this.state.ticket.title + " (" + ticketId + ")";
+      const message = "closed by " + this.state.attendedBy;
+      const email = this.state.ticket.createdBy;
+      const target = "client";
+      const subject = "Your ticket has been closed";
+      const link = ticketId;
 
       axios.post("/api/notify", {
+        email,
+        subject,
         title,
         status,
-        receiver,
-        message
+        message,
+        target,
+        link
       });
 
       // change route
@@ -113,10 +124,15 @@ export default class TicketList extends Component {
   renderScreenshots() {
     if (this.state.imgSources.length != 0) {
       return this.state.imgSources.map((obj, i) => {
-        var imgURL = new Buffer(obj, 'base64').toString('binary');
-        console.log(imgURL)
-        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i}></img>
-      })
+        var imgURL = new Buffer(obj, "base64").toString("binary");
+        console.log(imgURL);
+        return (
+          <div className="thumbnails justify-content-center">
+            <h4> Screenshots </h4>
+            <img className="img-thumbnail img-fluid" src={imgURL} alt={i} />
+          </div>
+        );
+      });
     }
   }
 
@@ -142,10 +158,7 @@ export default class TicketList extends Component {
           </div>
         </div>
 
-        <div className="">
-        <h4> Screenshots </h4>
-          {this.renderScreenshots()}
-        </div>
+        {this.renderScreenshots()}
 
         <h4>Update History</h4>
         {this.state.statusUpdates.map((obj, i) => (

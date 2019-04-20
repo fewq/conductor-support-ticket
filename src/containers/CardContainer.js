@@ -60,6 +60,15 @@ const mapDispatchToProps = (dispatch, { id, index, parentListId }) => ({
       })
       .catch(res => console.log(res));
   },
+  onClickToggleRead: (read, ticketID) => {
+    dispatch(updateCard(id, "read", !read));
+    dispatch(closeCardMenu());
+    axios
+      .patch("http://localhost:4000/ticket/update/" + ticketID, {
+        read: !read
+      })
+      .catch(res => console.log(res));
+  },
   handleOnSortCard: (hoverID, hoverIndex, dragID, dragIndex) =>
     dispatch(sortCard(parentListId, hoverID, hoverIndex, dragID, dragIndex))
 });
@@ -76,6 +85,7 @@ class CardContainer extends Component {
     this.setState(prevState => ({
       shouldShowDetails: !prevState.shouldShowDetails
     }));
+    this.props.updateCard("read", true);
   };
   handleShowDetails = () =>
     this.setState({

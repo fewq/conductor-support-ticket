@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #282c34;
 }
 
 .App-logo {
@@ -64,6 +65,15 @@
   padding: 0;
 }
 
+a.btn {
+  margin: 5px;
+}
+
+.loading {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 80%;
+}
 /* Thad defined buttons here */
 /* 
 input,

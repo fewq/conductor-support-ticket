@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import axios from "axios";
 import { convertDateToString } from "../helper";
 import { Link } from "react-router-dom";
-import ImagePreview from "./ImagePreview.js"
+import ImagePreview from "./ImagePreview.js";
 import { Button, ProgressBar } from "react-bootstrap";
-import { saveAs } from 'file-saver';
-import JSZip from 'jszip';
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
 
 export default class TicketList extends Component {
   constructor(props) {
@@ -18,8 +18,7 @@ export default class TicketList extends Component {
       displayDate: displayDate,
       statusUpdates: [],
       imgSources: [],
-      screenshotsLoaded: false,
-      screenshotsLoading: true,
+      screenshotsLoaded: false
     };
   }
 
@@ -34,21 +33,32 @@ export default class TicketList extends Component {
         }
       })
       .catch((error, response) => {
-        console.log("No status updates retrieved.")
+        console.log("No status updates retrieved.");
       });
 
     if (this.state.ticket.fileUpload.length !== 0) {
-      console.log("retrieving file attachments.")
-      axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
+      console.log("retrieving file attachments.");
+      axios
+        .get(
+          "http://localhost:4000/ticket/view/" +
+            this.state.ticket._id +
+            "/fileupload"
+        )
         .then(res => {
           this.setState({
-            imgSources: res.data.map((obj, i) => new Buffer(obj, 'base64').toString('binary')),
-            screenshotsLoaded: true,
-            screenshotsLoading: false})
+            imgSources: res.data.map((obj, i) =>
+              new Buffer(obj, "base64").toString("binary")
+            ),
+            screenshotsLoaded: true
+          });
         })
         .catch((error, res) => {
-          console.log(error)
+          console.log(error);
         });
+    } else {
+      this.setState({
+        screenshotsLoaded: true
+      });
     }
   }
 
@@ -62,13 +72,13 @@ export default class TicketList extends Component {
         });
 
       let status = "Closed";
-      let sender = this.state.ticket.createdBy;
+      const client = this.state.ticket.createdBy;
 
       var update = {
         statusToClient: status,
         statusToAdmin: status,
         ticketId: ticketId,
-        attendedBy: sender,
+        attendedBy: client,
         dateOfUpdate: new Date()
       };
 
@@ -80,16 +90,20 @@ export default class TicketList extends Component {
         .catch(err => console.log(err));
 
       // set email content
-
-      let receiver = "admin@conductor.com";
-      let title = "Close Ticket " + ticketId;
-      let message = "Closed by" + sender;
+      const title =
+        "Closed Ticket: " + this.state.ticket.title + " (" + ticketId + ")";
+      const description = "Closed.";
+      const email = "admin@conductor.com";
+      const target = "admin";
+      const subject = "Ticket deleted by client";
 
       axios.post("/api/notify", {
+        email,
+        subject,
         title,
-        status,
-        receiver,
-        message
+        description,
+        client,
+        target
       });
 
       // redirect to dashboard
@@ -101,7 +115,9 @@ export default class TicketList extends Component {
   renderTopics() {
     if (this.state.statusUpdates.length !== 0) {
       return this.state.ticket.topics.map((obj, i) => {
-        return <span className="badge badge-pill badge-warning mr-2"> {obj} </span>;
+        return (
+          <span className="badge badge-pill badge-warning mr-2"> {obj} </span>
+        );
       });
     }
   }
@@ -110,29 +126,45 @@ export default class TicketList extends Component {
     if (this.state.imgSources.length !== 0) {
       return this.state.imgSources.map((obj, i) => {
         return (
-        <div key={i} className="col-md-4">
-          <div className="thumbnail mb-2">
-            <ImagePreview index={i} imgSources={this.state.imgSources} />
+          <div>
+            <h4>
+              {" "}
+              Screenshots{" "}
+              <Button
+                variant="outline-warning"
+                onClick={() => {
+                  this.handleDownload();
+                }}
+              >
+                {" "}
+                Download all{" "}
+              </Button>{" "}
+            </h4>
+            <div className="row">
+              <div key={i} className="col-md-4">
+                <div className="thumbnail mb-2">
+                  <ImagePreview index={i} imgSources={this.state.imgSources} />
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      )
-      })
+        );
+      });
     }
   }
 
   handleDownload() {
     var zip = new JSZip();
     var img = zip.folder("images");
-    console.log("handling download")
+    console.log("handling download");
     this.state.imgSources.map((obj, i) => {
       let filename = "screenshot" + i;
-      let imgData = obj.replace(/^data:image\/\w+;base64,/, '');
-      img.file(filename, imgData, {base64: true});
-    })    
-    zip.generateAsync({type:"blob"})
-      .then((content) => {
-          saveAs(content, "example.zip");
-      });
+      let imgData = obj.replace(/^data:image\/\w+;base64,/, "");
+      img.file(filename, imgData, { base64: true });
+    });
+    zip.generateAsync({ type: "blob" }).then(content => {
+      saveAs(content, "example.zip");
+    });
   }
 
   render() {
@@ -154,21 +186,13 @@ export default class TicketList extends Component {
             <p> {this.state.ticket.description} </p>
           </div>
 
-          {!this.state.screenshotsLoaded && (
+          {this.state.screenshotsLoaded ? (
+            this.renderScreenshots()
+          ) : (
             <div>
-             <ProgressBar animated now={45} />
+              <ProgressBar animated now={45} />
             </div>
           )}
-
-          {this.state.screenshotsLoaded && (
-            <div>
-              <h4> Screenshots <Button variant="outline-warning" onClick={() => {this.handleDownload()}}> Download all </Button> </h4>
-              <div className="row">
-                {this.renderScreenshots()}
-              </div>
-            </div>
-          )}
-          
         </div>
         {this.state.statusUpdates.map((obj, i) => (
           <div>
