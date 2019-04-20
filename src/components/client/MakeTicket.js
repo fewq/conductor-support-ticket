@@ -42,12 +42,13 @@ const formikEnhancer = withFormik({
     const payload = {
       ...values,
       topics: values.topics.map(t => t.value),
-      files: values.files.map(f => { 
-        return {buffer: f.buffer}}),
+      files: values.files.map(f => {
+        return { buffer: f.buffer };
+      }),
       statusToClient: "Pending Admin",
       statusToAdmin: "Pending Admin",
       dateOfCreation: new Date(),
-      priority: Number.MAX_SAFE_INTEGER,
+      priority: new Date().getTime(),
       notified: false,
       tasks: [
         {
@@ -158,12 +159,12 @@ const MyForm = props => {
 
       <div>
         <label>File Upload</label>
-        <FileUpload 
-        setFieldValue={setFieldValue}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        value={values.files}
-         />
+        <FileUpload
+          setFieldValue={setFieldValue}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          value={values.files}
+        />
       </div>
 
       <label htmlFor="description" style={{ display: "block" }}>
