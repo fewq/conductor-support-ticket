@@ -16,7 +16,7 @@ export default class TicketList extends Component {
       displayDate: displayDate,
       statusUpdates: [],
       attendedBy: email,
-      imgSources: [],
+      imgSources: []
     };
   }
 
@@ -39,18 +39,23 @@ export default class TicketList extends Component {
         // console.log(error);
       });
 
-      if (this.state.ticket.fileUpload.length != 0) {
-        axios.get("http://localhost:4000/ticket/view/" + this.state.ticket._id + "/fileupload")
+    if (this.state.ticket.fileUpload.length != 0) {
+      axios
+        .get(
+          "http://localhost:4000/ticket/view/" +
+            this.state.ticket._id +
+            "/fileupload"
+        )
         // console.log(imgSources);
-          .then(res => {
-            console.log(res);
-            this.setState({imgSources: res.data})
-          })
-          .catch((error, res) => {
-            console.log("no status update history for this ticket.");
-            // console.log(error);
-          });
-      }
+        .then(res => {
+          console.log(res);
+          this.setState({ imgSources: res.data });
+        })
+        .catch((error, res) => {
+          console.log("no status update history for this ticket.");
+          // console.log(error);
+        });
+    }
   }
 
   // Upon confirmation to delete, the ticket will be deleted,
@@ -113,10 +118,10 @@ export default class TicketList extends Component {
   renderScreenshots() {
     if (this.state.imgSources.length != 0) {
       return this.state.imgSources.map((obj, i) => {
-        var imgURL = new Buffer(obj, 'base64').toString('binary');
-        console.log(imgURL)
-        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i}></img>
-      })
+        var imgURL = new Buffer(obj, "base64").toString("binary");
+        console.log(imgURL);
+        return <img className="img-thumbnail img-fluid" src={imgURL} alt={i} />;
+      });
     }
   }
 
@@ -142,8 +147,8 @@ export default class TicketList extends Component {
           </div>
         </div>
 
-        <div className="">
-        <h4> Screenshots </h4>
+        <div className="thumbnails justify-content-center">
+          <h4> Screenshots </h4>
           {this.renderScreenshots()}
         </div>
 
