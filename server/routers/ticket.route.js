@@ -16,7 +16,7 @@ const upload = multer({
         cb(undefined, true)
     }
 })
-// POST: Add a ticket
+// POST: Add a ticket with limit of 4 screenshots
 ticketRoutes.route('/add').post(upload.array('fileUpload',4), async(req, res) => {
     let ticket = new Ticket(req.body);
     const data = [];
@@ -119,7 +119,7 @@ ticketRoutes.route('/view/:id/fileupload').get(async (req, res) => {
 })
 
 // PATCH: Update a specific ticket with ID
-ticketRoutes.route('/update/:id').patch(async (req, res) => {
+ticketRoutes.route('/update/:id').patch(upload.array('fileUpload', 4), async (req, res) => {
     const updates = Object.keys(req.body)
     try {
         const ticket = await Ticket.findOne({
@@ -133,6 +133,21 @@ ticketRoutes.route('/update/:id').patch(async (req, res) => {
         updates.forEach((update) => {
             ticket[update] = req.body[update]
         })
+
+        // does not work for some reason
+        if (req.body.files != null) {
+            ticket.numUploads = ticket.numUploads + req.body.files.length
+            for(let i = 0; i<req.body.files.length; i++){
+                data[i] = req.body.files[i].buffer;
+            }
+            if (ticket.fileUpload == null) {
+                ticket.fileUpload = data;
+            }
+            else {
+                ticket.fileUpload.push(data)
+            }
+        }
+
         await ticket.save()
         res.send(ticket)
     } catch (e) {
