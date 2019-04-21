@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import withSplashScreen from "./withSplashScreen";
 
-export default class Main extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
 
@@ -31,3 +32,5 @@ export default class Main extends Component {
     );
   }
 }
+
+export default withSplashScreen(Main);

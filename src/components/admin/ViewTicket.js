@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { convertDateToString, renderStatus } from "../helper";
+import { 
+  convertDateToString,
+  renderLoading,
+  renderTopics,
+  renderStatusHistory,
+  renderScreenshots, } from "../helper";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
@@ -16,7 +21,8 @@ export default class TicketList extends Component {
       displayDate: displayDate,
       statusUpdates: [],
       attendedBy: email,
-      imgSources: []
+      imgSources: [],
+      screenshotsLoaded: false
     };
   }
 
@@ -49,7 +55,12 @@ export default class TicketList extends Component {
         // console.log(imgSources);
         .then(res => {
           console.log(res);
-          this.setState({ imgSources: res.data });
+          this.setState({
+            imgSources: res.data.map((obj, i) =>
+              new Buffer(obj, "base64").toString("binary")
+            ),
+            screenshotsLoaded: true
+          });
         })
         .catch((error, res) => {
           console.log("no status update history for this ticket.");
@@ -113,29 +124,6 @@ export default class TicketList extends Component {
     }
   };
 
-  renderTopics() {
-    return this.state.ticket.topics.map((obj, i) => {
-      return (
-        <span className="badge badge-pill badge-warning mr-2"> {obj} </span>
-      );
-    });
-  }
-
-  renderScreenshots() {
-    if (this.state.imgSources.length != 0) {
-      return this.state.imgSources.map((obj, i) => {
-        var imgURL = new Buffer(obj, "base64").toString("binary");
-        console.log(imgURL);
-        return (
-          <div className="thumbnails justify-content-center">
-            <h4> Screenshots </h4>
-            <img className="img-thumbnail img-fluid" src={imgURL} alt={i} />
-          </div>
-        );
-      });
-    }
-  }
-
   render() {
     return (
       <div className="container-fluid">
@@ -150,45 +138,25 @@ export default class TicketList extends Component {
             </span>{" "}
           </p>
           <div className="d-flex justify-content-center my-2">
-            {this.renderTopics()}
+            {renderTopics(this.state.ticket.topics)}
           </div>
           <div className="my-5 mb-2">
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
+        
+        {this.state.imgSources.length !== 0 && 
+            (this.state.screenshotsLoaded ? (
+              renderScreenshots(this.state.imgSources)
+            ) : (
+              renderLoading()
+            ) 
+          )}
         </div>
-
-        {this.renderScreenshots()}
-
-        <h4>Update History</h4>
-        {this.state.statusUpdates.map((obj, i) => (
-          <div>
-            <table className="table table-striped text-white">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Attended By</th>
-                  <th>Comments</th>
-                  <th>Change in Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{convertDateToString(obj.dateOfUpdate)}</td>
-                  <td>{obj.attendedBy}</td>
-                  <td>{obj.comments}</td>
-                  <td>
-                    <p>
-                      {renderStatus(obj.prevStatusToClient)} →{" "}
-                      {renderStatus(obj.statusToClient)}
-                    </p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        ))}
-
+        
+        {this.state.statusUpdates.length !== 0 && 
+        renderStatusHistory(this.state.statusUpdates)}
+        
         <div className="my-2">
           <Link
             to={"/update/" + this.state.ticket._id}

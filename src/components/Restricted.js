@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ClientDashboard from "./client/Dashboard.js";
 import AdminDashboard from "./admin/Dashboard.js";
 import Kanban from "./Kanban.js";
+import withSplashScreen from "./withSplashScreen";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Restricted extends Component {
@@ -52,4 +53,4 @@ class Restricted extends Component {
   }
 }
 
-export default Restricted;
+export default withSplashScreen(Restricted);
