@@ -122,30 +122,37 @@ export default class TicketList extends Component {
     }
   }
 
+  renderScreenshotsArea() {
+    return (
+      <div>
+        <h4>
+          {" "}
+          Screenshots{" "}
+          <Button
+            variant="outline-warning"
+            onClick={() => {
+              this.handleDownload();
+            }}
+          >
+            {" "}
+            Download all{" "}
+          </Button>{" "}
+        </h4>
+        <div className="row text-center text-lg-left">
+        {this.renderScreenshots()}
+        </div>
+        
+      </div> 
+    )
+  }
+
   renderScreenshots() {
     if (this.state.imgSources.length !== 0) {
       return this.state.imgSources.map((obj, i) => {
         return (
-          <div>
-            <h4>
-              {" "}
-              Screenshots{" "}
-              <Button
-                variant="outline-warning"
-                onClick={() => {
-                  this.handleDownload();
-                }}
-              >
-                {" "}
-                Download all{" "}
-              </Button>{" "}
-            </h4>
-            <div className="row">
-              <div key={i} className="col-md-4">
-                <div className="thumbnail mb-2">
-                  <ImagePreview index={i} imgSources={this.state.imgSources} />
-                </div>
-              </div>
+          <div key={i} className="col-lg-3 col-md-4 col-6">
+            <div className="d-block mb-4 h-100">
+              <ImagePreview index={i} imgSources={this.state.imgSources} />
             </div>
           </div>
         );
@@ -187,7 +194,7 @@ export default class TicketList extends Component {
           </div>
 
           {this.state.screenshotsLoaded ? (
-            this.renderScreenshots()
+            this.renderScreenshotsArea()
           ) : (
             <div>
               <ProgressBar animated now={45} />
