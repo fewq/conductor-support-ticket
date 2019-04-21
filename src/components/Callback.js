@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Auth from "../Auth";
+import {renderLoading} from "./helper";
 
 class Callback extends Component {
   state = {};
@@ -12,7 +13,7 @@ class Callback extends Component {
   render() {
     return (
       <div>
-        <h1>Loading...</h1>
+        {renderLoading()}
       </div>
     );
   }

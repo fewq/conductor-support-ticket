@@ -1,12 +1,13 @@
 /* eslint-disable no-useless-constructor */
 import React, { Component } from "react";
 import axios from "axios";
-import { convertDateToString } from "../helper";
+import { 
+  convertDateToString,
+  renderLoading,
+  renderTopics,
+  renderStatusHistory,
+  renderScreenshots, } from "../helper";
 import { Link } from "react-router-dom";
-import ImagePreview from "./ImagePreview.js";
-import { Button, ProgressBar } from "react-bootstrap";
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
 
 export default class TicketList extends Component {
   constructor(props) {
@@ -112,68 +113,6 @@ export default class TicketList extends Component {
     }
   };
 
-  renderTopics() {
-    if (this.state.statusUpdates.length !== 0) {
-      return this.state.ticket.topics.map((obj, i) => {
-        return (
-          <span className="badge badge-pill badge-warning mr-2"> {obj} </span>
-        );
-      });
-    }
-  }
-
-  renderScreenshotsArea() {
-    return (
-      <div>
-        <h4>
-          {" "}
-          Screenshots{" "}
-          <Button
-            variant="outline-warning"
-            onClick={() => {
-              this.handleDownload();
-            }}
-          >
-            {" "}
-            Download all{" "}
-          </Button>{" "}
-        </h4>
-        <div className="row text-center text-lg-left">
-        {this.renderScreenshots()}
-        </div>
-        
-      </div> 
-    )
-  }
-
-  renderScreenshots() {
-    if (this.state.imgSources.length !== 0) {
-      return this.state.imgSources.map((obj, i) => {
-        return (
-          <div key={i} className="col-lg-3 col-md-4 col-6">
-            <div className="d-block mb-4 h-100">
-              <ImagePreview index={i} imgSources={this.state.imgSources} />
-            </div>
-          </div>
-        );
-      });
-    }
-  }
-
-  handleDownload() {
-    var zip = new JSZip();
-    var img = zip.folder("images");
-    console.log("handling download");
-    this.state.imgSources.map((obj, i) => {
-      let filename = "screenshot" + i;
-      let imgData = obj.replace(/^data:image\/\w+;base64,/, "");
-      img.file(filename, imgData, { base64: true });
-    });
-    zip.generateAsync({ type: "blob" }).then(content => {
-      saveAs(content, "example.zip");
-    });
-  }
-
   render() {
     return (
       <div className="container-fluid">
@@ -186,44 +125,24 @@ export default class TicketList extends Component {
             </span>
           </p>
           <div className="d-flex justify-content-center my-2">
-            {this.renderTopics()}
+            {renderTopics(this.state.ticket.topics)}
           </div>
           <div className="my-5 mb-2">
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
 
-          {this.state.screenshotsLoaded ? (
-            this.renderScreenshotsArea()
-          ) : (
-            <div>
-              <ProgressBar animated now={45} />
-            </div>
+          {this.state.imgSources.length !== 0 && 
+            (this.state.screenshotsLoaded ? (
+              renderScreenshots(this.state.imgSources)
+            ) : (
+              renderLoading()
+            ) 
           )}
         </div>
-        {this.state.statusUpdates.map((obj, i) => (
-          <div>
-            <p>Update History</p>
-            <table className="table table-striped text-white">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Attended By</th>
-                  <th>Comments</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{obj.dateOfUpdate}</td>
-                  <td>{obj.attendedBy}</td>
-                  <td>{obj.comments}</td>
-                  <td>Some status field to be implemented later.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        ))}
+        
+        {this.state.statusUpdates.length !== 0 && 
+        renderStatusHistory(this.state.statusUpdates)}
 
         <div className="my-4">
           <Link
