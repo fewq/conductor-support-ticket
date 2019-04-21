@@ -1,5 +1,5 @@
 import React from "react";
-import {Spinner, Button} from 'react-bootstrap';
+import { Spinner, Button } from "react-bootstrap";
 import ImagePreview from "./ImagePreview";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
@@ -32,33 +32,41 @@ export const convertDateToString = date => {
 
 export const renderTopics = topics => {
   return topics.map((obj, i) => {
-    return <span class="badge badge-pill badge-info"> {obj} </span>;
+    return <span className="badge badge-pill badge-info"> {obj} </span>;
+  });
+};
+
+export const renderTopicsShort = topics => {
+  return topics.map((obj, i) => {
+    return (
+      <span className="badge badge-pill badge-dark"> {obj.charAt(0)} </span>
+    );
   });
 };
 
 export const renderLoading = () => {
-  return <Spinner animation="border" variant="warning" />
-}
+  return <Spinner animation="border" variant="warning" />;
+};
 
 export const renderStatus = status => {
   switch (status) {
     case "Pending Admin":
-      return <span class="badge badge-secondary mr-2"> {status} </span>;
+      return <span className="badge badge-secondary mr-2"> {status} </span>;
 
     case "Pending BA":
-      return <span class="badge badge-light mr-2"> {status} </span>;
+      return <span className="badge badge-light mr-2"> {status} </span>;
 
     case "Pending Developers":
-      return <span class="badge badge-light mr-2"> {status} </span>;
+      return <span className="badge badge-light mr-2"> {status} </span>;
 
     case "Pending Client":
-      return <span class="badge badge-warning mr-2"> {status} </span>;
+      return <span className="badge badge-warning mr-2"> {status} </span>;
 
     case "Resolved":
-      return <span class="badge badge-success mr-2"> {status} </span>;
+      return <span className="badge badge-success mr-2"> {status} </span>;
 
     case "Deleted":
-      return <span class="badge badge-danger mr-2"> {status} </span>;
+      return <span className="badge badge-danger mr-2"> {status} </span>;
 
     default:
       return null;
@@ -81,21 +89,21 @@ export const renderScreenshots = objects => {
           Download all{" "}
         </Button>{" "}
       </h4>
-      <hr class="mt-2 mb-5" />
+      <hr className="mt-2 mb-5" />
       <div className="row text-center text-lg-left">
-      {objects.map((obj, i) => {
-        return (
-          <div key={i} className="col-lg-3 col-md-4 col-6">
-            <div className="d-block mb-4 h-100">
-              <ImagePreview index={i} imgSources={objects} />
+        {objects.map((obj, i) => {
+          return (
+            <div key={i} className="col-lg-3 col-md-4 col-6">
+              <div className="d-block mb-4 h-100">
+                <ImagePreview index={i} imgSources={objects} />
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
       </div>
-    </div> 
-  )
-}
+    </div>
+  );
+};
 
 export const renderStatusHistory = objects => {
   return (
@@ -118,7 +126,7 @@ export const renderStatusHistory = objects => {
               <td>{obj.comments}</td>
               <td>
                 <p>
-                  {renderStatus(obj.prevStatusToClient)} → {" "}
+                  {renderStatus(obj.prevStatusToClient)} →{" "}
                   {renderStatus(obj.statusToClient)}
                 </p>
               </td>
@@ -127,8 +135,8 @@ export const renderStatusHistory = objects => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
 export const handleDownload = objects => {
   var zip = new JSZip();

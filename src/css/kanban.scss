@@ -192,10 +192,20 @@ $header-color: #f7f7f7;
   margin-bottom: 0px;
   .title-read {
     padding-left: 5px;
+    span {
+      margin-top: 3px;
+      margin-left: 5px;
+      float: right;
+    }
   }
   .title-unread {
     padding-left: 5px;
     font-weight: bold;
+    span {
+      margin-top: 3px;
+      margin-left: 5px;
+      float: right;
+    }
   }
 }
 a#card-view-details {
@@ -223,7 +233,14 @@ a#card-view-details {
   position: absolute;
   right: 5px;
   top: 5px;
+  width: 18px;
   i {
+    float: left;
+    width: 18px;
+    height: 18px;
+    line-height: 19px;
+  }
+  div {
     float: left;
     width: 18px;
     height: 18px;

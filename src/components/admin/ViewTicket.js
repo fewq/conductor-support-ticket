@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { 
+import {
   convertDateToString,
   renderLoading,
   renderTopics,
   renderStatusHistory,
-  renderScreenshots, } from "../helper";
+  renderScreenshots
+} from "../helper";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
@@ -144,19 +145,16 @@ export default class TicketList extends Component {
             <h4> Description </h4>
             <p> {this.state.ticket.description} </p>
           </div>
-        
-        {this.state.imgSources.length !== 0 && 
-            (this.state.screenshotsLoaded ? (
-              renderScreenshots(this.state.imgSources)
-            ) : (
-              renderLoading()
-            ) 
-          )}
+
+          {this.state.imgSources.length !== 0 &&
+            (this.state.screenshotsLoaded
+              ? renderScreenshots(this.state.imgSources)
+              : renderLoading())}
         </div>
-        
-        {this.state.statusUpdates.length !== 0 && 
-        renderStatusHistory(this.state.statusUpdates)}
-        
+
+        {this.state.statusUpdates.length !== 0 &&
+          renderStatusHistory(this.state.statusUpdates)}
+
         <div className="my-2">
           <Link
             to={"/update/" + this.state.ticket._id}

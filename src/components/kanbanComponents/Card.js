@@ -13,6 +13,7 @@ import { DragSource, DropTarget } from "react-dnd";
 import Types from "./staticTypes";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { renderTopicsShort } from "../helper";
 
 let initialState; // initialState before begin DnD
 
@@ -292,17 +293,23 @@ class Card extends Component {
     return connectDragSource(
       connectDropTarget(
         <div className="card ">
-          <div className="menu-icon action">
-            <i
-              className="fa fa-ellipsis-v"
-              aria-hidden="true"
-              onClick={e => {
-                this.props.onClickMenu(e.target);
-                console.log(e.target);
-                e.stopPropagation();
-              }}
-            />
+          <div className="menu-icon">
+            <div className="action">
+              <i
+                className="fa fa-ellipsis-v"
+                aria-hidden="true"
+                onClick={e => {
+                  this.props.onClickMenu(e.target);
+                  console.log(e.target);
+                  e.stopPropagation();
+                }}
+              />
+            </div>
+            {card.fileNumber > 0 && (
+              <div class="fa fa-paperclip" aria-hidden="true" />
+            )}
           </div>
+
           {this.props.shouldShowCardMenu && (
             <CardMenu
               hasDescription={!!card.description.length}
@@ -362,9 +369,15 @@ class Card extends Component {
                   aria-hidden="true"
                 />
                 {card.read ? (
-                  <span className="title-read">{card.title}</span>
+                  <span className="title-read">
+                    {card.title}
+                    {renderTopicsShort(card.topics)}
+                  </span>
                 ) : (
-                  <span className="title-unread">{card.title}</span>
+                  <span className="title-unread">
+                    {card.title}
+                    {renderTopicsShort(card.topics)}
+                  </span>
                 )}
               </div>
             )}
