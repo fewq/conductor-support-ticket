@@ -13,7 +13,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: "conductor.au.auth0.com",
     clientID: env.AUTH_TOKEN,
-    redirectUri: "http://localhost:3000/callback",
+    redirectUri: "http://0.0.0.0:3000/callback",
     audience: "https://conductor.au.auth0.com/userinfo", //specifies what kind of user
     responseType: "token id_token",
     scope: "openid profile email app_metadata"

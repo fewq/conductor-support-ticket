@@ -8,10 +8,10 @@ console.log('env *****', env);
 
 if (env === 'development') {
    process.env.PORT = 3000;
-   process.env.MONGODB_URI = 'mongodb://localhost:27017/TicketManager', {useNewUrlParser:true};
+   process.env.MONGODB_URI = 'mongodb://0.0.0.0:27017/TicketManager', {useNewUrlParser:true};
 } else if (env === 'test') {
    process.env.PORT = 3000;
-   process.env.MONGODB_URI = 'mongodb://localhost:27017/TicketManagerTest', {useNewUrlParser:true};
+   process.env.MONGODB_URI = 'mongodb://0.0.0.0:27017/TicketManagerTest', {useNewUrlParser:true};
 } else {
    process.env.MONGODB_URI = "mongodb://testing:test123@ds113866.mlab.com:13866/heroku_sk8z5qss"
 }
