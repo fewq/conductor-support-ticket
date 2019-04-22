@@ -15,6 +15,7 @@
     "bootstrap": "^4.3.1",
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
+    "nodemon": "^1.18.11",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
     "file-saver": "^2.0.1",
@@ -45,6 +46,8 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.3.1",
     "yup": "^0.26.10"
   },
   "scripts": {
