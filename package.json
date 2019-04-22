@@ -72,7 +72,8 @@
     "nodemon": "^1.18.11",
     "react-testing-library": "^6.1.2",
     "supertest": "^3.4.1",
-    "webpack": "^4.28.3"
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.3.1"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
