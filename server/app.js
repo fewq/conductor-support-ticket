@@ -25,7 +25,7 @@ app.post("/api/notify", (req, res) => {
     <h3>${req.body.title}</h3>
     <p>Your ticket status is now: ${req.body.status}</p>
     <p>Message: ${req.body.message}</p>
-    <p>View your ticket here: localhost:3000/view/${req.body.link}</p>
+    <p>View your ticket here: localhost:5000/view/${req.body.link}</p>
   `;
   } else if (req.body.target == "admin") {
     output = `
