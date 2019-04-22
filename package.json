@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:4000/",
+  "engines": {
+    "node": "8.11.4"
+  },
   "dependencies": {
     "auth0-js": "^9.10.1",
     "auth0-lock": "^11.14.1",
@@ -25,6 +28,7 @@
     "multer": "^1.4.1",
     "node-sass": "^4.11.0",
     "nodemailer": "^5.1.1",
+    "nodemon": "^1.18.10",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-auth0": "^0.4.1",
@@ -42,6 +46,8 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.3.1",
     "yup": "^0.26.10"
   },
   "scripts": {
