@@ -1,2 +1,2 @@
-web: node --optimize_for_size --max_old_space_size=400 src/App.js
-web: node --optimize_for_size --max_old_space_size=400 server/server.js
+web: node --optimize_for_size --max_old_space_size=400 ./src/App.js
+web: node --optimize_for_size --max_old_space_size=400 ./server/server.js
