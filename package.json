@@ -46,8 +46,8 @@
         "yup": "^0.26.10"
     },
     "scripts": {
-        "start": "concurrently \"nodemon server.js\" \"react-scripts start\"",
-        "build": "react-scripts build",
+        "start": "node server.js",
+        "heroku-postbuild": "cd src && npm install --only=dev && npm install && npm run build",
         "test": "react-scripts test --env=jsdom --verbose --silent",
         "coverage": "react-scripts test --coverage",
         "eject": "react-scripts eject",
