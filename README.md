@@ -1,13 +1,8 @@
 # Conductor - Accenture Support Ticket System
 
-This is a project for SUTD's 50.003 Elements of Software Construction course. Here is our pitch deck to the Accenture staff on June 2018: https://docs.google.com/presentation/d/e/2PACX-1vSBr5Upz-oO_xdLsB_D-mZcDMwb1H9UJsOPV2n_b5Yxp8lRzxYCoQHy2eiG9DuPQ5quzd1ttzsBypKb/pub?start=true&loop=false&delayms=10000.
+This is a project for SUTD's 50.003 Elements of Software Construction course. 
 
-## The Team
-
-Yuan Jia
-Thaddeus Phua
-Tey Siew Wen
-Sean Lew
+Here is our pitch deck to the Accenture staff on June 2018: https://docs.google.com/presentation/d/e/2PACX-1vSBr5Upz-oO_xdLsB_D-mZcDMwb1H9UJsOPV2n_b5Yxp8lRzxYCoQHy2eiG9DuPQ5quzd1ttzsBypKb/pub?start=true&loop=false&delayms=10000.
 
 ## Tech Stack
 
