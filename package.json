@@ -19,7 +19,7 @@
         "formik": "1.2.0",
         "jszip": "^3.2.1",
         "jwt-decode": "^2.2.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "mongodb": "^3.2.3",
         "mongoose": "^5.4.20",
         "morgan": "^1.9.1",
